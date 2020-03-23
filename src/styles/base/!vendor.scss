@@ -127,7 +127,7 @@
     }
 
     .swiper-container {
-        width: calc(100% + $gutter * 2);
+        width: calc(100% + #{$gutter * 2});
         padding: $gutter;
         margin: 0 -1 * $gutter;
         overflow: hidden;
