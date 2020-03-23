@@ -26,7 +26,7 @@ module.exports = (gulp, plugins, config) => {
 
                 const copyFonts = cb => {
                     gulp.src(config.paths.src.icomoon.fonts, {
-                            base: config.paths.src.root
+                            base: config.paths.src.icomoon.root
                         }).pipe(gulp.dest(config.paths.output.root))
                         .on(`end`, cb);
                 };
