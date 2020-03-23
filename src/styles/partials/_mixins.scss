@@ -192,8 +192,8 @@
     }
 }
 
-@mixin shadow($color: $shadow-color, $depth: $shadow-depth, $x: $shadow-x, $y: $shadow-y, $blur: $shadow-blur) {
-    box-shadow: $x $y $blur rgba($color, $depth);
+@mixin shadow($color: $shadow-color, $depth: $shadow-depth, $x: $shadow-x, $y: $shadow-y, $blur: $shadow-blur, $spread: $shadow-spread) {
+    box-shadow: $x $y $blur $spread rgba($color, $depth);
 }
 
 @mixin col($items, $gutter: 15px) {
