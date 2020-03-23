@@ -1,7 +1,7 @@
 {
   "name": "{{name}}",
   "version": "1.0.0",
-  "description": "{{description}}",
+  "description": "",
   "main": "gulpfile.js",
   "dependencies": {
     "animate.css": "^3.7.2",

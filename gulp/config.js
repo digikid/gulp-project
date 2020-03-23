@@ -5,7 +5,6 @@ const args = require(`./helpers/args`);
 module.exports = {
     title: `{{title}}`,
     name: pjson.name,
-    description: pjson.description,
     now: date(),
     files: {
         bootstrap: `bootstrap.custom.min.css`,
