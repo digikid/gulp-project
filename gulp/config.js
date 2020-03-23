@@ -121,7 +121,10 @@ module.exports = {
                     `./src/styles/**/*.{scss,sass}`,
                     `!./src/styles/vendor/bootstrap/**`
                 ],
-                bootstrap: `./src/styles/vendor/bootstrap/**/*.{scss,sass}`
+                bootstrap: [
+                    `./src/styles/_config.scss`,
+                    `./src/styles/vendor/bootstrap/**/*.{scss,sass}`
+                ]
             },
             js: `./src/javascripts/**/*.{js,json}`,
             html: [`./src/**/*.{html,json}`, `!./src/common/**`, `!./src/icomoon/**/*.*`],
