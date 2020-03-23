@@ -22,8 +22,10 @@
     }
 
     @each $icon, $content in $icons {
-        #{$icomoon-prefix}#{$icon}:before {
-            content: $content;
+        #{unquote('.' + $icomoon-prefix + $icon)} {
+            &:before {
+                content: $content;
+            }
         }
     }
 }
