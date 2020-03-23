@@ -2,7 +2,7 @@ const pjson = require(`../package.json`);
 const args = require(`./helpers/args`);
 
 module.exports = {
-    title: `{{title}}`,
+    title: `Новый проект`,
     name: pjson.name,
     files: {
         bootstrap: `bootstrap.custom.min.css`,
