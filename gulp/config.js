@@ -1,11 +1,9 @@
 const pjson = require(`../package.json`);
-const date = require(`./helpers/date`);
 const args = require(`./helpers/args`);
 
 module.exports = {
     title: `{{title}}`,
     name: pjson.name,
-    now: date(),
     files: {
         bootstrap: `bootstrap.custom.min.css`,
         css: `build.css`,

@@ -1,3 +1,5 @@
+const now = require(`../helpers/now`);
+
 module.exports = (gulp, plugins, config) => {
     return done => {
         return gulp.src(config.paths.src.html.root)
@@ -7,7 +9,7 @@ module.exports = (gulp, plugins, config) => {
                 basepath: config.paths.src.html.partials,
                 context: {
                     title: config.title,
-                    year: new Date().getFullYear()
+                    year: now.year
                 }
             }))
             .pipe(plugins.inject(gulp.src([

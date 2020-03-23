@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (() => {
     const days = [`воскресенье`, `понедельник`, `вторник`, `среда`, `четверг`, `пятница`, `суббота`];
     const date = new Date();
     const dd = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
@@ -11,6 +11,7 @@ module.exports = () => {
     return {
         date: `${dd}.${dm}.${dy}`,
         time: `${dh}:${dmn}`,
-        day: dw
+        day: dw,
+        year: date.getFullYear()
     };
-};
+})();

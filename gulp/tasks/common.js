@@ -1,22 +1,20 @@
 const { promises: fs } = require(`fs`);
 const dree = require(`dree`);
 
-const getPage = async (path, encoding = `utf-8`) => {
-    return fs.readFile(path, { encoding });
-};
+const now = require('../helpers/now');
 
-const createDirectory = path => {
-    return fs.mkdir(path).catch(err => {
-        if (err.code !== `EEXIST`) throw err;
-    }).then(() => {});
-};
+const readFile = async (path, encoding = `utf-8`) => fs.readFile(path, { encoding });
 
 const createFile = (path, data = ``) => fs.writeFile(path, data, `utf8`);
 
+const createDirectory = path => fs.mkdir(path).catch(err => {
+    if (err.code !== `EEXIST`) throw err;
+}).then(() => {});
+
 module.exports = (gulp, plugins, config) => {
     return done => {
-        getPage(`${config.paths.src.root}/index.html`).then(() => done()).catch(e => {
-            getPage(`${config.paths.src.common.root}/index.html`).then(async () => {
+        readFile(`${config.paths.src.root}/index.html`).then(() => done()).catch(e => {
+            readFile(`${config.paths.src.common.root}/index.html`).then(async () => {
                 createDirectory(`${config.paths.src.common.root}/data`);
 
                 const modules = await fs.access(config.paths.src.import).then(() => config.common.import).catch(e => false);
@@ -160,8 +158,9 @@ module.exports = (gulp, plugins, config) => {
                                 context: {
                                     title: config.title,
                                     name: config.name,
-                                    now: config.now,
-                                    year: new Date().getFullYear(),
+                                    theme: config.common.theme,
+                                    now: now,
+                                    year: now.year,
                                     merge: config.merge,
                                     zip: config.zip,
                                     pages: files.html.length,
@@ -172,7 +171,7 @@ module.exports = (gulp, plugins, config) => {
                                     copyright: config.common.copyright,
                                     repo: config.git ? config.repo : null,
                                     modules,
-                                    modulesFile,
+                                    modulesFile
                                 }
                             }))
                             .pipe(plugins.beautify.html({
