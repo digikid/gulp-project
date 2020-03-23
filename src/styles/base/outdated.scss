@@ -1,0 +1,26 @@
+@import '../config';
+@import '../partials';
+
+/* Outdated */
+
+.outdated {
+    padding: 15px 0;
+    font-size: 12px;
+    background: $primary;
+
+    &, a {
+        color: $white;
+    }
+
+    a {
+        text-decoration: underline;
+
+        &:hover, &:focus, &:active {
+            text-decoration: none;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+}

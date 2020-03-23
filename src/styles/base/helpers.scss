@@ -1,0 +1,12 @@
+@import '../config';
+@import '../partials';
+
+/* Helpers */
+
+.is-hidden {
+    display: none!important;
+}
+
+.no-transition {
+    transition: none!important;
+}

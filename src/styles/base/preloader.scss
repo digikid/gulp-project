@@ -1,0 +1,36 @@
+@import '../config';
+@import '../partials';
+
+@keyframes fadeOutPreloader {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 0.01;
+    }
+    100% {
+        opacity: 0;
+        z-index: -1;
+    }
+}
+
+/* Preloader */
+
+.preloader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: $white;
+    z-index: 999;
+
+    .is-ready & {
+        animation: fadeOutPreloader .3s ease-in-out forwards;
+    }
+}

@@ -1,0 +1,90 @@
+@import '../config';
+@import '../partials';
+
+// @import '../../../node_modules/normalize.css/normalize';
+
+/* Global */
+
+html,
+body {
+    height: 100%;
+}
+
+html {
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    width: 100%;
+    font-size: $font-size;
+    line-height: $line-height;
+    color: $text;
+    background: $body-background;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    &:before {
+        display: none;
+        visibility: hidden;
+
+        @each $breakpoint, $width in $breakpoints {
+            @include mo(#{$breakpoint}) {
+                content: '#{$breakpoint}';
+            }
+        }
+    }
+}
+
+a, button {
+    body.is-ready & {
+        @include transition(color, border-color, background, opacity);
+    }
+}
+
+a {
+    color: $primary;
+    text-decoration: none;
+    outline: 0 !important;
+
+    @include hover() {
+        color: lighten($primary, 10%);
+        text-decoration: none;
+    }
+}
+
+img, svg {
+    max-width: 100%;
+}
+
+svg {
+    fill: none;
+}
+
+ul, ol {
+    list-style: none;
+
+    &, li {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+code {
+    font-size: 70%;
+    color: $primary;
+    padding: 5px 8px;
+    background: $gray-200;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin: 0 5px;
+}
+
+hr {
+    background-color: $gray-200;
+    height: 1px;
+    border: 0;
+}

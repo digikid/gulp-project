@@ -1,0 +1,140 @@
+$pi: 3.14159265359;
+$_precision: 10;
+
+@function pow($base, $exp) {
+    $value: $base;
+
+    @if $exp>1 {
+        @for $i from 2 through $exp {
+            $value: $value * $base;
+        }
+    }
+
+    @if $exp < 1 {
+        @for $i from 0 through -$exp {
+            $value: $value / $base;
+        }
+    }
+
+    @return $value;
+}
+
+@function fact($num) {
+    $fact: 1;
+
+    @if $num>0 {
+        @for $i from 1 through $num {
+            $fact: $fact * $i;
+        }
+    }
+
+    @return $fact;
+}
+
+@function _to_unitless_rad($angle) {
+    @if unit($angle)=='deg' {
+        $angle: $angle / 180deg * $pi;
+    }
+
+    @if unit($angle)=='rad' {
+        $angle: $angle / 1rad;
+    }
+
+    @return $angle;
+}
+
+@function sin($angle) {
+    $a: _to_unitless_rad($angle);
+    $sin: $a;
+
+    @for $n from 1 through $_precision {
+        $sin: $sin + (pow(-1, $n) / fact(2 * $n + 1)) * pow($a, (2 * $n + 1));
+    }
+
+    @return $sin;
+}
+
+@function cos($angle) {
+    $a: _to_unitless_rad($angle);
+    $cos: 1;
+
+    @for $n from 1 through $_precision {
+        $cos: $cos + (pow(-1, $n) / fact(2*$n)) * pow($a, 2*$n);
+    }
+
+    @return $cos;
+}
+
+@function tan($angle) {
+    @return sin($angle) / cos($angle);
+}
+
+@function get-item($list, $current, $offset: 0) {
+    $position: ($current + $offset) % length($list);
+
+    @if $position == 0 {
+        $position: length($list);
+    }
+    @return nth($list, $position);
+}
+
+@function unfold-transition($transition) {
+    $property: all;
+    $duration: $duration;
+    $easing: $easing;
+    $delay: null;
+    $defaults: ($property, $duration, $easing, $delay);
+
+    $unfolded-transition: ();
+
+    @for $i from 1 through length($defaults) {
+        $p: null;
+
+        @if $i <= length($transition) {
+            $p: nth($transition, $i);
+        } @else {
+            $p: nth($defaults, $i);
+        };
+
+        $unfolded-transition: append($unfolded-transition, $p);
+    }
+
+    @return $unfolded-transition;
+}
+
+@function ms_search_screens($search) {
+    $keys: map-keys($breakpoints);
+    $keysCount: length($keys);
+    $prev: null;
+    $curr: null;
+    $next: null;
+
+    @for $i from 1 through $keysCount {
+        @if (nth($keys, $i) == $search) {
+            $curr: $search;
+
+            @if ($i < $keysCount) {
+                $next: nth($keys, $i + 1);
+            }
+
+            @if ($i > 1) {
+                $prev: nth($keys, $i - 1);
+            }
+        }
+    }
+
+    @return (
+        'previous': $prev,
+        'current':  $curr,
+        'next':     $next
+    );
+}
+
+@function ms_get_screen($search, $position: 'current') {
+    $result: ms_search_screens($search);
+    @return map-get($result, $position);
+}
+
+@function ms_get_screen_size($search, $position: 'current') {
+    @return map-get($breakpoints, ms_get_screen($search, $position));
+}

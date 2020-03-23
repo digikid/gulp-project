@@ -1,0 +1,518 @@
+@import '../config';
+@import '../partials';
+
+/* Form */
+
+$input-size: round($font-size * $input-factor);
+$input-height: $font-size * $line-height + nth($padding, 1) * 2 + $border-width * 2;
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+textarea,
+button {
+    appearance: none;
+    outline: 0!important;
+    box-shadow: none!important;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+textarea {
+    @include autofill() {
+        box-shadow: 0 0 0 30px white inset !important;
+    }
+
+    &:focus {
+        border-color: $primary;
+    }
+
+    @include placeholder() {
+        color: $gray-400;
+    }
+
+    .js-focus & {
+        @include placeholder() {
+            color: transparent;
+        }
+    }
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+textarea,
+.select__input,
+.select__dropdown {
+    width: 100%;
+    max-width: 100%;
+    padding: $padding;
+    border-radius: $radius;
+    border: $border-width solid $border;
+    @include transition(border-color);
+
+    @include mo(xs) {
+        padding-left: round(nth($padding, 2) * $padding-xs-factor);
+        padding-right: round(nth($padding, 2) * $padding-xs-factor);
+    }
+}
+
+textarea {
+    min-height: $textarea-height;
+}
+
+label {
+    max-width: 100%;
+    display: inline-block;
+    margin-bottom: $form-gutter / 2;
+}
+
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"],
+select {
+    visibility: hidden;
+    display: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    + label {
+        position: relative;
+        cursor: pointer;
+        padding-left: $input-size * $input-offset-factor;
+        margin-bottom: 0;
+
+        &:before, &:after {
+            position: absolute;
+            top: ($font-size * $line-height - $input-size) / 2;
+            left: 0;
+            @include transition();
+        }
+
+        &:before {
+            content: '';
+            border: $border-width solid $border;
+            border-radius: $radius / 2;
+            width: $input-size;
+            height: $input-size;
+            display: inline-flex;
+            vertical-align: middle;
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            opacity: 0;
+            @include transition();
+        }
+    }
+
+    &:checked {
+        + label {
+            &:after {
+                opacity: 1;
+            }
+        }
+
+        &.switch {
+            + label {
+                &:before {
+                    background: $checkbox-color;
+                }
+                &:after {
+                    background: $white;
+                    transform: translate($input-size * (3 - $switcher-factor) / 2, $input-size * (1 - $switcher-factor) / 2);
+                }
+            }
+        }
+    }
+
+    &:disabled {
+        + label {
+            opacity: .35;
+            pointer-events: none;
+        }
+    }
+}
+
+input[type="checkbox"] {
+    + label {
+        &:after {
+            width: round($input-size / 4);
+            height: round($input-size / 2);
+            transform-origin: 50% 50%;
+            border: solid $checkbox-color;
+            border-width: 0 $checkbox-thickness $checkbox-thickness 0;
+            transform: rotate(45deg) translate($input-size / 2.5, -$input-size / 8);
+        }
+    }
+    &:checked {
+        + label {
+            &:before {
+                border-color: $checkbox-color;
+            }
+        }
+    }
+
+    &.switch {
+        + label {
+            padding-left: $input-size * ($input-offset-factor + 1);
+
+            &:before {
+                width: $input-size * 2;
+                border-radius: $input-size;
+            }
+
+            &:after {
+                opacity: 1;
+                width: $input-size * $switcher-factor;
+                height: $input-size * $switcher-factor;
+                border: 0;
+                border-radius: 50%;
+                background: $checkbox-color;
+                transform: translate($input-size * (1 - $switcher-factor) / 2, $input-size * (1 - $switcher-factor) / 2);
+            }
+        }
+    }
+}
+
+input[type="radio"] {
+    + label {
+        &:after {
+            width: $input-size * $radio-factor;
+            height: $input-size * $radio-factor;
+            border-radius: 50%;
+            background: $radio-color;
+            transform: translate($input-size / 4, $input-size / 4);
+        }
+        &:before {
+            border-radius: 50%;
+        }
+    }
+
+    &:checked {
+        + label {
+            &:before {
+                border-color: $radio-color;
+            }
+        }
+    }
+
+    &:disabled {
+        + label {
+            opacity: .35;
+            pointer-events: none;
+        }
+    }
+}
+
+input[type="file"] {
+    + label {
+        width: auto;
+        border: $border-width solid $border;
+        padding: $padding;
+        border-radius: $radius;
+        cursor: pointer;
+        margin: 0;
+        @include truncate();
+        @include transition(border-color);
+
+        @include mo(xs) {
+            padding-left: round(nth($padding, 2) * $padding-xs-factor);
+            padding-right: round(nth($padding, 2) * $padding-xs-factor);
+        }
+    }
+
+    .is-focused &,
+    .is-checked & {
+        + label {
+            border-color: $primary;
+        }
+    }
+
+    .is-checked & {
+        + label {
+            color: $primary;
+        }
+    }
+}
+
+.js-focus {
+    label {
+        position: absolute;
+        top: nth($padding, 1);
+        left: nth($padding, 2);
+        transition: font-size .15s ease-in-out, top .15s ease-in-out;
+        margin-bottom: 0;
+
+        @include mo(xs) {
+            left: round(nth($padding, 2) * $padding-xs-factor);
+        }
+    }
+
+    &.is-focused,
+    &.is-checked {
+
+        label {
+            top: nth($padding, 1) / 2;
+            font-size: $font-size * .6;
+        }
+
+        input,
+        textarea {
+            padding: nth($padding, 1) * 1.5 nth($padding, 2) nth($padding, 1) / 2;
+
+            @include mo(xs) {
+                padding-left: round(nth($padding, 2) * $padding-xs-factor);
+                padding-right: round(nth($padding, 2) * $padding-xs-factor);
+            }
+        }
+    }
+}
+
+.select {
+    position: relative;
+
+    &__element {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: $input-height;
+        appearance: none;
+        opacity: 0;
+
+        @include mo(xs) {
+            display: block;
+            visibility: visible;
+            z-index: 2;
+        }
+    }
+
+    &__input {
+        $angle-size: $input-height / 5;
+        $angle-position: ($angle-size * sin(45deg) + $angle-size * cos(45deg)) / 2;
+
+        width: $select-width;
+        position: relative;
+        z-index: 1;
+        @include truncate();
+        padding-right: $angle-size * 4!important;
+        @include transition();
+
+        &:after {
+            content: '';
+            width: $angle-size;
+            height: $angle-size;
+            position: absolute;
+            top: 1.65 * $input-height / 5;
+            right: 1.65 * $input-height / 5;
+            border: solid darken($border, 20%);
+            border-width: 0 $border-width $border-width 0;
+            display: block;
+            transform: rotate(45deg);
+            transform-origin: $angle-position $angle-position;
+            @include transition();
+        }
+
+        .is-focused &,
+        .is-opened & {
+            border-color: $select-color;
+
+            &:after {
+                border-color: $select-color;
+                transform: rotate(-135deg);
+            }
+        }
+
+        .is-checked & {
+            color: $white;
+            background: $select-color;
+            border-color: $select-color;
+
+            &:after {
+                border-color: $white;
+            }
+        }
+    }
+
+    &__dropdown {
+        display: none;
+        padding: 0;
+        position: absolute;
+        top: 125%;
+        left: 0;
+        background: $white;
+        max-height: $dropdown-height;
+        opacity: 0;
+        z-index: 2;
+        @include transition(opacity);
+
+        .is-opened & {
+            display: block;
+            animation: fadeIn .15s ease-in-out forwards;
+        }
+
+        @include mo(xs) {
+            display: none;
+        }
+    }
+
+    &__item {
+        display: block;
+        padding: nth($padding, 1) * nth($dropdown-item-ratio, 1) nth($padding, 2) * nth($dropdown-item-ratio, 2);
+        cursor: pointer;
+
+        @include mo(xs) {
+            padding-left: round(nth($padding, 2) * $padding-xs-factor);
+            padding-right: round(nth($padding, 2) * $padding-xs-factor);
+        }
+
+        &.is-active {
+            background: rgba($select-color, 0.05);
+        }
+    }
+}
+
+.btn {
+    display: inline-block;
+    outline: 0 !important;
+    text-decoration: none!important;
+    padding: nth($button-padding, 1) * nth($button-ratio-normal, 1) nth($button-padding, 2) * nth($button-ratio-normal, 2);
+    margin-right: $form-gutter / 2;
+    margin-bottom: $form-gutter / 2;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &:focus {
+        box-shadow: none!important;
+    }
+
+    @include mo(xs) {
+        width: 100%;
+        padding-left: round(nth($button-padding, 2) * $button-padding-xs-factor);
+        padding-right: round(nth($button-padding, 2) * $button-padding-xs-factor);
+        margin: 0 0 $form-gutter / 2;
+    }
+
+    p + & {
+        margin-top: 20px;
+    }
+
+    @mixin button-bg($type, $color) {
+        $text-color: if($type == 'yellow', $text, $white);
+
+        color: $text-color;
+        background: $color;
+
+        @include hover() {
+            color: $text-color;
+            background: lighten($color, $hover-depth);
+        }
+    };
+
+    @each $type, $color in $colors {
+        @if $color == $primary {
+            @include button-bg($type, $color);
+        } @else {
+            &--#{$type} {
+                @include button-bg($type, $color);
+            }
+        }
+    }
+
+    &--light {
+        background: lighten($primary, 55%);
+        color: $text;
+
+        @include hover() {
+            color: $text;
+            background: lighten($primary, 57%);
+        }
+    }
+
+    &--white,
+    &--border {
+        color: $primary;
+        background: $white;
+        border: $border-width solid $primary;
+
+        @include hover() {
+            color: $white;
+            background: lighten($primary, $hover-depth);
+        }
+    }
+
+    &--round {
+        border-radius: $radius * 10;
+        padding-left: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
+        padding-right: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
+    }
+
+    &--square {
+        border-radius: 0;
+    }
+
+    &--small {
+        padding: nth($button-padding, 1) * nth($button-ratio-small, 1) nth($button-padding, 2) * nth($button-ratio-small, 2);
+
+        &.btn--round {
+            padding-left: nth($button-padding, 2) * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
+            padding-right: nth($button-padding, 2) * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
+        }
+    }
+
+    &--large {
+        padding: nth($button-padding, 1) * nth($button-ratio-large, 1) nth($button-padding, 2) * nth($button-ratio-large, 2);
+
+        &.btn--round {
+            padding-left: nth($button-padding, 2) * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
+            padding-right: nth($button-padding, 2) * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
+        }
+    }
+
+    &--disabled {
+        opacity: $disabled-opacity;
+        filter: grayscale(1);
+        pointer-events: none;
+    }
+}
+
+.form {
+    &__control {
+        width: 100%;
+        position: relative;
+        margin-bottom: $form-gutter;
+
+        @include mo(xs) {
+            margin-bottom: round($form-gutter * 0.75);
+        }
+
+        .form__group & {
+            flex: 1;
+            margin-right: $form-gutter;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            @include ms(lg) {
+                flex: 0 1 auto;
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__submit {
+        margin-top: $form-gutter * 1.5;
+    }
+}

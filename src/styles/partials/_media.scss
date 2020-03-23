@@ -1,0 +1,86 @@
+@mixin ms($screen) {
+    $size: ms_get_screen_size($screen);
+
+    @if ($size) {
+        @if ($size > 2) {
+            @media screen and (max-width: $size - 1) {
+                @content;
+            }
+        } @else  {
+            @warn 'can\'t have @media smaller than `#{$size}`';
+        }
+    } @else {
+        @warn 'media type not found: #{$screen}';
+    }
+}
+
+@mixin mo($screen) {
+    $previous: ms_get_screen($screen, 'previous');
+    $current: ms_get_screen($screen, 'current');
+    $next: ms_get_screen($screen, 'next');
+
+    $current-size: ms_get_screen_size($current);
+    $next-size: ms_get_screen_size($next);
+
+    @if ($current) {
+        @if ($next) {
+            @if ($current-size <= 0) {
+                @include ms($next) {
+                    @content;
+                };
+            } @else {
+                @media screen and (min-width: $current-size) and (max-width: $next-size - 1) {
+                    @content;
+                }
+            }
+        } @else if ($previous) {
+            @include ml($previous) {
+                @content;
+            }
+        }
+    } @else {
+        @warn 'media type not found: #{$screen}';
+    }
+}
+
+@mixin ml($screen) {
+    @if (ms_get_screen($screen)) {
+        $next-size: ms_get_screen_size($screen, 'next');
+
+        @if ($next-size) {
+            @media screen and (min-width: $next-size) {
+                @content;
+            }
+        } @else {
+            @warn 'no breakpoint after `#{$screen}`';
+        }
+    } @else {
+        @warn 'media type not found: #{$screen}';
+    }
+}
+
+@mixin mc($breakpoints) {
+    @each $screen in $breakpoints {
+        @include mo($screen) {
+            @content;
+        }
+    }
+}
+
+@mixin mr() {
+    @media screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+        @content;
+    }
+}
+
+@mixin dm() {
+    @media (prefers-color-scheme: dark) {
+        @content;
+    }
+}
+
+@mixin lm() {
+    @media (prefers-color-scheme: light) {
+        @content;
+    }
+}

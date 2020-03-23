@@ -1,0 +1,213 @@
+@import '../config';
+@import '../partials';
+
+/* Wysiwyg */
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.35;
+    margin-bottom: 1.5rem;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-top: 2rem;
+
+    @include ms(lg) {
+        margin-top: 1.5rem;
+    }
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+h1 {
+    @include ms(lg) {
+        font-size: 2rem;
+    }
+
+    @include ms(md) {
+        font-size: 1.75rem;
+    }
+}
+
+h2 {
+    @include ms(lg) {
+        font-size: 1.75rem;
+    }
+
+    @include ms(md) {
+        font-size: 1.5rem;
+    }
+}
+
+h3 {
+    font-size: 1.675rem;
+
+    @include ms(lg) {
+        font-size: 1.5rem;
+    }
+
+    @include ms(md) {
+        font-size: 1.25rem;
+    }
+}
+
+h4 {
+    font-size: 1.5rem;
+
+    @include ms(lg) {
+        font-size: 1.5rem;
+    }
+
+    @include ms(md) {
+        font-size: 1.25rem;
+    }
+}
+
+.wysiwyg {
+
+    table {
+        width: 100%;
+        min-width: 800px;
+        overflow: hidden;
+        margin: 25px 0;
+
+        thead {
+            font-weight: 600;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid $border;
+            padding: 10px 15px;
+        }
+    }
+
+    ul,
+    ol,
+    table,
+    blockquote,
+    form,
+    hr {
+        margin: 35px 0;
+
+        @include ms(md) {
+            margin: 25px 0;
+        }
+    }
+
+    ul, ol {
+        padding: 0;
+
+        @include ms(md) {
+            margin: 25px 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: $ul-size * 5;
+            margin-bottom: 15px;
+
+            &:before {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    }
+
+    ol {
+        counter-reset: num;
+
+        li {
+            @include mo(xs) {
+                padding-left: $ol-size * 1.5;
+            }
+
+            &:before {
+                content: counter(num);
+                counter-increment: num;
+                font-weight: bold;
+                background: $primary;
+                color: $white;
+                width: $ol-size;
+                height: $ol-size;
+                border-radius: 50%;
+                top: ($font-size * $line-height - $ol-size) / 2;
+
+                @include ms(md) {
+                    top: 0;
+                }
+            }
+        }
+    }
+
+    ul {
+        li {
+            padding-left: $ul-size * 5;
+
+            @include ms(md) {
+                padding-left: $ul-size * 3.5;
+            }
+
+            @include mo(xs) {
+                padding-left: $ul-size * 2.5;
+            }
+
+            &:before {
+                content: '';
+                top: ($font-size * $line-height - $ul-size) / 2;
+                width: $ul-size;
+                height: $ul-size;
+                background: $primary;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    figure {
+
+        img {
+            display: block;
+        }
+
+        figcaption {
+            a {
+
+            }
+        }
+    }
+
+    p {
+        a {
+            text-decoration: underline;
+
+            @include hover() {
+                text-decoration: none;
+            }
+        }
+
+        small {
+            font-size: 90%;
+            color: rgba($text, .5);
+        }
+    }
+
+    blockquote {
+        border-radius: $radius;
+        background: $gray-100;
+        padding: 35px 45px;
+        border-left: 5px solid $gray-300;
+
+        @include mo(xs) {
+            padding: 25px;
+        }
+    }
+
+    code {
+        font-size: 85%;
+    }
+}

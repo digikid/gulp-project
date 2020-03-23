@@ -1,0 +1,165 @@
+@import '../config';
+@import '../partials';
+
+/* Animate.css */
+
+@import '../../../node_modules/animate.css/animate';
+
+/* Wow */
+
+.wow {
+    visibility: hidden;
+}
+
+/* Tippy */
+
+.tippy-tooltip.white-theme {
+    font-size: round($font-size * 0.95);
+    color: $text;
+    background: $white;
+    padding: 5px;
+    @include shadow($depth: .15);
+
+    &[data-placement^='top'] {
+        .tippy-arrow {
+            border-top-color: $white;
+        }
+    }
+
+    &[data-placement^='bottom'] {
+        .tippy-arrow {
+            border-bottom-color: $white;
+        }
+    }
+
+    &[data-placement^='left'] {
+        .tippy-arrow {
+            border-left-color: $white;
+        }
+    }
+
+    &[data-placement^='right'] {
+        .tippy-arrow {
+            border-right-color: $white;
+        }
+    }
+}
+
+/* Simplebar */
+
+.simplebar {
+    &-track {
+        &.simplebar-vertical {
+            width: 15px;
+
+            .simplebar-scrollbar {
+                &:before {
+                    top: 5px;
+                    bottom: 5px;
+                }
+            }
+        }
+
+        &.simplebar-horizontal {
+            height: 15px;
+
+            .simplebar-scrollbar {
+                &:before {
+                    left: 5px;
+                    right: 5px;
+                }
+            }
+        }
+    }
+
+    &-scrollbar {
+        &:before {
+            left: 3px;
+            right: 5px;
+        }
+
+        &.simplebar-visible {
+            &:before {
+                opacity: .15;
+            }
+        }
+    }
+}
+
+/* Fancybox */
+
+.fancybox {
+
+    &-slide {
+        padding: 25px;
+
+        @include mo(xs) {
+            padding: 0;
+        }
+    }
+
+    &-content {
+        @include ms(lg) {
+            padding: 35px;
+        }
+
+        @include ms(md) {
+            padding: 25px;
+        }
+
+        @include mo(xs) {
+            padding: 18px;
+            height: 100%;
+        }
+    }
+}
+
+/* Swiper */
+
+@import '../vendor/swiper/swiper';
+
+.js-swiper {
+    opacity: 0;
+
+    &.is-ready,
+    &.is-destroyed {
+        animation: fadeIn .3s ease-in-out forwards;
+    }
+
+    .swiper-container {
+        width: calc(100% + $gutter * 2);
+        padding: $gutter;
+        margin: 0 -1 * $gutter;
+        overflow: hidden;
+    }
+
+    .swiper-slide {
+        min-height: 100%;
+    }
+}
+
+/* Lazy elements */
+
+.js-lazy {
+    position: relative;
+    background-color: transparent;
+
+    &.is-loading {
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            @include bg-filler('../../vectors/lazy.svg', 50px);
+            opacity: .15;
+        }
+    }
+
+    &.is-loaded{
+        &:before {
+            z-index: -1;
+        }
+    }
+}

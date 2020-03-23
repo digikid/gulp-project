@@ -1,0 +1,348 @@
+@import '../icons';
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+    $src: null;
+
+    $extmods: (
+        eot: "?",
+        svg: "#" + str-replace($name, " ", "_")
+    );
+
+    $formats: (
+        otf: "opentype",
+        ttf: "truetype"
+    );
+
+    @each $ext in $exts {
+        $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+        $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+        $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+    }
+
+    @font-face {
+        font-family: quote($name);
+        font-style: $style;
+        font-weight: $weight;
+        src: $src;
+    }
+}
+
+@mixin icomoon-base {
+    font-family: 'icomoon'!important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin icomoon($icon, $position: 'before', $replace: false) {
+    @if $replace {
+        font-size: 0;
+    }
+
+    &:#{$position} {
+        content: map-get($icons, $icon);
+        @include icomoon-base();
+
+        @if $replace {
+            font-size: 1rem;
+        }
+
+        @content;
+    }
+}
+
+@mixin fa-base {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome!important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin fa($icon, $position: 'before', $replace: false) {
+    @if $replace {
+        font-size: 0;
+    }
+
+    &:#{$position} {
+        content: map-get($fa-icons, $icon);
+        @include fa-base;
+
+        @if $replace {
+            font-size: 1rem;
+        }
+
+        @content;
+    }
+}
+
+@mixin clearfix {
+    *zoom: 1;
+    &:after {
+        content: '';
+        display: table;
+        line-height: 0;
+        clear: both;
+    }
+}
+
+@mixin truncate($overflow: ellipsis) {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: $overflow;
+}
+
+@mixin transition($transitions...) {
+    $unfolded-transitions: ();
+
+    @if length($transitions) > 0 {
+        @each $transition in $transitions {
+            $unfolded-transitions: append($unfolded-transitions, unfold-transition($transition), comma);
+        }
+    } @else {
+        $unfolded-transitions: append($unfolded-transitions, unfold-transition(all), comma);
+    };
+
+    transition: $unfolded-transitions;
+}
+
+@mixin triangle($direction: bottom, $size: 6px, $border-color: $border) {
+    $directions: top, right, bottom, left;
+
+    content: '';
+    display: inline-block;
+    height: 0;
+    width: 0;
+    @include transition(transform);
+
+    @for $i from 1 through length($directions) {
+        @if nth($directions, $i) == $direction {
+            border-#{get-item($directions, $i, -1)}: $size solid transparent;
+            border-#{get-item($directions, $i, 1)}: $size solid transparent;
+            border-#{get-item($directions, $i, 2)}: $size solid $border-color;
+        }
+    }
+
+    @content;
+}
+
+@mixin chevron($direction: bottom, $size: 6px, $border-color: $border, $thickness: 1px) {
+    $rotation: 45deg;
+
+    @if $direction == right {
+        $rotation: 45deg;
+    } @else if $direction == bottom {
+        $rotation: 135deg;
+    } @else if $direction == left {
+        $rotation: 225deg;
+    } @else if $direction == top {
+        $rotation: 315deg;
+    }
+
+    content: '';
+    display: inline-block;
+    height: $size;
+    width: $size;
+    border: solid $border-color;
+    border-width: $thickness $thickness 0 0;
+    transform: rotate($rotation);
+    @include transition(transform);
+
+    @content;
+}
+
+@mixin placeholder() {
+    &::placeholder {
+        opacity: 1;
+        @content;
+    }
+    &:-moz-placeholder {
+        opacity: 1;
+        @content;
+    }
+    &::-moz-placeholder {
+        opacity: 1;
+        @content;
+    }
+    &:-ms-input-placeholder {
+        opacity: 1;
+        @content;
+    }
+    &::-ms-input-placeholder {
+        opacity: 1;
+        @content;
+    }
+    &::-webkit-input-placeholder {
+        opacity: 1;
+        @content;
+    }
+}
+
+@mixin autofill() {
+    &:-webkit-autofill {
+        &, &:hover, &:focus, &:active {
+            @content;
+        }
+    }
+}
+
+@mixin shadow($color: $shadow-color, $depth: $shadow-depth, $x: $shadow-x, $y: $shadow-y, $blur: $shadow-blur) {
+    box-shadow: $x $y $blur rgba($color, $depth);
+}
+
+@mixin col($items, $gutter: 15px) {
+    @if $items != 1 {
+        @if unit($gutter) == '%' {
+            width: #{(100% - $gutter * ($items - 1)) / $items};
+        } @else {
+            width: calc((100% - #{$gutter * ($items - 1)}) / #{$items});
+        }
+        margin-right: $gutter;
+        &:nth-child(#{$items}n) {
+            margin-right: 0;
+        }
+    } @else {
+        width: 100%;
+    }
+}
+
+@mixin touch-scroll($direction: x) {
+    flex-wrap: nowrap;
+    overflow-#{$direction}: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: $direction mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    @if ($direction == x) {
+        padding-bottom: 15px;
+    }
+
+    &::-webkit-scrollbar {
+        background-color: transparent;
+        display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
+@mixin touch-scroll-snap() {
+    scroll-snap-align: center;
+}
+
+@mixin scrollbar($color: #ccc, $size: 6px) {
+    -webkit-appearance: none;
+    -webkit-overflow-scrolling: auto;
+
+    &::-webkit-scrollbar {
+
+        &, * {
+            background: transparent;
+        }
+
+        &, &-track {
+            display: block;
+        }
+
+        &:vertical {
+            width: $size * 3;
+        }
+
+        &:horizontal {
+            height: $size * 3;
+        }
+
+        &-track {
+            &-piece {
+                display: none;
+            }
+        }
+
+        &-thumb {
+            width: $size;
+            background: $color;
+            background-clip: padding-box;
+            border-radius: $size * 4;
+            border: $size solid transparent;
+
+            &:window-inactive {
+                background: lighten($color, 5%);
+            }
+
+            &:focus {
+                background: darken($color, 5%);
+            }
+        }
+    }
+}
+
+@mixin bg-filler($url: null, $size: contain, $position: center) {
+    background: {
+        @if ($url) {
+            image: url($url);
+        };
+        size: $size;
+        position: $position;
+        repeat: no-repeat;
+    };
+    @content;
+}
+
+@mixin bg-cover($url: null, $size: cover, $position: center) {
+    background: {
+        @if ($url) {
+            image: url($url);
+        };
+        size: $size;
+        position: $position;
+        repeat: no-repeat;
+    };
+    @content;
+}
+
+@mixin retina() {
+    @include media-retina() {
+        @content;
+    }
+}
+
+@mixin bg-2x($image) {
+    @media screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+        background-image: url($image);
+    }
+}
+
+@mixin ratio($width, $height) {
+    padding-bottom: ($height / $width) * 100%;
+}
+
+@mixin replace-parent($original, $replacement, $selector: &) {
+    @at-root #{selector-replace($selector, $original, $replacement)} {
+        @content;
+    }
+}
+
+@mixin backface-fix() {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform-style: preserve-3d;
+}
+
+@mixin hover() {
+    &:hover, &:active, &:focus {
+        @content;
+    }
+}
+

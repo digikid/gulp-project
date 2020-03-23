@@ -1,0 +1,114 @@
+$breakpoints: (
+    xs: 0px,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px
+) !default;
+
+$containers: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1158px
+) !default;
+
+$gutter: 15px;
+
+$font-size: 16px;
+$line-height: 1.5;
+
+$shadow-depth: 0.07;
+$shadow-blur: 18px;
+$shadow-color: #000;
+$shadow-x: 0;
+$shadow-y: 0;
+
+$duration: .15s;
+$easing: ease-in-out;
+
+$white: #fff;
+$black: #000;
+
+$primary: #42517A;
+$text: #20344B;
+$body-background: $white;
+$border: #C7CCD2;
+
+$gray: #808899;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+$blue:    $primary;
+$red:     #c65845;
+$yellow:  #ffc107;
+$green:   #09a758;
+$cyan:    #099ea7;
+
+$colors: (
+    'blue': $blue,
+    'red': $red,
+    'yellow': $yellow,
+    'green': $green,
+    'cyan': $cyan,
+    'gray': $gray-600,
+    'gray-dark': $gray-800
+);
+
+$brand-colors: (
+    vk: #5181B8,
+    facebook: #297CC1,
+    twitter: #4DABDF,
+    instagram: linear-gradient(45deg, #FFE4BB 0%, #E8A339 19.69%, #DE2E8B 51.3%, #5951D6 96.29%)
+) !default;
+
+$radius: 6px;
+$input-factor: 1.35;
+
+$padding: 12px 18px;
+$padding-xs-factor: 0.8;
+
+$border-width: 1px;
+$form-gutter: 25px;
+
+$textarea-height: 215px;
+$dropdown-height: 215px;
+$select-width: 550px;
+
+$button-padding: $padding;
+$button-padding-xs-factor: $padding-xs-factor;
+
+$button-ratio-small: 1 1;
+$button-ratio-normal: 1.25 1.5;
+$button-ratio-large: 1.35 2;
+$button-ratio-round: 1 1;
+
+$dropdown-item-ratio: 0.75 1;
+
+$input-offset-factor: 1.85;
+
+$disabled-opacity: 0.2;
+$hover-depth: 5%;
+
+$checkbox-thickness: 2px;
+
+$radio-factor: 0.5;
+$switcher-factor: 0.75;
+
+$checkbox-color: $primary;
+$radio-color: $primary;
+$select-color: $primary;
+
+$ol-size: 30px;
+$ul-size: 10px;
+
+$icomoon-prefix: 'icon--';
+$icomoon-font-name: 'icomoon';
+$icomoon-font-family: 'icomoon';
