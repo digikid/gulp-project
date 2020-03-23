@@ -292,7 +292,7 @@ input[type="file"] {
     }
 
     &__input {
-        $angle-size: $input-height / 5;
+        $angle-size: $input-height * $select-angle-factor;
         $angle-position: ($angle-size * sin(45deg) + $angle-size * cos(45deg)) / 2;
 
         width: $select-width;
@@ -300,6 +300,7 @@ input[type="file"] {
         z-index: 1;
         @include truncate();
         padding-right: $angle-size * 4!important;
+        cursor: pointer;
         @include transition();
 
         &:after {
@@ -310,7 +311,7 @@ input[type="file"] {
             top: 1.65 * $input-height / 5;
             right: 1.65 * $input-height / 5;
             border: solid darken($border, 20%);
-            border-width: 0 $border-width $border-width 0;
+            border-width: 0 $select-angle-border $select-angle-border 0;
             display: block;
             transform: rotate(45deg);
             transform-origin: $angle-position $angle-position;
