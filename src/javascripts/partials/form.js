@@ -88,8 +88,10 @@ $.fn.customSelect = function(options) {
             _this.$options.appendTo(_this.$dropdown);
             _this.$input.insertAfter(_this.$select);
             _this.$dropdown.insertAfter(_this.$select);
+        };
 
-            new SimpleBar(_this.$dropdown[0], settings.scrollbar);
+        _this.initScrollbar = function() {
+            _this.$simpleBar = new SimpleBar(_this.$dropdown[0], settings.scrollbar);
         };
 
         _this.clickListeners = function() {
@@ -101,6 +103,8 @@ $.fn.customSelect = function(options) {
 
             $(document).on('click', function(e) {
                 $('.select').removeClass('is-focused is-opened');
+            }).on('afterShow.fb', function(e, instance, slide) {
+                _this.initScrollbar();
             });
         };
 
@@ -119,6 +123,7 @@ $.fn.customSelect = function(options) {
             if (_this.$select.hasClass('select__element')) return;
 
             _this.buildLayout();
+            _this.initScrollbar();
             _this.clickListeners();
             _this.updateListeners();
         };
