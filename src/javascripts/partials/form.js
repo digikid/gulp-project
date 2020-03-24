@@ -96,6 +96,7 @@ $.fn.customSelect = function(options) {
             _this.$input.click(function(e) {
                 e.stopPropagation();
                 _this.$wrapper.toggleClass('is-opened');
+                $('.select').not(_this.$wrapper).removeClass('is-focused is-opened');
             });
 
             $(document).on('click', function(e) {
