@@ -29,7 +29,7 @@ textarea {
     }
 
     @include placeholder() {
-        color: $gray-400;
+        color: $placeholder-color;
     }
 
     .js-focus & {
@@ -301,6 +301,7 @@ input[type="file"] {
         position: relative;
         z-index: 1;
         @include truncate();
+        color: $placeholder-color;
         padding-right: $select-angle-size + nth($input-padding, 2) * 2!important;
         cursor: pointer;
         @include transition();
@@ -322,6 +323,7 @@ input[type="file"] {
 
         .is-focused &,
         .is-opened & {
+            color: $primary;
             border-color: $select-color;
 
             &:after {
@@ -369,7 +371,7 @@ input[type="file"] {
         color: $text;
         padding: nth($input-padding, 1) * nth($select-item-ratio, 1) nth($input-padding, 2) * nth($select-item-ratio, 2);
         cursor: pointer;
-        @include transition(color);
+        @include transition(color, background);
 
         @include mo(xs) {
             padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
@@ -377,11 +379,13 @@ input[type="file"] {
         }
 
         @include hover() {
-            color: lighten($text, 25%);
+            background: $select-hover-item-bg;
+            color: $select-hover-item-color;
         }
 
         &.is-active {
-            background: rgba($select-color, 0.05);
+            background: $select-active-item-bg;
+            color: $select-active-item-color;
         }
     }
 }

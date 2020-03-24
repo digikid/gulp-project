@@ -116,6 +116,8 @@ $select-width: 550px;
 $select-dropdown-height: 215px;
 $select-color: $primary;
 $select-hover-item-color: lighten($text, 25%);
+$select-hover-item-bg: transparent;
+$select-active-item-color: $text;
 $select-active-item-bg: rgba($select-color, 0.05);
 $select-angle-color: darken($border, 20%);
 $select-angle-border-width: $input-border-width;
