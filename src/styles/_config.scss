@@ -71,47 +71,56 @@ $brand-colors: (
     instagram: linear-gradient(45deg, #FFE4BB 0%, #E8A339 19.69%, #DE2E8B 51.3%, #5951D6 96.29%)
 ) !default;
 
-$radius: 6px;
-$input-factor: 1.35;
+$disabled-opacity: 0.2;
+$hover-depth: 5%;
 
-$padding: 12px 18px;
-$padding-xs-factor: 0.8;
+$radius: 6px;
 
 $border-width: 1px;
 $form-gutter: 25px;
 
+$placeholder-color: $gray-400;
+
+$input-padding: 12px 18px;
+$input-padding-xs-factor: 0.8;
+$input-font-size: $font-size;
+$input-radius: $radius;
+$input-border-color: $border;
+$input-border-width: $border-width;
+$input-factor: 1.35;
+$input-offset-factor: 1.85;
+
 $textarea-height: 215px;
-$dropdown-height: 215px;
-$select-width: 550px;
 
+$button-padding: $input-padding;
+$button-padding-xs-factor: $input-padding-xs-factor;
 $button-font-size: $font-size;
-
-$button-padding: $padding;
-$button-padding-xs-factor: $padding-xs-factor;
+$button-radius: $radius;
+$button-border-width: $border-width;
+$button-hover-depth: $hover-depth;
 
 $button-ratio-small: 1 1;
 $button-ratio-normal: 1.25 1.5;
 $button-ratio-large: 1.35 2;
 $button-ratio-round: 1 1;
 
-$dropdown-item-ratio: 0.75 1;
-
-$input-offset-factor: 1.85;
-
-$disabled-opacity: 0.2;
-$hover-depth: 5%;
-
-$checkbox-thickness: 2px;
-
-$radio-factor: 0.5;
 $switcher-factor: 0.75;
 
 $checkbox-color: $primary;
-$radio-color: $primary;
-$select-color: $primary;
+$checkbox-thickness: 2px;
 
-$select-angle-border: $border-width;
+$radio-factor: 0.5;
+$radio-color: $primary;
+
+$select-width: 550px;
+$select-dropdown-height: 215px;
+$select-color: $primary;
+$select-hover-item-color: lighten($text, 25%);
+$select-active-item-bg: rgba($select-color, 0.05);
+$select-angle-color: darken($border, 20%);
+$select-angle-border-width: $input-border-width;
 $select-angle-factor: 0.2;
+$select-item-ratio: 0.75 1;
 
 $ol-size: 30px;
 $ul-size: 10px;

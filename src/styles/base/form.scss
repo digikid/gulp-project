@@ -3,8 +3,8 @@
 
 /* Form */
 
-$input-size: round($font-size * $input-factor);
-$input-height: $font-size * $line-height + nth($padding, 1) * 2 + $border-width * 2;
+$input-size: round($input-font-size * $input-factor);
+$input-height: $input-font-size * $line-height + nth($input-padding, 1) * 2 + $input-border-width * 2;
 
 input[type="text"],
 input[type="tel"],
@@ -47,14 +47,15 @@ textarea,
 .select__dropdown {
     width: 100%;
     max-width: 100%;
-    padding: $padding;
-    border-radius: $radius;
-    border: $border-width solid $border;
+    font-size: $input-font-size;
+    padding: $input-padding;
+    border-radius: $input-radius;
+    border: $input-border-width solid $input-border-color;
     @include transition(border-color);
 
     @include mo(xs) {
-        padding-left: round(nth($padding, 2) * $padding-xs-factor);
-        padding-right: round(nth($padding, 2) * $padding-xs-factor);
+        padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+        padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
     }
 }
 
@@ -86,15 +87,15 @@ input[type="radio"] {
 
         &:before, &:after {
             position: absolute;
-            top: ($font-size * $line-height - $input-size) / 2;
+            top: ($input-font-size * $line-height - $input-size) / 2;
             left: 0;
             @include transition();
         }
 
         &:before {
             content: '';
-            border: $border-width solid $border;
-            border-radius: $radius / 2;
+            border: $input-border-width solid $border;
+            border-radius: $input-radius / 2;
             width: $input-size;
             height: $input-size;
             display: inline-flex;
@@ -211,17 +212,17 @@ input[type="radio"] {
 input[type="file"] {
     + label {
         width: auto;
-        border: $border-width solid $border;
-        padding: $padding;
-        border-radius: $radius;
+        border: $input-border-width solid $input-border-color;
+        padding: $input-padding;
+        border-radius: $input-radius;
         cursor: pointer;
         margin: 0;
         @include truncate();
         @include transition(border-color);
 
         @include mo(xs) {
-            padding-left: round(nth($padding, 2) * $padding-xs-factor);
-            padding-right: round(nth($padding, 2) * $padding-xs-factor);
+            padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
         }
     }
 
@@ -242,13 +243,13 @@ input[type="file"] {
 .js-focus {
     label {
         position: absolute;
-        top: nth($padding, 1);
-        left: nth($padding, 2);
+        top: nth($input-padding, 1);
+        left: nth($input-padding, 2);
         transition: font-size .15s ease-in-out, top .15s ease-in-out;
         margin-bottom: 0;
 
         @include mo(xs) {
-            left: round(nth($padding, 2) * $padding-xs-factor);
+            left: round(nth($input-padding, 2) * $input-padding-xs-factor);
         }
     }
 
@@ -256,17 +257,17 @@ input[type="file"] {
     &.is-checked {
 
         label {
-            top: nth($padding, 1) / 2;
-            font-size: $font-size * .6;
+            top: nth($input-padding, 1) / 2;
+            font-size: $input-font-size * .6;
         }
 
         input,
         textarea {
-            padding: nth($padding, 1) * 1.5 nth($padding, 2) nth($padding, 1) / 2;
+            padding: nth($input-padding, 1) * 1.5 nth($input-padding, 2) nth($input-padding, 1) / 2;
 
             @include mo(xs) {
-                padding-left: round(nth($padding, 2) * $padding-xs-factor);
-                padding-right: round(nth($padding, 2) * $padding-xs-factor);
+                padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+                padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
             }
         }
     }
@@ -292,29 +293,30 @@ input[type="file"] {
     }
 
     &__input {
-        $angle-size: $input-height * $select-angle-factor;
-        $angle-position: ($angle-size * sin(45deg) + $angle-size * cos(45deg)) / 2;
+        $select-angle-size: $input-height * $select-angle-factor;
+        $select-angle-real-size: $select-angle-size * sin(45deg) + $select-angle-size * cos(45deg);
+        $select-angle-position: $select-angle-real-size / 2;
 
         width: $select-width;
         position: relative;
         z-index: 1;
         @include truncate();
-        padding-right: $angle-size * 4!important;
+        padding-right: $select-angle-size + nth($input-padding, 2) * 2!important;
         cursor: pointer;
         @include transition();
 
         &:after {
             content: '';
-            width: $angle-size;
-            height: $angle-size;
+            width: $select-angle-size;
+            height: $select-angle-size;
             position: absolute;
-            top: 1.65 * $input-height / 5;
-            right: 1.65 * $input-height / 5;
-            border: solid darken($border, 20%);
-            border-width: 0 $select-angle-border $select-angle-border 0;
+            top: calc(50% - #{$select-angle-real-size / 2 - $input-border-width});
+            right: nth($input-padding, 2);
+            border: solid $select-angle-color;
+            border-width: 0 $select-angle-border-width $select-angle-border-width 0;
             display: block;
             transform: rotate(45deg);
-            transform-origin: $angle-position $angle-position;
+            transform-origin: $select-angle-position $select-angle-position;
             @include transition();
         }
 
@@ -325,6 +327,7 @@ input[type="file"] {
             &:after {
                 border-color: $select-color;
                 transform: rotate(-135deg);
+                top: ($input-height - $select-angle-real-size - $select-angle-border-width) / 2;
             }
         }
 
@@ -346,7 +349,7 @@ input[type="file"] {
         top: 125%;
         left: 0;
         background: $white;
-        max-height: $dropdown-height;
+        max-height: $select-dropdown-height;
         opacity: 0;
         z-index: 2;
         @include transition(opacity);
@@ -364,13 +367,13 @@ input[type="file"] {
     &__item {
         display: block;
         color: $text;
-        padding: nth($padding, 1) * nth($dropdown-item-ratio, 1) nth($padding, 2) * nth($dropdown-item-ratio, 2);
+        padding: nth($input-padding, 1) * nth($select-item-ratio, 1) nth($input-padding, 2) * nth($select-item-ratio, 2);
         cursor: pointer;
         @include transition(color);
 
         @include mo(xs) {
-            padding-left: round(nth($padding, 2) * $padding-xs-factor);
-            padding-right: round(nth($padding, 2) * $padding-xs-factor);
+            padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
         }
 
         @include hover() {
@@ -389,6 +392,7 @@ input[type="file"] {
     outline: 0 !important;
     text-decoration: none!important;
     padding: nth($button-padding, 1) * nth($button-ratio-normal, 1) nth($button-padding, 2) * nth($button-ratio-normal, 2);
+    border-radius: $button-radius;
 
     &:focus {
         box-shadow: none!important;
@@ -412,7 +416,7 @@ input[type="file"] {
 
         @include hover() {
             color: $text-color;
-            background: lighten($color, $hover-depth);
+            background: lighten($color, $button-hover-depth);
         }
     };
 
@@ -440,16 +444,16 @@ input[type="file"] {
     &--border {
         color: $primary;
         background: $white;
-        border: $border-width solid $primary;
+        border: $input-border-width solid $primary;
 
         @include hover() {
             color: $white;
-            background: lighten($primary, $hover-depth);
+            background: lighten($primary, $button-hover-depth);
         }
     }
 
     &--round {
-        border-radius: $radius * 10;
+        border-radius: $button-radius * 10;
         padding-left: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
         padding-right: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
     }
