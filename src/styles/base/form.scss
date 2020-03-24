@@ -391,11 +391,18 @@ input[type="file"] {
 }
 
 .btn {
-    display: inline-block;
+    $button-padding-y: nth($input-padding, 1) - ($button-border-width - $input-border-width);
+    $button-padding-x: nth($input-padding, 2) - ($button-border-width - $input-border-width);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: $input-height;
     font-size: $button-font-size;
     outline: 0 !important;
     text-decoration: none!important;
-    padding: nth($button-padding, 1) * nth($button-ratio-normal, 1) nth($button-padding, 2) * nth($button-ratio-normal, 2);
+    padding: $button-padding-y * nth($button-ratio-normal, 1) $button-padding-x * nth($button-ratio-normal, 2);
+    border: $button-border-width solid;
     border-radius: $button-radius;
 
     &:focus {
@@ -404,8 +411,8 @@ input[type="file"] {
 
     @include mo(xs) {
         width: 100%;
-        padding-left: round(nth($button-padding, 2) * $button-padding-xs-factor);
-        padding-right: round(nth($button-padding, 2) * $button-padding-xs-factor);
+        padding-left: round($button-padding-x * $button-padding-xs-factor);
+        padding-right: round($button-padding-x * $button-padding-xs-factor);
     }
 
     p + & {
@@ -417,10 +424,12 @@ input[type="file"] {
 
         color: $text-color;
         background: $color;
+        border-color: $color;
 
         @include hover() {
             color: $text-color;
             background: lighten($color, $button-hover-depth);
+            border-color: lighten($color, $button-hover-depth);
         }
     };
 
@@ -448,7 +457,6 @@ input[type="file"] {
     &--border {
         color: $primary;
         background: $white;
-        border: $input-border-width solid $primary;
 
         @include hover() {
             color: $white;
@@ -458,8 +466,8 @@ input[type="file"] {
 
     &--round {
         border-radius: $button-radius * 10;
-        padding-left: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
-        padding-right: nth($button-padding, 2) * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
+        padding-left: $button-padding-x * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
+        padding-right: $button-padding-x * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
     }
 
     &--square {
@@ -467,20 +475,20 @@ input[type="file"] {
     }
 
     &--small {
-        padding: nth($button-padding, 1) * nth($button-ratio-small, 1) nth($button-padding, 2) * nth($button-ratio-small, 2);
+        padding: $button-padding-y * nth($button-ratio-small, 1) $button-padding-x * nth($button-ratio-small, 2);
 
         &.btn--round {
-            padding-left: nth($button-padding, 2) * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
-            padding-right: nth($button-padding, 2) * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
+            padding-left: $button-padding-x * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
+            padding-right: $button-padding-x * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
         }
     }
 
     &--large {
-        padding: nth($button-padding, 1) * nth($button-ratio-large, 1) nth($button-padding, 2) * nth($button-ratio-large, 2);
+        padding: $button-padding-y * nth($button-ratio-large, 1) $button-padding-x * nth($button-ratio-large, 2);
 
         &.btn--round {
-            padding-left: nth($button-padding, 2) * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
-            padding-right: nth($button-padding, 2) * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
+            padding-left: $button-padding-x * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
+            padding-right: $button-padding-x * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
         }
     }
 
