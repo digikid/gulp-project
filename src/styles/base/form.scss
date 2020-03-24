@@ -363,12 +363,18 @@ input[type="file"] {
 
     &__item {
         display: block;
+        color: $text;
         padding: nth($padding, 1) * nth($dropdown-item-ratio, 1) nth($padding, 2) * nth($dropdown-item-ratio, 2);
         cursor: pointer;
+        @include transition(color);
 
         @include mo(xs) {
             padding-left: round(nth($padding, 2) * $padding-xs-factor);
             padding-right: round(nth($padding, 2) * $padding-xs-factor);
+        }
+
+        @include hover() {
+            color: lighten($text, 25%);
         }
 
         &.is-active {
