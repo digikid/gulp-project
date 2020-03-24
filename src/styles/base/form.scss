@@ -379,15 +379,10 @@ input[type="file"] {
 
 .btn {
     display: inline-block;
+    font-size: $button-font-size;
     outline: 0 !important;
     text-decoration: none!important;
     padding: nth($button-padding, 1) * nth($button-ratio-normal, 1) nth($button-padding, 2) * nth($button-ratio-normal, 2);
-    margin-right: $form-gutter / 2;
-    margin-bottom: $form-gutter / 2;
-
-    &:last-child {
-        margin-right: 0;
-    }
 
     &:focus {
         box-shadow: none!important;
@@ -397,7 +392,6 @@ input[type="file"] {
         width: 100%;
         padding-left: round(nth($button-padding, 2) * $button-padding-xs-factor);
         padding-right: round(nth($button-padding, 2) * $button-padding-xs-factor);
-        margin: 0 0 $form-gutter / 2;
     }
 
     p + & {
