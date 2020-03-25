@@ -513,15 +513,10 @@ input[type="file"] {
         }
 
         .form__group & {
-            flex: 1;
+            width: auto;
             margin-right: $form-gutter;
 
             &:last-child {
-                margin-right: 0;
-            }
-
-            @include ms(lg) {
-                flex: 0 1 auto;
                 margin-right: 0;
             }
         }
