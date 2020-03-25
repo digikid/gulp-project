@@ -512,6 +512,9 @@ input[type="file"] {
 }
 
 .form {
+    width: 100%;
+    max-width: 100%;
+
     &__control {
         width: 100%;
         position: relative;
