@@ -274,6 +274,8 @@ input[type="file"] {
 }
 
 .select {
+    $this: &;
+
     position: relative;
 
     &__element {
@@ -321,8 +323,8 @@ input[type="file"] {
             @include transition();
         }
 
-        .is-focused &,
-        .is-opened & {
+        #{$this}.is-focused &,
+        #{$this}.is-opened & {
             color: $primary;
             border-color: $select-color;
 
@@ -333,7 +335,7 @@ input[type="file"] {
             }
         }
 
-        .is-checked & {
+        #{$this}.is-checked & {
             color: $white;
             background: $select-color;
             border-color: $select-color;
@@ -351,12 +353,13 @@ input[type="file"] {
         top: 125%;
         left: 0;
         background: $white;
+        height: auto;
         max-height: $select-dropdown-height;
         opacity: 0;
         z-index: 2;
         @include transition(opacity);
 
-        .is-opened & {
+        #{$this}.is-opened & {
             display: block;
             animation: fadeIn .15s ease-in-out forwards;
         }
