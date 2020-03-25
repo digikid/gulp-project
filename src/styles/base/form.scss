@@ -277,12 +277,22 @@ input[type="file"] {
     $this: &;
 
     position: relative;
+    width: $select-width;
+    max-width: 100%;
+
+    @include mo(xs) {
+        width: 100%;
+    }
+
+    &__element,
+    &__input {
+        width: 100%;
+    }
 
     &__element {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
         height: $input-height;
         appearance: none;
         opacity: 0;
@@ -299,13 +309,12 @@ input[type="file"] {
         $select-angle-real-size: $select-angle-size * sin(45deg) + $select-angle-size * cos(45deg);
         $select-angle-position: $select-angle-real-size / 2;
 
-        width: $select-width;
         position: relative;
-        z-index: 1;
-        @include truncate();
         color: $placeholder-color;
         padding-right: $select-angle-size + nth($input-padding, 2) * 2!important;
         cursor: pointer;
+        z-index: 1;
+        @include truncate();
         @include transition();
 
         &:after {
