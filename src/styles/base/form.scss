@@ -523,7 +523,7 @@ input[type="file"] {
     }
 
     &--large {
-        padding: $button-padding-y-large $button-padding-y-large;
+        padding: $button-padding-y-large $button-padding-x-large;
 
         &.btn--round {
             padding-left: $button-padding-x-large * nth($button-ratio-round, 2);
