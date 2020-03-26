@@ -6,6 +6,27 @@
 $input-size: round($input-font-size * $input-factor);
 $input-height: $input-font-size * $line-height + nth($input-padding, 1) * 2 + $input-border-width * 2;
 
+$switcher-width: $input-size * $switcher-width-factor;
+$switcher-x: $input-size * (1 - $switcher-dot-factor) / 2;
+$switcher-x-active: $input-size * ($switcher-width-factor * 2 - $switcher-dot-factor - 1) / 2;
+$switcher-y: $input-size * (1 - $switcher-dot-factor) / 2;
+
+$select-angle-size: $input-height * $select-angle-factor;
+$select-angle-real-size: $select-angle-size * sin(45deg) + $select-angle-size * cos(45deg);
+$select-angle-position: $select-angle-real-size / 2;
+
+$button-padding-y: nth($input-padding, 1) - ($button-border-width - $input-border-width);
+$button-padding-x: nth($input-padding, 2) - ($button-border-width - $input-border-width);
+
+$button-padding-y-small: round($button-padding-y * nth($button-ratio-small, 1));
+$button-padding-x-small: round($button-padding-x * nth($button-ratio-small, 2));
+
+$button-padding-y-normal: round($button-padding-y * nth($button-ratio-normal, 1));
+$button-padding-x-normal: round($button-padding-x * nth($button-ratio-normal, 2));
+
+$button-padding-y-large: round($button-padding-y * nth($button-ratio-large, 1));
+$button-padding-x-large: round($button-padding-x * nth($button-ratio-large, 2));
+
 input[type="text"],
 input[type="tel"],
 input[type="email"],
@@ -79,7 +100,7 @@ select {
 
 input[type="checkbox"],
 input[type="radio"] {
-    + label {
+    & + label {
         position: relative;
         cursor: pointer;
         padding-left: $input-size * $input-offset-factor;
@@ -111,27 +132,27 @@ input[type="radio"] {
     }
 
     &:checked {
-        + label {
+        & + label {
             &:after {
                 opacity: 1;
             }
         }
 
         &.switch {
-            + label {
+            & + label {
                 &:before {
-                    background: $checkbox-color;
+                    background: $switcher-active-bg;
                 }
                 &:after {
-                    background: $white;
-                    transform: translate($input-size * (3 - $switcher-factor) / 2, $input-size * (1 - $switcher-factor) / 2);
+                    background: $switcher-active-color;
+                    transform: translate($switcher-x-active, $switcher-y);
                 }
             }
         }
     }
 
     &:disabled {
-        + label {
+        & + label {
             opacity: .35;
             pointer-events: none;
         }
@@ -139,7 +160,7 @@ input[type="radio"] {
 }
 
 input[type="checkbox"] {
-    + label {
+    & + label {
         &:after {
             width: round($input-size / 4);
             height: round($input-size / 2);
@@ -150,7 +171,7 @@ input[type="checkbox"] {
         }
     }
     &:checked {
-        + label {
+        & + label {
             &:before {
                 border-color: $checkbox-color;
             }
@@ -158,29 +179,42 @@ input[type="checkbox"] {
     }
 
     &.switch {
-        + label {
+        & + label {
+            display: inline-block;
+            width: $switcher-width;
+            height: $input-size;
             padding-left: $input-size * ($input-offset-factor + 1);
 
             &:before {
-                width: $input-size * 2;
+                width: $switcher-width;
+                background: $switcher-bg;
                 border-radius: $input-size;
+                border-color: $switcher-border-color;
             }
 
             &:after {
                 opacity: 1;
-                width: $input-size * $switcher-factor;
-                height: $input-size * $switcher-factor;
+                width: $input-size * $switcher-dot-factor;
+                height: $input-size * $switcher-dot-factor;
                 border: 0;
                 border-radius: 50%;
-                background: $checkbox-color;
-                transform: translate($input-size * (1 - $switcher-factor) / 2, $input-size * (1 - $switcher-factor) / 2);
+                background: $switcher-color;
+                transform: translate($switcher-x, $switcher-y);
+            }
+        }
+
+        &:checked {
+            & + label {
+                &:before {
+                    border-color: $switcher-active-border-color;
+                }
             }
         }
     }
 }
 
 input[type="radio"] {
-    + label {
+    & + label {
         &:after {
             width: $input-size * $radio-factor;
             height: $input-size * $radio-factor;
@@ -194,7 +228,7 @@ input[type="radio"] {
     }
 
     &:checked {
-        + label {
+        & + label {
             &:before {
                 border-color: $radio-color;
             }
@@ -202,7 +236,7 @@ input[type="radio"] {
     }
 
     &:disabled {
-        + label {
+        & + label {
             opacity: .35;
             pointer-events: none;
         }
@@ -210,7 +244,7 @@ input[type="radio"] {
 }
 
 input[type="file"] {
-    + label {
+    & + label {
         width: auto;
         border: $input-border-width solid $input-border-color;
         padding: $input-padding;
@@ -228,13 +262,13 @@ input[type="file"] {
 
     .is-focused &,
     .is-checked & {
-        + label {
+        & + label {
             border-color: $primary;
         }
     }
 
     .is-checked & {
-        + label {
+        & + label {
             color: $primary;
         }
     }
@@ -258,7 +292,7 @@ input[type="file"] {
 
         label {
             top: nth($input-padding, 1) / 2;
-            font-size: $input-font-size * .6;
+            font-size: $input-font-size * 0.6;
         }
 
         input,
@@ -305,10 +339,6 @@ input[type="file"] {
     }
 
     &__input {
-        $select-angle-size: $input-height * $select-angle-factor;
-        $select-angle-real-size: $select-angle-size * sin(45deg) + $select-angle-size * cos(45deg);
-        $select-angle-position: $select-angle-real-size / 2;
-
         position: relative;
         color: $placeholder-color;
         padding-right: $select-angle-size + nth($input-padding, 2) * 2!important;
@@ -403,9 +433,6 @@ input[type="file"] {
 }
 
 .btn {
-    $button-padding-y: nth($input-padding, 1) - ($button-border-width - $input-border-width);
-    $button-padding-x: nth($input-padding, 2) - ($button-border-width - $input-border-width);
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -413,7 +440,7 @@ input[type="file"] {
     font-size: $button-font-size;
     outline: 0 !important;
     text-decoration: none!important;
-    padding: $button-padding-y * nth($button-ratio-normal, 1) $button-padding-x * nth($button-ratio-normal, 2);
+    padding: $button-padding-y-normal $button-padding-x-normal;
     border: $button-border-width solid;
     border-radius: $button-radius;
 
@@ -423,8 +450,8 @@ input[type="file"] {
 
     @include mo(xs) {
         width: 100%;
-        padding-left: round($button-padding-x * $button-padding-xs-factor);
-        padding-right: round($button-padding-x * $button-padding-xs-factor);
+        padding-left: $button-padding-x-normal * $button-padding-xs-factor;
+        padding-right: $button-padding-x-normal * $button-padding-xs-factor;
     }
 
     p + & {
@@ -477,9 +504,9 @@ input[type="file"] {
     }
 
     &--round {
-        border-radius: $button-radius * 10;
-        padding-left: $button-padding-x * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
-        padding-right: $button-padding-x * nth($button-ratio-normal, 2) * nth($button-ratio-round, 2);
+        border-radius: $button-radius * $button-round-factor;
+        padding-left: $button-padding-x-normal * nth($button-ratio-round, 2);
+        padding-right: $button-padding-x-normal * nth($button-ratio-round, 2);
     }
 
     &--square {
@@ -487,20 +514,20 @@ input[type="file"] {
     }
 
     &--small {
-        padding: $button-padding-y * nth($button-ratio-small, 1) $button-padding-x * nth($button-ratio-small, 2);
+        padding: $button-padding-y-small $button-padding-x-small;
 
         &.btn--round {
-            padding-left: $button-padding-x * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
-            padding-right: $button-padding-x * nth($button-ratio-small, 2) * nth($button-ratio-round, 2);
+            padding-left: $button-padding-x-small * nth($button-ratio-round, 2);
+            padding-right: $button-padding-x-small * nth($button-ratio-round, 2);
         }
     }
 
     &--large {
-        padding: $button-padding-y * nth($button-ratio-large, 1) $button-padding-x * nth($button-ratio-large, 2);
+        padding: $button-padding-y-large $button-padding-y-large;
 
         &.btn--round {
-            padding-left: $button-padding-x * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
-            padding-right: $button-padding-x * nth($button-ratio-large, 2) * nth($button-ratio-round, 2);
+            padding-left: $button-padding-x-large * nth($button-ratio-round, 2);
+            padding-right: $button-padding-x-large * nth($button-ratio-round, 2);
         }
     }
 

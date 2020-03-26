@@ -104,7 +104,18 @@ $button-ratio-normal: 1.25 1.5;
 $button-ratio-large: 1.35 2;
 $button-ratio-round: 1 1;
 
-$switcher-factor: 0.75;
+$button-round-factor: 10;
+
+$switcher-width-factor: 2;
+$switcher-dot-factor: 0.75;
+
+$switcher-color: $primary;
+$switcher-bg: $white;
+$switcher-border-color: $border;
+
+$switcher-active-color: $white;
+$switcher-active-bg: $primary;
+$switcher-active-border-color: $primary;
 
 $checkbox-color: $primary;
 $checkbox-thickness: 2px;
