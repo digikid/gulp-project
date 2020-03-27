@@ -163,3 +163,13 @@
         }
     }
 }
+
+/* Map */
+
+.js-map {
+    opacity: 0;
+
+    &.is-ready {
+        animation: fadeIn .3s ease-in-out forwards;
+    }
+}
