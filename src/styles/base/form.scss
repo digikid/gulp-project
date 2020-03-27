@@ -546,9 +546,15 @@ input[type="file"] {
         width: 100%;
         position: relative;
         margin-bottom: $form-gutter;
+        @include transition(opacity);
 
         @include mo(xs) {
             margin-bottom: round($form-gutter * 0.75);
+        }
+
+        &.is-disabled {
+            opacity: .35;
+            pointer-events: none;
         }
 
         .form__group & {
