@@ -483,12 +483,14 @@ input[type="file"] {
     }
 
     &--light {
-        background: lighten($primary, 55%);
         color: $text;
+        background: lighten($primary, 55%);
+        border-color: lighten($primary, 55%);
 
         @include hover() {
             color: $text;
             background: lighten($primary, 57%);
+            border-color: lighten($primary, 57%);
         }
     }
 
