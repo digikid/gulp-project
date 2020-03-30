@@ -181,8 +181,6 @@ input[type="checkbox"] {
     &.switch {
         & + label {
             display: inline-block;
-            width: $switcher-width;
-            height: $input-size;
             padding-left: $input-size * ($input-offset-factor + 1);
 
             &:before {
