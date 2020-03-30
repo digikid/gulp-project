@@ -124,7 +124,6 @@ $radio-factor: 0.5;
 $radio-color: $primary;
 
 $select-width: 550px;
-$select-dropdown-height: 215px;
 $select-color: $primary;
 $select-hover-item-color: lighten($text, 25%);
 $select-hover-item-bg: transparent;
@@ -134,6 +133,10 @@ $select-angle-color: darken($border, 20%);
 $select-angle-border-width: $input-border-width;
 $select-angle-factor: 0.2;
 $select-item-ratio: 0.75 1;
+$select-dropdown-height: 215px;
+$select-dropdown-border: 0;
+$select-dropdown-border-color: $border;
+$select-dropdown-shadow: 1px 3px 7px 4px rgba(0, 0, 0, 0.05);
 
 $ol-size: 30px;
 $ul-size: 10px;
