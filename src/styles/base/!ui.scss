@@ -396,7 +396,6 @@ input[type="file"] {
         z-index: 2;
         border: $select-dropdown-border solid $select-dropdown-border-color;
         box-shadow: $select-dropdown-shadow;
-        overflow: hidden;
         @include transition(opacity);
 
         #{$this}.is-opened & {
