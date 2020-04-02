@@ -85,9 +85,9 @@ $.fn.customSelect = function(options) {
                 }).appendTo(_this.$options);
             });
 
-            _this.$options.appendTo(_this.$dropdown);
             _this.$input.insertAfter(_this.$select);
-            _this.$dropdown.insertAfter(_this.$select);
+            _this.$options.appendTo(_this.$dropdown);
+            _this.$dropdown.insertAfter(_this.$input);
         };
 
         _this.initScrollbar = function() {
