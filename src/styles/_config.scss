@@ -92,12 +92,16 @@ $input-offset-factor: 1.85;
 
 $textarea-height: 215px;
 
-$button-padding: $input-padding;
-$button-padding-xs-factor: $input-padding-xs-factor;
+$button-text: $white;
+$button-text-shadow: none;
+$button-font-weight: normal;
+$button-shadow: none;
 $button-font-size: $font-size;
 $button-radius: $radius;
 $button-border-width: $border-width;
 $button-hover-depth: $hover-depth;
+$button-padding: $input-padding;
+$button-padding-xs-factor: $input-padding-xs-factor;
 
 $button-ratio-small: 1 1;
 $button-ratio-normal: 1.15 1.5;
