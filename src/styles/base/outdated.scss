@@ -4,9 +4,11 @@
 /* Outdated */
 
 .outdated {
+    position: relative;
     padding: 15px 0;
     font-size: 12px;
     background: $primary;
+    z-index: 99999;
 
     &, a {
         color: $white;
