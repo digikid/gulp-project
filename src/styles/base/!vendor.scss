@@ -119,6 +119,7 @@
 @import '../vendor/swiper/swiper';
 
 .js-swiper {
+    position: relative;
     opacity: 0;
 
     &.is-ready,
@@ -135,6 +136,11 @@
 
     .swiper-slide {
         min-height: 100%;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        outline: 0;
     }
 }
 

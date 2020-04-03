@@ -60,7 +60,8 @@ $.fn.initSwiper = function(options) {
         _this.buildLayout = function() {
             $this.children().wrap('<div class="swiper-slide"></div>');
             $this.wrapInner('<div class="swiper-container"><div class="swiper-wrapper"></div></div>');
-            $this.find('.swiper-wrapper').after('<div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>');
+            $this.find('.swiper-wrapper').after('<div class="swiper-pagination"></div>');
+            $this.append('<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>');
 
             _this.afterLayoutOptions = {
                 pagination: {
