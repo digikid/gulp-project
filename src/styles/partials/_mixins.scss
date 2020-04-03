@@ -1,6 +1,6 @@
 @import '../icons';
 
-@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+@mixin font-face($name, $path, $weight: 400, $style: normal, $exts: eot woff2 woff ttf svg) {
     $src: null;
 
     $extmods: (
