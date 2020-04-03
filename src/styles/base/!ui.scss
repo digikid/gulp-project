@@ -30,6 +30,7 @@ $button-padding-x-large: round($button-padding-x * nth($button-ratio-large, 2));
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="number"],
 textarea,
 button {
     appearance: none;
@@ -40,6 +41,7 @@ button {
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="number"],
 textarea {
     @include autofill() {
         box-shadow: 0 0 0 30px white inset !important;
@@ -63,6 +65,7 @@ textarea {
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="number"],
 textarea,
 .select__input,
 .select__dropdown {

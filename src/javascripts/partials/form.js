@@ -138,7 +138,7 @@ $.fn.initFormListeners = function(options) {
     var settings = $.extend(true, {}, options);
 
     // toggle focus
-    $('input[type="text"], input[type="tel"], input[type="email"], input[type="date"], textarea').on({
+    $('input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], textarea').on({
         focus: function() {
             $(this).closest('.form__control').addClass('is-focused');
         },
