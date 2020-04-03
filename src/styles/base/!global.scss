@@ -42,9 +42,7 @@ body {
 }
 
 a, button {
-    body.is-ready & {
-        @include transition(color, border-color, background, opacity);
-    }
+    @include transition(color, border-color, background, opacity);
 }
 
 a {
