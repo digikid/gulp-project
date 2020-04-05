@@ -89,6 +89,7 @@ module.exports = {
                 `./src/templates/**/*.*`,
                 `./src/import/**/*.*`,
                 `./src/video/**/*.*`,
+                `./src/upload/**/*.*`,
                 `./src/**/*.php`
             ],
             icomoon: {
@@ -99,13 +100,13 @@ module.exports = {
                 output: `./src/styles/icons`
             },
             vendor: `./src/vendor`,
-            import: `.src/import/modules.json`,
             common: {
                 root: `./src/common`,
                 data: `./src/common/data`,
                 sass: `./src/common/styles`,
                 partials: `./src/common/includes`
-            }
+            },
+            import: `.src/import/modules.json`
         },
         output: {
             root: `./dist`,
@@ -133,6 +134,7 @@ module.exports = {
             steady: [
                 `./src/fonts/**/*.*`,
                 `./src/templates/**/*.*`,
+                `./src/import/**/*.*`,
                 `./src/video/**/*.*`,
                 `./src/upload/**/*.*`,
                 `./src/**/*.php`
