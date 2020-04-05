@@ -98,15 +98,20 @@ h4 {
 
     ul, ol {
         padding: 0;
+        margin: 30px 0;
 
-        @include ms(md) {
+        @include mo(xs) {
             margin: 25px 0;
         }
 
         li {
             position: relative;
-            padding-left: $ul-size * 5;
-            margin-bottom: 15px;
+            padding-left: 30px;
+            margin-bottom: 10px;
+
+            @include mo(xs) {
+                padding-left: 25px;
+            }
 
             &:before {
                 display: inline-flex;
@@ -121,42 +126,19 @@ h4 {
 
     ol {
         counter-reset: num;
+        list-style-position: inside;
 
         li {
-            @include mo(xs) {
-                padding-left: $ol-size * 1.5;
-            }
-
             &:before {
-                content: counter(num);
+                content: counter(num) '.';
                 counter-increment: num;
-                font-weight: bold;
-                background: $primary;
-                color: $white;
-                width: $ol-size;
-                height: $ol-size;
-                border-radius: 50%;
-                top: ($font-size * $line-height - $ol-size) / 2;
-
-                @include ms(md) {
-                    top: 0;
-                }
+                color: $gray-400;
             }
         }
     }
 
     ul {
         li {
-            padding-left: $ul-size * 5;
-
-            @include ms(md) {
-                padding-left: $ul-size * 3.5;
-            }
-
-            @include mo(xs) {
-                padding-left: $ul-size * 2.5;
-            }
-
             &:before {
                 content: '';
                 top: ($font-size * $line-height - $ul-size) / 2;
