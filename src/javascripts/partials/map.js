@@ -23,8 +23,8 @@ $.fn.renderMap = function(options) {
                 active: 'marker-active',
                 visited: 'marker-visited',
                 extension: 'svg',
-                size: [40, 50],
-                offset: [-5, -38],
+                size: [50, 50],
+                offset: [0, -50],
                 toggle: false
             },
             onClick: null
