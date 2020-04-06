@@ -24,7 +24,7 @@ $.fn.renderMap = function(options) {
                 visited: 'marker-visited',
                 extension: 'svg',
                 size: [50, 50],
-                offset: [0, -50],
+                offset: [-25, -50],
                 toggle: false
             },
             onClick: null
