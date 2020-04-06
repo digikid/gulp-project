@@ -76,7 +76,7 @@ $.fn.initSwiper = function(options) {
                 on: {
                     init: function() {
                         if (settings.on !== undefined && settings.on.init !== undefined && typeof settings.on.init === 'function') {
-                            settings.on.init();
+                            settings.on.init(this);
                         };
 
                         $(this.$el).find('.js-lazy').initLazyLoading();
