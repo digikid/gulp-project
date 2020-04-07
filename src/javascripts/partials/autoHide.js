@@ -1,8 +1,8 @@
 $.fn.autoHide = function(options) {
 
     var settings = $.extend(true, {}, {
-        breakpoint: 767,
         collapse: 0,
+        offset: 15,
         debounce: 300,
         watch: []
     }, options);
@@ -14,6 +14,7 @@ $.fn.autoHide = function(options) {
         _this.scrollDirection = 'none';
         _this.lastScrollTop = window.scrollY || 0;
         _this.isHidden = false;
+        _this.point = 0;
         _this.watch = [];
 
         _this.initWatch = function() {
@@ -29,8 +30,8 @@ $.fn.autoHide = function(options) {
         _this.collapse = function() {
             var top = $(window).scrollTop(),
                 height = $this.outerHeight(),
-                negativeTop = -(height + 15),
-                collapsePoint = window.matchMedia('(max-width: ' + settings.breakpoint + 'px)').matches ? $(window).height() / 2 : settings.collapse,
+                negativeTop = (height + settings.offset) * -1,
+                collapsePoint = (typeof settings.collapse === 'function') ? settings.collapse() : settings.collapse,
                 watchPointMin = settings.collapse,
                 watchPointMax = $(document).height();
 
