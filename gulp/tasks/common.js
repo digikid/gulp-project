@@ -63,7 +63,7 @@ module.exports = (gulp, plugins, config) => {
                 });
 
                 Promise.all(titles).then(() => {
-                    tree.filter(item => item.type === `directory` && (item.name === `css` || item.name === `js`)).reduce((acc, val) => acc.concat(val.children), []).forEach(item => {
+                    tree.filter(item => item.type === `directory` && (item.name === `css` || item.name === `js`)).reduce((acc, val) => acc.concat(val.children), []).filter(item => item.name !== config.files.polyfills).forEach(item => {
 
                         const type = globalFiles.includes(item.name) ? `globals` : `components`,
                             title = item.name.charAt(0).toUpperCase() + item.name.replace(`.${item.extension}`, ``).slice(1).replace(`.min`, ``);
