@@ -4,11 +4,19 @@
 /* Outdated */
 
 .outdated {
-    position: relative;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
     padding: 15px 0;
     font-size: 12px;
     background: $primary;
     z-index: 99999;
+    display: none;
+
+    @include ie() {
+        display: block;
+    }
 
     &, a {
         color: $white;

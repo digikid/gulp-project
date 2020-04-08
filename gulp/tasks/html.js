@@ -13,6 +13,7 @@ module.exports = (gulp, plugins, config) => {
                 }
             }))
             .pipe(plugins.inject(gulp.src([
+                    `${config.paths.output.js}/${config.files.polyfills}`,
                     `${config.paths.output.vendor}/css/bootstrap*.css`,
                     `${config.paths.output.vendor}/js/jquery-*.js`,
                     `${config.paths.output.vendor}/**/*.{css,js}`,

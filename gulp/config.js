@@ -8,6 +8,7 @@ module.exports = {
         bootstrap: `bootstrap.custom.min.css`,
         css: `build.css`,
         js: `build.js`,
+        polyfills: `polyfills.js`,
         zip: {
             src: `${pjson.name}-src.zip`,
             output: `${pjson.name}-dist.zip`
@@ -74,9 +75,11 @@ module.exports = {
                 root: `./src/javascripts/**/*.{js,json}`,
                 base: [
                     `./src/javascripts/base/**/*.{js,json}`,
-                    `./src/javascripts/*.{js,json}`
+                    `./src/javascripts/*.{js,json}`,
+                    `!./src/javascripts/polyfills/**/*.{js,json}`
                 ],
                 components: `./src/javascripts/components/**/*.{js,json}`,
+                polyfills: `./src/javascripts/polyfills/**/*.{js,json}`,
                 partials: `./src/javascripts/`
             },
             html: {
@@ -128,7 +131,11 @@ module.exports = {
                 ]
             },
             js: `./src/javascripts/**/*.{js,json}`,
-            html: [`./src/**/*.{html,json}`, `!./src/common/**`, `!./src/icomoon/**/*.*`],
+            html: [
+                `./src/**/*.{html,json}`,
+                `!./src/common/**`,
+                `!./src/icomoon/**/*.*`
+            ],
             img: `./src/images/**/*.*`,
             vectors: `./src/vectors/**/*.*`,
             steady: [

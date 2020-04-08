@@ -1,0 +1,11 @@
+@import '../config';
+@import '../partials';
+
+/* Header */
+
+.header {
+
+    @include ie() {
+        padding-top: 66px;
+    }
+}

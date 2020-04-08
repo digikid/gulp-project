@@ -63,7 +63,7 @@ $.fn.autoHide = function(options) {
         };
 
         _this.init = function() {
-            $this.addClass('is-autohide').css('position', 'sticky');
+            $this.addClass('is-autohide');
             _this.initWatch();
             $(window).on('scroll', _this.scrollListeners).trigger('scroll');
         };

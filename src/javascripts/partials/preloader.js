@@ -24,11 +24,11 @@ $.fn.preloader = function(options) {
             if (document.readyState === 'complete') {
                 _this.ready();
             } else {
-                $(window).on('load', function() {
+                window.onload = function() {
                     setTimeout(function() {
                         _this.ready();
                     }, 0);
-                });
+                };
             };
         };
 

@@ -1,7 +1,4 @@
-// polyfills
-@@include('polyfills/MutationObserver.js')
-
-// partials
+// helpers
 ;(function($) {
     @@include('partials/debounce.js')
     @@include('partials/preloader.js')

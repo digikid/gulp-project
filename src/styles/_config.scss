@@ -142,8 +142,15 @@ $select-dropdown-border: 0;
 $select-dropdown-border-color: $border;
 $select-dropdown-shadow: 1px 3px 7px 4px rgba(0, 0, 0, 0.05);
 
-$ul-size: 10px;
+$ul-size: 7px;
 
 $icomoon-prefix: 'icon--';
 $icomoon-font-name: 'icomoon';
 $icomoon-font-family: 'icomoon';
+
+$formats-list: doc docx xls xlsx rtf pdf zip;
+
+$spinner-size: 4em;
+$spinner-color: $primary;
+
+$menu-breakpoint: md;
