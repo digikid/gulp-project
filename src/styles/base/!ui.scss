@@ -83,6 +83,16 @@ textarea,
     }
 }
 
+input[type="number"] {
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        appearance: none;
+        margin: 0;
+    }
+}
+
 textarea {
     min-height: $textarea-height;
 }
