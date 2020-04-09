@@ -446,15 +446,13 @@ input[type="file"] {
 }
 
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: $input-height;
+    display: inline-block;
     font-size: $button-font-size;
     font-weight: $button-font-weight;
+    text-align: center;
     text-shadow: $button-text-shadow;
-    outline: 0 !important;
     text-decoration: none!important;
+    outline: 0 !important;
     padding: $button-padding-y-normal $button-padding-x-normal;
     border: $button-border-width solid;
     border-radius: $button-radius;
@@ -468,10 +466,6 @@ input[type="file"] {
         width: 100%;
         padding-left: $button-padding-x-normal * $button-padding-xs-factor;
         padding-right: $button-padding-x-normal * $button-padding-xs-factor;
-    }
-
-    p + & {
-        margin-top: 20px;
     }
 
     @mixin button-bg($type, $color) {
@@ -556,5 +550,12 @@ input[type="file"] {
         opacity: $disabled-opacity;
         filter: grayscale(1);
         pointer-events: none;
+    }
+
+    .form__group & {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: $input-height;
     }
 }
