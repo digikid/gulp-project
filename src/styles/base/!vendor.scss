@@ -103,10 +103,6 @@
             padding: 35px;
         }
 
-        @include ms(md) {
-            padding: 25px;
-        }
-
         @include mo(xs) {
             padding: 18px;
             height: 100%;

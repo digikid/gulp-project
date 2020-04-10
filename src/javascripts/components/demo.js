@@ -3,6 +3,8 @@ $(document).ready(function() {
     // disable form submit
     $('form').on('submit', function(e) {
         e.preventDefault();
+        $.fancybox.close();
+        $.fancybox.open($('#modal-success'));
     });
 
     // copy button class
