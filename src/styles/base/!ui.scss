@@ -36,6 +36,10 @@ button {
     appearance: none;
     outline: 0!important;
     box-shadow: none!important;
+
+    &:disabled {
+        opacity: $disabled-opacity;
+    }
 }
 
 input[type="text"],
@@ -166,7 +170,7 @@ input[type="radio"] {
 
     &:disabled {
         & + label {
-            opacity: .35;
+            opacity: $disabled-opacity;
             pointer-events: none;
         }
     }
@@ -248,7 +252,7 @@ input[type="radio"] {
 
     &:disabled {
         & + label {
-            opacity: .35;
+            opacity: $disabled-opacity;
             pointer-events: none;
         }
     }
@@ -466,6 +470,10 @@ input[type="file"] {
         width: 100%;
         padding-left: $button-padding-x-normal * $button-padding-xs-factor;
         padding-right: $button-padding-x-normal * $button-padding-xs-factor;
+    }
+
+    p + & {
+        margin-top: 20px;
     }
 
     @mixin button-bg($type, $color) {
