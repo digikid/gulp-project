@@ -22,4 +22,11 @@ $(document).ready(function() {
         };
     });
 
+    // active menu
+    $('.menu__item').each(function() {
+        if ($(this).find('a').attr('href') === window.location.pathname.replace('/', '')) {
+            $(this).addClass('is-active');
+        };
+    });
+
 });
