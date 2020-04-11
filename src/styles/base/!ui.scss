@@ -18,14 +18,14 @@ $select-angle-position: $select-angle-real-size / 2;
 $button-padding-y: nth($input-padding, 1) - ($button-border-width - $input-border-width);
 $button-padding-x: nth($input-padding, 2) - ($button-border-width - $input-border-width);
 
-$button-padding-y-small: round($button-padding-y * nth($button-ratio-small, 1));
-$button-padding-x-small: round($button-padding-x * nth($button-ratio-small, 2));
+$button-padding-y-small: $button-padding-y * nth($button-ratio-small, 1);
+$button-padding-x-small: $button-padding-x * nth($button-ratio-small, 2);
 
-$button-padding-y-normal: round($button-padding-y * nth($button-ratio-normal, 1));
-$button-padding-x-normal: round($button-padding-x * nth($button-ratio-normal, 2));
+$button-padding-y-normal: $button-padding-y * nth($button-ratio-normal, 1);
+$button-padding-x-normal: $button-padding-x * nth($button-ratio-normal, 2);
 
-$button-padding-y-large: round($button-padding-y * nth($button-ratio-large, 1));
-$button-padding-x-large: round($button-padding-x * nth($button-ratio-large, 2));
+$button-padding-y-large: $button-padding-y * nth($button-ratio-large, 1);
+$button-padding-x-large: $button-padding-x * nth($button-ratio-large, 2);
 
 input[type="text"],
 input[type="tel"],
