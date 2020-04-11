@@ -119,8 +119,9 @@ input[type="checkbox"],
 input[type="radio"] {
     & + label {
         position: relative;
-        cursor: pointer;
+        font-size: $input-font-size;
         padding-left: $input-size * $input-offset-factor;
+        cursor: pointer;
         margin-bottom: 0;
 
         &:before, &:after {
