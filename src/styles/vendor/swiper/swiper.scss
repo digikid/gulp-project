@@ -12,20 +12,16 @@ $colors: ('white': #ffffff, 'black': #000000) !default;
 }
 
 @import './components/core/core';
-
-//IMPORT_COMPONENTS
 @import './components/pagination/pagination';
-
-// customizations
 
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
-.swiper-container-horizontal>.swiper-pagination-bullets {
+.swiper-container-horizontal > .swiper-pagination-bullets {
     position: static;
     margin-top: 25px;
 }
 
-.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {
+.swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
     margin: 0 5px;
     outline: 0 !important;
 }
@@ -35,14 +31,17 @@ $colors: ('white': #ffffff, 'black': #000000) !default;
     height: 14px;
 }
 
+.swiper-button-prev,
+.swiper-button-next {
+    outline: 0!important;
+}
+
 .swiper-container {
     width: 100%;
 }
 
 .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     align-self: stretch;
     height: auto;
+    min-height: 100%;
 }
