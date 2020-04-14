@@ -147,6 +147,10 @@
             height: 100%;
             @include bg-filler('../../vectors/lazy.svg', 50px);
             opacity: .15;
+
+            @include mo(xs) {
+                background-size: 35px;
+            }
         }
     }
 
