@@ -21,7 +21,9 @@
 - - [Подключение библиотек и плагинов](#vendor)
 - [Загрузка файлов на сервер](#deploy)
 - [Создание ZIP-архивов](#zip)
+- [Аудит страниц (Lighthouse)](#lighthouse)
 - [Включенные библиотеки](#addons)
+- [История изменений](#changelog)
 
 <a name="about"></a>
 
@@ -392,6 +394,16 @@ module.exports = {
 
 `gulp --zip`
 
+<a name="lighthouse"></a>
+
+## Аудит страниц (Lighthouse)
+
+>[Google Lighthouse](https://github.com/GoogleChrome/lighthouse) – это инструмент аудита с открытым исходным кодом, который помогает разработчикам повысить производительность и доступность своих веб-проектов.
+
+Отчеты Google Lighthouse генерируются на локальном сервере для каждой страницы проекта после запуска команды:
+
+`gulp lighthouse`
+
 <a name="addons"></a>
 
 ## Включенные библиотеки
@@ -406,6 +418,17 @@ module.exports = {
 - [jQuery Mask](https://igorescobar.github.io/jQuery-Mask-Plugin/)
 - [popper.js](https://popper.js.org/)
 - [tippy.js](https://atomiks.github.io/tippyjs/)
+
+<a name="changelog"></a>
+
+## История изменений
+
+**1.1.0**
+- Добавлено: аудит страниц через Google Lighthouse.
+- Исправлено: удаление неиспользуемого кода, исправление мелких ошибок.
+
+**1.0.0**
+- Первый стабильный релиз.
 
 ## Лицензия
 

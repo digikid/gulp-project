@@ -171,6 +171,18 @@ module.exports = {
         port: 9002,
         logPrefix: `app_dev`
     },
+    lighthouse: {
+        path: `./reports`,
+        port: 8080,
+        chromeLauncherPort: 9222,
+        config: {
+            extends: 'lighthouse:default'
+        },
+        flags: {
+            chromeFlags: [`--show-paint-rects`],
+            output: `html`
+        }
+    },
     compressors: {
         jpegtran: {
             progressive: true
