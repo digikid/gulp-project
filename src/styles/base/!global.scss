@@ -10,14 +10,7 @@ body {
     height: 100%;
 }
 
-html {
-    -webkit-text-size-adjust: none;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
 body {
-    width: 100%;
     font-family: $font-family;
     font-size: $font-size;
     font-feature-settings: 'pnum' on, 'lnum' on;
@@ -26,6 +19,7 @@ body {
     background: $body-background;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
