@@ -5,33 +5,37 @@ $.fn.preloader = function(options) {
         onReady: null
     }, options);
 
-    return this.each(function() {
-        var _this = this,
-            $this = $(this);
+    var $this = $(this);
 
-        if ($this.hasClass(settings.cssClass)) {
-            return;
+    if ($this.hasClass(settings.cssClass)) {
+        return;
+    };
+
+    $(document).on('allContentIsLoaded', function() {
+        window.allContentIsLoaded = true;
+        $(document).trigger('readyChecker');
+    });
+
+    $(document).on('readyChecker', function() {
+        if (!window.swipers) {
+            window.allSwipersIsReady = true;
         };
 
-        _this.ready = function() {
+        if (window.allContentIsLoaded && window.allSwipersIsReady) {
             if (typeof settings.onReady === 'function') {
                 settings.onReady();
             };
             $this.addClass(settings.cssClass);
         };
-
-        _this.init = function() {
-            if (document.readyState === 'complete') {
-                _this.ready();
-            } else {
-                window.onload = function() {
-                    setTimeout(function() {
-                        _this.ready();
-                    }, 0);
-                };
-            };
-        };
-
-        _this.init();
     });
+
+    if (document.readyState === 'complete') {
+        $(document).trigger('allContentIsLoaded');
+    } else {
+        window.onload = function() {
+            setTimeout(function() {
+                $(document).trigger('allContentIsLoaded');
+            }, 0);
+        };
+    };
 };

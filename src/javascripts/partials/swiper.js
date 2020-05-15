@@ -2,7 +2,7 @@ $.fn.initSwiper = function(options) {
 
     var settings = $.extend(true, {}, {
         slidesPerView: 1,
-        spaceBetween: 15,
+        spaceBetween: 18,
         watchOverflow: true,
         breakpoints: {
             768: {
@@ -17,6 +17,16 @@ $.fn.initSwiper = function(options) {
 
     if (!window.swipers) {
         window.swipers = {};
+        window.allSwipersIsReady = false;
+
+        var total = $(this).length;
+
+        $(document).on('swiperReady', function() {
+            if (Object.keys(window.swipers).length === total) {
+                window.allSwipersIsReady = true;
+                $(document).trigger('readyChecker');
+            };
+        });
     };
 
     return this.each(function() {
@@ -81,6 +91,8 @@ $.fn.initSwiper = function(options) {
 
                         $(this.$el).find('.js-lazy').initLazyLoading();
                         $this.addClass('is-ready');
+
+                        $(document).trigger('swiperReady');
                     }
                 }
             };
