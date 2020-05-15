@@ -132,6 +132,115 @@ $.fn.customSelect = function(options) {
     });
 };
 
+$.fn.phoneMask = function(options) {
+
+    var settings = $.extend(true, {}, {
+        masks: {},
+        keyHandlers: {},
+        eventHandlers: {},
+        maskOptions: {},
+        debug: true,
+        onReady: null
+    }, options);
+
+    return this.each(function() {
+        var _this = this,
+            $this = $(this);
+
+        _this.mask = null;
+        _this.handlers = null;
+
+        _this.masks = $.extend(true, {}, {
+            '7': '+ 7 (000) 000-00-00',
+            '8': '8 (000) 000-00-00'
+        }, settings.masks);
+
+        _this.defaultMask = _this.masks[Object.keys(_this.masks)[0]];
+
+        _this.keyHandlers = $.extend(true, {}, {
+            '7': {
+                keydown: function(e) {
+                    if (e.key === '8' && !$(e.target).val()) {
+                        _this.updateMask(e.key);
+                    };
+                }
+            },
+            '8': {
+                keydown: function(e) {
+                    if ((e.key === '+' || e.key === '7') && !$(e.target).val()) {
+                        _this.updateMask(e.key);
+                    };
+                }
+            }
+        }, settings.keyHandlers);
+
+        _this.initMask = function(key) {
+            key = key && key.toString() || Object.keys(settings.masks)[0];
+
+            _this.mask = key in _this.masks ? _this.masks[key] : _this.defaultMask;
+
+            _this.initHandlers(key);
+
+            $this.mask(_this.mask, settings.maskOptions).on(_this.handlers);
+        };
+
+        _this.initHandlers = function(key) {
+            if (_this.handlers) {
+                $.each(Object.keys(_this.handlers), function(i, event) {
+                    $this.unbind(event, _this.handlers[event]);
+                });
+            };
+
+            _this.handlers = $.extend(true, {
+                paste: function(e) {
+                    e.preventDefault();
+                },
+                focusout: function(e) {
+                    if ($(e.target).val().length !== _this.mask.length) {
+                        $(e.target).val('');
+                    };
+                }
+            }, _this.keyHandlers[key], settings.eventHandlers);
+        };
+
+        _this.destroyMask = function() {
+            $this.unmask();
+        };
+
+        _this.updateMask = function(key) {
+            _this.destroyMask();
+            _this.initMask(key);
+        };
+
+        _this.checkPluginAccessibility = function(func) {
+            if ($().mask) {
+                func();
+                return;
+            };
+
+            if (settings.debug) {
+                console.error('jQuery.mask plugin is missing.');
+            };
+        };
+
+        _this.init = function() {
+            _this.checkPluginAccessibility(function() {
+                $this.on('keypress', function(e) {
+                    if (!$this.val()) {
+                        _this.initMask(e.key);
+
+                        if (typeof settings.onReady === 'function') {
+                            settings.onReady(_this.mask, _this);
+                        };
+                    };
+                });
+            });
+        };
+
+        _this.init();
+    });
+};
+
 // init form listeners
 $.fn.initFormListeners = function(options) {
 
@@ -215,30 +324,7 @@ $.fn.initFormListeners = function(options) {
     });
 
     // phone mask
-    $('input[type="tel"]').mask('+ 7 (000) 000-00-00').on({
-        paste: function(e) {
-            e.preventDefault();
-        },
-        click: function() {
-            if (!$(this).val().length) {
-                $(this).setCursorPosition(6);
-            }
-            if ($(this).val().length !== 19) {
-                $(this).val('+ 7 (');
-                $(this).putCursorAtEnd();
-            }
-        },
-        keydown: function() {
-            if ($(this).val().length < 6) {
-                $(this).val('+ 7 ( ');
-            }
-        },
-        focusout: function() {
-            if ($(this).val().length !== 19) {
-                $(this).val('');
-            }
-        }
-    });
+    $('input[type="tel"]').phoneMask();
 
     // custom select
     $('select').customSelect();
