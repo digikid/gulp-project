@@ -52,7 +52,7 @@ textarea {
     }
 
     &:focus {
-        border-color: $primary;
+        border-color: $input-border-color-focus;
     }
 
     @include placeholder() {
