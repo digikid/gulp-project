@@ -17,7 +17,7 @@ $.fn.preloader = function(options) {
     });
 
     $(document).on('readyChecker', function() {
-        if (!window.swipers) {
+        if (!window.swipers || $.isEmptyObject(window.swipers)) {
             window.allSwipersIsReady = true;
         };
 
