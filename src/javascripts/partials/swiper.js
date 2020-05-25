@@ -17,16 +17,23 @@ $.fn.initSwiper = function(options) {
 
     if (!window.swipers) {
         window.swipers = {};
+        window.allSwipersIsReady = false;
 
         var total = $(this).length;
 
         $(document).on('swiperReady', function() {
-            if (Object.keys(window.swipers).length === total) {
-                window.allSwipersIsReady = true;
-                $.each(window.swipers, function(i, item) {
-                    window.allSwipersIsReady = window.allSwipersIsReady && item.swiper.initialized;
+            var swiperIds = Object.keys(window.swipers),
+                isReady = true;
+
+            if (swiperIds.length >= total) {
+                swiperIds.forEach(function(item) {
+                    isReady = isReady && window.swipers[item].swiper.initialized;
                 });
-                $(document).trigger('readyChecker');
+
+                if (isReady && !window.allSwipersIsReady) {
+                    window.allSwipersIsReady = true;
+                    $(document).trigger('readyChecker');
+                };
             };
         });
     };
