@@ -91,8 +91,6 @@ $.fn.initSwiper = function(options) {
 
                         $(this.$el).find('.js-lazy').initLazyLoading();
                         $this.addClass('is-ready');
-
-                        $(document).trigger('swiperReady');
                     }
                 }
             };
@@ -126,6 +124,8 @@ $.fn.initSwiper = function(options) {
             if (typeof _this.params.onReady === 'function') {
                 _this.params.onReady(window.swipers[id]);
             };
+
+            $(document).trigger('swiperReady');
         };
 
         _this.init();
