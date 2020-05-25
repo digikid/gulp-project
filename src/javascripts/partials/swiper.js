@@ -17,13 +17,15 @@ $.fn.initSwiper = function(options) {
 
     if (!window.swipers) {
         window.swipers = {};
-        window.allSwipersIsReady = false;
 
         var total = $(this).length;
 
         $(document).on('swiperReady', function() {
             if (Object.keys(window.swipers).length === total) {
                 window.allSwipersIsReady = true;
+                $.each(window.swipers, function(i, item) {
+                    window.allSwipersIsReady = window.allSwipersIsReady && item.swiper.initialized;
+                });
                 $(document).trigger('readyChecker');
             };
         });
@@ -69,7 +71,7 @@ $.fn.initSwiper = function(options) {
 
         _this.buildLayout = function() {
             $this.children().wrap('<div class="swiper-slide"></div>');
-            $this.wrapInner('<div class="swiper-container"><div class="swiper-wrapper"></div></div>');
+            $this.wrapInner('<div class="swiper-container"' + (id === 'benefits-thumbs' && ' dir="rtl"' || '') + '><div class="swiper-wrapper"></div></div>');
             $this.find('.swiper-wrapper').after('<div class="swiper-pagination"></div>');
             $this.append('<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>');
 
@@ -91,6 +93,8 @@ $.fn.initSwiper = function(options) {
 
                         $(this.$el).find('.js-lazy').initLazyLoading();
                         $this.addClass('is-ready');
+
+                        $(document).trigger('swiperReady');
                     }
                 }
             };
