@@ -4,6 +4,8 @@ $.fn.autoHide = function(options) {
         collapse: 0,
         offset: 15,
         debounce: 300,
+        duration: 600,
+        disable: null,
         watch: []
     }, options);
 
@@ -49,9 +51,19 @@ $.fn.autoHide = function(options) {
 
             if (_this.scrollDirection === 'up') {
                 if (_this.isHidden && top < watchPointMax) {
+                    if (typeof settings.disable === 'function' && settings.disable()) {
+                        return;
+                    };
+
                     $this.css('top', 0);
                     _this.isHidden = false;
                 };
+            };
+
+            if ($this.attr('style') && $this.attr('style').indexOf('visibility') !== -1) {
+                $this.attr('style', function(i, style) {
+                    return style && style.replace(/visibility[^;]+;?/g, '');
+                });
             };
         };
 
@@ -63,8 +75,16 @@ $.fn.autoHide = function(options) {
         };
 
         _this.init = function() {
-            $this.addClass('is-autohide');
+            if ($(window).scrollTop()) {
+                $this.css('visibility', 'hidden').addClass('is-autohide');
+            };
+
+            setTimeout(function() {
+                $this.css('transition', $this.css('transition') + ', top ' + settings.duration / 1000 + 's ease-in-out 0s');
+            }, settings.duration);
+
             _this.initWatch();
+
             $(window).on('scroll', _this.scrollListeners).trigger('scroll');
         };
 
