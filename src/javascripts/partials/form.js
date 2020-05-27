@@ -299,7 +299,7 @@ $.fn.initFormListeners = function(options) {
     // select once
     $('.js-once input').change(function(e) {
         if ($(this).prop('checked') || $(this).attr('checked')) {
-            $(this).parents('.js-once').find('input').not($(this)).prop('checked', false).removeAttr('data-checked');
+            $(this).closest('.js-once').find('input').not($(this)).prop('checked', false).removeAttr('data-checked');
         };
     });
 
