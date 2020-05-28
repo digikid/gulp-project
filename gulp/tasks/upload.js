@@ -5,7 +5,9 @@ const ftp = require(`../ftp`);
 
 module.exports = (gulp, plugins, config) => {
     return done => {
-        return gulp.src(config.paths.deploy.source, {
+        const path = config.main ? config.paths.deploy.main : config.paths.deploy.source;
+
+        return gulp.src(path, {
             base: config.paths.deploy.base,
             buffer: false
         })

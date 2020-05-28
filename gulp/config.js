@@ -156,6 +156,7 @@ module.exports = {
         },
         deploy: {
             source: `./dist/**/*`,
+            main: `./dist/**/*.{html,css,js}`,
             base: `dist/`
         },
         clean: `./dist`
