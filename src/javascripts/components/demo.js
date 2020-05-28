@@ -24,7 +24,9 @@ $(document).ready(function() {
 
     // active menu
     $('.menu__item').each(function() {
-        if ($(this).find('a').attr('href') === window.location.pathname.replace('/', '')) {
+        var path = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+
+        if ($(this).find('a').attr('href') === path) {
             $(this).addClass('is-active');
         };
     });
