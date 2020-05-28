@@ -49,17 +49,24 @@
 
 Для инициализации и запуска проекта необходимо наличие в системе [Node.js](https://nodejs.org/). Если он не установлен, произведите установку с [официального сайта](https://nodejs.org/).
 
-Сборка проекта осуществляется с использованием последней версии [Gulp](https://gulpjs.com/).  Перед началом работы убедитесь, что Gulp установлен с помощью команды `gulp -v`.
+Сборка проекта осуществляется с использованием последней версии [Gulp](https://gulpjs.com/).  Перед началом работы убедитесь, что Gulp установлен с помощью команды:
 
+```shell
+gulp -v
+```
 Для установки Gulp воспользуйтесь командой:
 
-`npm install --global gulp-cli`
+```shell
+npm install --global gulp-cli
+```
 
 **Примечание:**
-Если ранее вы уже устанавливали Gulp глобально, удалите его ([подробнее](https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467)) и установите пакет `gulp-cli`:
+Если ранее вы уже устанавливали Gulp глобально, удалите его ([подробнее](https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467)) и установите пакет [gulp-cli](https://www.npmjs.com/package/gulp-cli):
 
-`npm rm --global gulp`
-`npm install --global gulp-cli`
+```shell
+npm rm --global gulp
+npm install --global gulp-cli
+```
 
 <a name="structure"></a>
 
@@ -384,7 +391,9 @@ module.exports = {
 
 Для установления соединения и загрузки файлов на сервер запустите команду:
 
-`gulp deploy`
+```shell
+gulp deploy
+```
 
 **Выборочная загрузка**
 
@@ -392,7 +401,9 @@ module.exports = {
 
 Если со времени последней загрузки изменялись только основные файлы проекта (HTML, CSS и JS), вы можете загрузить только их, минуя загрузку статических файлов (шрифты, изображения и т.п.) с помощью команды:
 
-`gulp deploy --main`
+```shell
+gulp deploy --main
+```
 
 <a name="zip"></a>
 
@@ -402,7 +413,9 @@ module.exports = {
 
 Для генерации ZIP-архивов с исходными и выходными файлами передайте параметр `--zip` перед сборкой проекта:
 
-`gulp --zip`
+```shell
+gulp --zip
+```
 
 <a name="lighthouse"></a>
 
@@ -412,7 +425,9 @@ module.exports = {
 
 Отчеты Google Lighthouse генерируются на локальном сервере для каждой страницы проекта после запуска команды:
 
-`gulp lighthouse`
+```shell
+gulp lighthouse
+```
 
 <a name="addons"></a>
 
