@@ -5,19 +5,6 @@
 
 h1, h2, h3, h4, h5, h6 {
     line-height: 1.35;
-    margin-bottom: 1.5rem;
-}
-
-h2, h3, h4, h5, h6 {
-    margin-top: 2rem;
-
-    @include ms(lg) {
-        margin-top: 1.5rem;
-    }
-
-    &:first-child {
-        margin-top: 0;
-    }
 }
 
 h1 {
@@ -67,7 +54,21 @@ h4 {
 .wysiwyg {
 
     h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 1.5rem;
+
         &:first-of-type {
+            margin-top: 0;
+        }
+    }
+
+    h2, h3, h4, h5, h6 {
+        margin-top: 2rem;
+
+        @include ms(lg) {
+            margin-top: 1.5rem;
+        }
+
+        &:first-child {
             margin-top: 0;
         }
     }
@@ -98,13 +99,14 @@ h4 {
     form,
     hr,
     p img,
-    .table-responsive {
+    ul,
+    ol,
+    .table-wrapper {
         margin: 30px 0;
     }
 
     ul, ol {
         padding: 0;
-        margin: 30px 0;
 
         @include mo(xs) {
             margin: 25px 0;
@@ -232,6 +234,28 @@ h4 {
 
     code {
         font-size: 85%;
+    }
+
+    .table {
+
+        &-wrapper {
+            @include touch-scroll();
+            padding-bottom: 0;
+
+            @include mo(xs) {
+                width: calc(100% + #{$gutter * 2});
+                margin-left: -$gutter;
+                margin-right: -$gutter;
+            }
+        }
+
+        &-inner {
+            display: inline-flex;
+
+            @include mo(xs) {
+                padding: 0 18px;
+            }
+        }
     }
 
     .btn {

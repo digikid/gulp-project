@@ -13,6 +13,11 @@
 // when document ready
 $(document).ready(function() {
 
+    // DOM manipulations
+
+    // wrap table
+    $('.wysiwyg table').wrap('<div class="table-wrapper"><div class="table-inner"></div></div>');
+
     // forms
     $.fn.initFormListeners();
 
