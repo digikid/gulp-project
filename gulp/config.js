@@ -210,7 +210,7 @@ module.exports = {
         port: 8080,
         chromeLauncherPort: 9222,
         config: {
-            extends: 'lighthouse:default'
+            extends: `lighthouse:default`
         },
         flags: {
             chromeFlags: [`--show-paint-rects`],
