@@ -108,7 +108,7 @@ module.exports = (gulp, plugins, config) => {
 
                     tree.filter(item => item.type === `directory` && item.name === `vendor`).reduce((acc, val) => acc.concat(val.children), []).reduce((acc, val) => acc.concat(val.children), []).reverse().forEach(item => {
 
-                        const title = item.name.replace(/\.+(min|concat)/g, ``).replace(/\.+(css|js)/g, ``),
+                        const title = item.name.replace(/\.+(umd|min|concat)/g, ``).replace(/\.+(css|js)/g, ``),
                             extension = item.name;
 
                         if (!files.vendor.filter(file => file.title.replace(/\.+(css|js)/g, ``) === title).length) {
