@@ -116,7 +116,11 @@ module.exports = {
             css: `./dist/css`,
             js: `./dist/js`,
             img: `./dist/images`,
-            vendor: `./dist/vendor`
+            vendor: {
+                root: `./dist/vendor`,
+                css: `./dist/vendor/css`,
+                js: `./dist/vendor/js`
+            }
         },
         watch: {
             root: `./src/**/*.*`,
@@ -152,6 +156,35 @@ module.exports = {
                 `./src/common/**/*.html`,
                 `./src/common/styles/**/*.scss`,
                 `./src/common/images/*.*`
+            ]
+        },
+        vendor: {
+            jquery: [
+                `./node_modules/jquery/dist/jquery.min.js`
+            ],
+            fancybox: [
+                `./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js`,
+                `./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css`
+            ],
+            simplebar: [
+                `./node_modules/simplebar/dist/simplebar.min.js`,
+                `./node_modules/simplebar/dist/simplebar.min.css`
+            ],
+            lozad: [
+                `./node_modules/lozad/dist/lozad.min.js`
+            ],
+            mask: [
+                `./node_modules/jquery-mask-plugin/dist/jquery.mask.min.js`
+            ],
+            swiper: [
+                `./node_modules/swiper/js/swiper.min.js`
+            ],
+            popper: [
+                `./node_modules/@popperjs/core/dist/umd/popper.min.js`
+            ],
+            tippy: [
+                `./node_modules/tippy.js/dist/tippy.umd.min.js`,
+                `./node_modules/tippy.js/dist/tippy.css`
             ]
         },
         deploy: {
