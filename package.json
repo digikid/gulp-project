@@ -52,6 +52,7 @@
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^7.0.0",
     "imagemin-zopfli": "^6.0.0",
+    "lighthouse": "^5.6.0",
     "vinyl-ftp": "^0.6.1",
     "yargs": "^13.3.2"
   },
