@@ -1,13 +1,40 @@
-const log = require(`fancy-log`);
-
 module.exports = (gulp, plugins, config) => {
     return done => {
-        return gulp.src(` `)
-            .pipe(plugins.plumber())
-            .pipe(plugins.directorySync(config.paths.src.vendor, config.paths.output.vendor, {
-                printSummary: true,
-                ignore: config.files.bootstrap
-            }))
-            .on(`error`, log);
+        const vendors = {
+            js: [],
+            css: []
+        };
+
+        const addToVendors = path => {
+            if (path.endsWith(`.js`)) {
+                ext = `js`;
+            };
+
+            if (path.endsWith(`.css`)) {
+                ext = `css`;
+            };
+
+            vendors[ext].push(path);
+        };
+
+        for (let [vendor, path] of Object.entries(config.paths.vendor)) {
+            if (path.length > 1) {
+                path.forEach(path => addToVendors(path));
+            } else {
+                addToVendors(path.join());
+            };
+        };
+
+        const moveFiles = (source, dest, cb) =>
+            gulp.src(source)
+                .pipe(plugins.plumber())
+                .pipe(gulp.dest(dest))
+                .on(`end`, cb);
+
+        const moveVendorJs = cb => moveFiles(vendors.js, config.paths.output.vendor.js, cb);
+        const moveVendorCss = cb => moveFiles(vendors.css, config.paths.output.vendor.css, cb);
+        const moveCustomVendor = cb => moveFiles(`${config.paths.src.vendor}/**`, config.paths.output.vendor.root, cb);
+
+        gulp.parallel(moveVendorJs, moveVendorCss, moveCustomVendor)(done);
     };
 };
