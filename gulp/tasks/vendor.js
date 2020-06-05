@@ -25,11 +25,16 @@ module.exports = (gulp, plugins, config) => {
             };
         };
 
-        const moveFiles = (source, dest, cb) =>
+        const moveFiles = (source, dest, cb) => {
+            if (!source.length) {
+                cb();
+                return;
+            };
             gulp.src(source)
                 .pipe(plugins.plumber())
                 .pipe(gulp.dest(dest))
                 .on(`end`, cb);
+        };
 
         const moveVendorJs = cb => moveFiles(vendors.js, config.paths.output.vendor.js, cb);
         const moveVendorCss = cb => moveFiles(vendors.css, config.paths.output.vendor.css, cb);
