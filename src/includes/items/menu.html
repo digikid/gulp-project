@@ -1,3 +1,3 @@
 <li class="menu__item@@if(cssClass !== ''){ @@cssClass}">
-    <a href="@@href"@@if(target !== ''){ target="@@target"}>@@title</a>
+    <a href="@@href"@@if(target !== ''){ target="@@target"}@@if(href.includes('#modal')){ class="js-modal"}>@@title</a>
 </li>
