@@ -6,6 +6,8 @@ const imageminGiflossy = require(`imagemin-giflossy`);
 module.exports = (gulp, plugins, config) => {
     return done => {
 
+        if (config.main) done();
+
         const imageminPlugins = {
             pngquant: imageminPngquant,
             mozjpeg: imageminMozjpeg,
