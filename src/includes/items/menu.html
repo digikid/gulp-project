@@ -1,3 +1,10 @@
 <li class="menu__item@@if(cssClass !== ''){ @@cssClass}">
     <a href="@@href"@@if(target !== ''){ target="@@target"}@@if(href.includes('#modal')){ class="js-modal"}>@@title</a>
+    @@if(items.length){
+    <ul class="menu__submenu">
+        @@for(var i = 0; i < items.length; i++) {
+        <li class="menu__subitem`+(items[i].cssClass ? ' ' + items[i].cssClass : '')+`">
+            <a href="`+ items[i].href +`" `+(items[i].href.includes('#modal') ? ' class="js-modal"' : '') + (items[i].target ? ' target="' + items[i].target + '"' : '')+`>`+ items[i].title +`</a>
+        </li>}
+    </ul>}
 </li>
