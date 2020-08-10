@@ -1,4 +1,4 @@
-<li class="menu__item@@if(cssClass !== ''){ @@cssClass}">
+<li class="menu__item@@if(cssClass !== ''){ @@cssClass}@@if(items.length){ has-submenu}">
     <a href="@@href"@@if(target !== ''){ target="@@target"}@@if(href.includes('#modal')){ class="js-modal"}>@@title</a>
     @@if(items.length){
     <ul class="menu__submenu">
