@@ -1,6 +1,6 @@
-<ul class="menu@@if(layout !== ''){ menu--@@layout}">
-    @@if(layout !== ''){
-    @@loop('items/menu.html', '/data/menu/@@layout.json')}
-    @@if(layout === ''){
+<ul class="menu@@if(id && !layout){ menu--@@id}@@if(layout){ menu--@@layout}">
+    @@if(id !== ''){
+    @@loop('items/menu.html', '/data/menu/@@id.json')}
+    @@if(id === ''){
     @@loop('items/menu.html', '/data/menu.json')}
 </ul>
