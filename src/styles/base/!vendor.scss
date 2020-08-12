@@ -16,7 +16,7 @@
 .tippy {
     &-box {
         &[data-theme~=light] {
-            color: #26323d;
+            color: $text;
             box-shadow: 0 0 20px 4px rgba(154, 161, 177, .15), 0 4px 80px -8px rgba(36, 40, 47, .25), 0 4px 4px -2px rgba(91, 94, 105, .15);
             background-color: $white;
 
