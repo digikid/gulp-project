@@ -64,7 +64,7 @@ $(document).ready(function() {
         var text = $(this).attr('data-tooltip') || $(this).attr('aria-label');
         new tippy(this, {
             content: text,
-            theme: 'white'
+            theme: 'light'
         });
     });
 
