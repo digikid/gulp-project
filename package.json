@@ -10,6 +10,7 @@
     "bootstrap": "^4.5.0",
     "jquery": "^3.5.1",
     "jquery-mask-plugin": "^1.14.16",
+    "js.device.detector": "^1.0.3",
     "lozad": "^1.15.0",
     "normalize.css": "^8.0.1",
     "simplebar": "^5.2.0",

@@ -159,6 +159,9 @@ module.exports = {
             ]
         },
         vendor: {
+            device: [
+                `./node_modules/js.device.detector/dist/jquery.device.detector.min.js`
+            ],
             jquery: [
                 `./node_modules/jquery/dist/jquery.min.js`
             ],
