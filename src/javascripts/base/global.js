@@ -2,6 +2,9 @@
 ;(function($) {
     @@include('language/datepicker.js')
     @@include('language/fancybox.js')
+    $.fancybox.defaults.autoFocus = false;
+    $.fancybox.defaults.backFocus = false;
+    $.fancybox.defaults.touch = false;
 
     @@include('partials/debounce.js')
     @@include('partials/preloader.js')
