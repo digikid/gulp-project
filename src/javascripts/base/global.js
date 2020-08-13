@@ -1,6 +1,5 @@
 // helpers
 ;(function($) {
-    @@include('language/datepicker.js')
     @@include('language/fancybox.js')
     $.fancybox.defaults.autoFocus = false;
     $.fancybox.defaults.backFocus = false;
@@ -19,7 +18,11 @@
 // when document ready
 $(document).ready(function() {
 
+    // detect browser
+    var detect = $.fn.deviceDetector.getInfo();
+
     // DOM manipulations
+
 
     // wrap table
     $('.wysiwyg table').wrap('<div class="table-wrapper"><div class="table-inner"></div></div>');
