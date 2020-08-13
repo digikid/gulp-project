@@ -1,5 +1,8 @@
 // helpers
 ;(function($) {
+    @@include('language/datepicker.js')
+    @@include('language/fancybox.js')
+
     @@include('partials/debounce.js')
     @@include('partials/preloader.js')
     @@include('partials/breakpoints.js')
