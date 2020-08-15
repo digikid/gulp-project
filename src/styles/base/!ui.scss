@@ -233,11 +233,13 @@ input[type="checkbox"] {
 input[type="radio"] {
     & + label {
         &:after {
+            display: table;
             width: $input-size * $radio-factor;
             height: $input-size * $radio-factor;
             border-radius: 50%;
             background: $radio-color;
-            transform: translate($input-size / 4, $input-size / 4);
+            transform: translate($input-size * (1 - $radio-factor) / 2, $input-size * (1 - $radio-factor) / 2);
+            line-height: $input-size;
         }
         &:before {
             border-radius: 50%;
