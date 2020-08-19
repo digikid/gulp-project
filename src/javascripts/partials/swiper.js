@@ -2,7 +2,7 @@ $.fn.initSwiper = function(options) {
 
     var settings = $.extend(true, {}, {
         slidesPerView: 1,
-        spaceBetween: 18,
+        spaceBetween: 15,
         watchOverflow: true,
         breakpoints: {
             768: {
@@ -41,10 +41,15 @@ $.fn.initSwiper = function(options) {
     return this.each(function() {
         var _this = this,
             $this = $(this),
-            id = $(this).attr('data-swiper-id') || $(this).attr('id');
+            id = $(this).attr('data-swiper-id') || $(this).attr('id'),
+            thumbs = $(this).attr('data-swiper-thumbs');
 
         if (window.swipers[id] !== undefined) {
             return;
+        };
+
+        if (!window.swipers[thumbs]) {
+            $('[data-swiper-id="' + thumbs + '"]').initSwiper(options);
         };
 
         _this.swiperInstance = null;
@@ -79,7 +84,7 @@ $.fn.initSwiper = function(options) {
         _this.buildLayout = function() {
             $this.children().wrap('<div class="swiper-slide"></div>');
             $this.wrapInner('<div class="swiper-container"><div class="swiper-wrapper"></div></div>');
-            $this.find('.swiper-wrapper').after('<div class="swiper-pagination"></div>');
+            $this.find('.swiper-wrapper').after('<a class="swiper-control swiper-control--prev"></a><a class="swiper-control swiper-control--next"></a><div class="swiper-pagination"></div>');
             $this.append('<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>');
 
             _this.afterLayoutOptions = {
@@ -88,8 +93,8 @@ $.fn.initSwiper = function(options) {
                     clickable: true
                 },
                 navigation: {
-                    nextEl: $this.find('.swiper-button-next'),
-                    prevEl: $this.find('.swiper-button-prev'),
+                    nextEl: $this.find('.swiper-control--next'),
+                    prevEl: $this.find('.swiper-control--prev'),
                     clickable: true
                 },
                 on: {
@@ -121,6 +126,12 @@ $.fn.initSwiper = function(options) {
 
             _this.dataOptions = $this.attr('data-swiper-options') ? JSON.parse($this.attr('data-swiper-options')) : {};
             _this.params = $.extend(true, {}, settings, _this.afterLayoutOptions, _this.dataOptions);
+
+            if (thumbs && window.swipers[thumbs]) {
+                _this.params.thumbs = {
+                    swiper: window.swipers[thumbs].swiper
+                };
+            };
 
             _this.swiperInstance = new Swiper($this.find('.swiper-container'), _this.params);
 
