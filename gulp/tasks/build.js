@@ -5,6 +5,7 @@ module.exports = (gulp, plugins) => gulp.series(
     `sass`,
     `js`,
     `vendor`,
+    `compress`,
     `images`,
     `steady`,
     `html`,

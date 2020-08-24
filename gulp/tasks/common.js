@@ -1,5 +1,7 @@
 const { promises: fs } = require(`fs`);
+
 const dree = require(`dree`);
+const del = require(`del`);
 
 const now = require('../helpers/now');
 
@@ -21,8 +23,8 @@ module.exports = (gulp, plugins, config) => {
                 const modulesFile = /[^/]*$/.exec(config.paths.src.import)[0];
 
                 const globalFiles = [
-                    config.minify.css ? config.files.css.replace(`.css`, `.min.css`) : config.files.css,
-                    config.minify.js ? config.files.js.replace(`.js`, `.min.js`) : config.files.js
+                    config.minify.css || config.compress ? config.files.css.replace(`.css`, `.min.css`) : config.files.css,
+                    config.minify.js || config.compress ? config.files.js.replace(`.js`, `.min.js`) : config.files.js
                 ];
 
                 let files = {
@@ -87,6 +89,7 @@ module.exports = (gulp, plugins, config) => {
                                     }
                                 }
                             };
+
                             files[type].push(result);
                         } else {
                             files[type].filter(file => file.title === title)[0][item.extension] = {
@@ -121,18 +124,24 @@ module.exports = (gulp, plugins, config) => {
 
                     files.vendor.sort((a, b) => a.title > b.title ? 1 : -1).map((item, id) => item.id = id);
 
-                    files.zip = config.zip ? tree.filter(item => item.type === `file` && item.extension === `zip`).map((item, id) => {
-                        const title = item.name === config.files.zip.src ? config.common.files.src : item.name === config.files.zip.output ? config.common.files.output : item.name;
-                        return {
-                            id: id,
-                            title,
-                            name: item.name,
-                            size: item.size,
-                            type: item.extension
-                        };
-                    }) : [];
+                    if (config.zip) {
+                        files.zip = tree.filter(item => item.type === `file` && item.extension === `zip`).map((item, id) => {
+                            const title = item.name === config.files.zip.src ? config.common.files.src : item.name === config.files.zip.output ? config.common.files.output : item.name;
+                            return {
+                                id: id,
+                                title,
+                                name: item.name,
+                                size: item.size,
+                                type: item.extension
+                            };
+                        });
+                    };
 
                     files.authors = config.common.authors;
+
+                    if (config.compress) {
+                        del(config.paths.output.vendor.root);
+                    };
 
                     const jsonFiles = Object.keys(files).map(file => {
                         return createFile(`${config.paths.src.common.data}/${file}.json`, JSON.stringify(files[file]));

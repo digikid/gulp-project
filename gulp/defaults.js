@@ -9,6 +9,7 @@ module.exports = {
         js: false,
         html: false
     },
+    compress: false,
     main: false,
     host: `default`
 };
