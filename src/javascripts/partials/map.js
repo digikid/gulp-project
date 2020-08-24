@@ -30,6 +30,8 @@ $.fn.renderMap = function(options) {
             onClick: null
         },
         lazy: true,
+        apiKey: null,
+        clusters: false,
         rootMargin: '200px 0px',
         disableTouch: true,
         disableZoom: true,
@@ -37,18 +39,27 @@ $.fn.renderMap = function(options) {
         onMarkerClick: null
     }, options);
 
+    if (!window.maps) {
+        window.maps = {};
+    };
+
     if (window.isMapAPIReady === undefined) {
         window.isMapAPIReady = false;
+    };
+
+    if (!settings.data) {
+        return;
     };
 
     return this.each(function() {
         var _this = this,
             $this = $(this),
-            id = $(this).attr('data-map-id') || $(this).attr('id').replace('#', '');
+            id = $(this).attr('data-map-id') || $(this).attr('id').replace('#', ''),
+            apiKey = $(this).attr('data-api-key') || settings.apiKey;
 
         _this.waitAPI = function() {
-            window.isMapAPIReady = true;
             if (window.ymaps && window.ymaps.Map) {
+                window.isMapAPIReady = true;
                 _this.render();
             } else {
                 setTimeout(_this.waitAPI, 200);
@@ -56,8 +67,10 @@ $.fn.renderMap = function(options) {
         };
 
         _this.init = function() {
+            var apiURL = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (apiKey ? '&amp;apikey=' + apiKey : '');
+
             if (!window.isMapAPIReady) {
-                $.getScript('https://api-maps.yandex.ru/2.1/?lang=ru_RU', _this.waitAPI);
+                $.getScript(apiURL, _this.waitAPI);
             } else {
                 _this.render();
             };
@@ -65,6 +78,10 @@ $.fn.renderMap = function(options) {
         };
 
         _this.addMarkers = function() {
+            if (!settings.markers) return;
+
+            _this.markers = [];
+
             var layout = {
                 default: {
                     image: settings.markers.image.path + settings.markers.image.default + '.' + settings.markers.image.extension,
@@ -131,17 +148,53 @@ $.fn.renderMap = function(options) {
                     };
 
                     if (typeof settings.markers.onClick === 'function') {
-                        settings.markers.onClick(markerObject, window.maps[id]);
+                        settings.markers.onClick(markerObject, window.maps[id], $this);
                     };
                 });
+
+                _this.markers.push(marker);
 
                 window.maps[id].markers.push(markerObject);
                 window.maps[id].map.geoObjects.add(marker);
             });
         };
 
+        _this.addClusters = function() {
+            if (!settings.clusters || !settings.markers || settings.data.length < 2) return;
+
+            var clusterer = new ymaps.Clusterer({
+                hasBalloon: false,
+                hasHint: false,
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false,
+                clusterIconLayout: ymaps.templateLayoutFactory.createClass('<div class="map__cluster">{{ properties.geoObjects.length }}</div>'),
+                clusterIconShape: {
+                    type: 'Rectangle',
+                    coordinates: [[0, 0], [50, 36]]
+                }
+            });
+
+            clusterer.add(_this.markers);
+
+            window.maps[id].map.geoObjects.add(clusterer);
+            window.maps[id].map.setBounds(clusterer.getBounds(), {
+                checkZoomRange: true
+            });
+        };
+
+        _this.centerize = function() {
+            if (settings.data.length < 2 || settings.clusters) return;
+
+            var zoom = window.maps[id].map.getZoom();
+
+            window.maps[id].map.setBounds(window.maps[id].map.geoObjects.getBounds());
+            window.maps[id].map.setZoom(zoom - 1);
+        };
+
         _this.setOffset = function(offset) {
-            if (offset.length !== 2) return;
+            var offset = offset || settings.offset;
+
+            if (!(offset instanceof Array) || offset.length !== 2) return;
 
             var center = window.maps[id].map.getCenter(),
                 zoom = window.maps[id].map.getZoom();
@@ -156,82 +209,38 @@ $.fn.renderMap = function(options) {
             window.maps[id].map.setCenter(geoCenter);
         };
 
-        _this.render = function() {
-            window.ymaps.ready(function() {
+        _this.disableTouchEvents = function() {
 
-                if (window.maps === undefined) {
-                    window.maps = {};
-                };
+            // disable multitouch
+            if (settings.disableTouch) {
+                window.maps[id].map.behaviors.disable('multiTouch');
+            };
 
-                if (!(id in window.maps)) {
-                    window.maps[id] = {
-                        id: id,
-                        map: null,
-                        markers: [],
-                        setOffset: _this.setOffset
-                    };
-                };
+            // disable zoom event
+            if (settings.disableZoom) {
+                window.maps[id].map.behaviors.disable('scrollZoom');
+            };
 
-                if (!settings.data || window.maps[id].map !== null) {
-                    return;
-                };
+            // disable drag event on mobile devices
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                window.maps[id].map.behaviors.disable('drag');
+            };
+        };
 
-                // render map layout
-                window.maps[id].map = new ymaps.Map(_this, {
-                    center: settings.data[0].coords,
-                    zoom: settings.zoom,
-                    controls: settings.controls
-                }, {
-                    searchControlProvider: 'yandex#search'
-                });
+        _this.waitLoading = function() {
+            var layer = window.maps[id].map.layers.get(0).get(0);
 
-                // add markers
-                if (settings.markers) {
-                    _this.addMarkers();
-                };
-
-                // centerize map
-                if (settings.data.length > 1) {
-                    var zoom = window.maps[id].map.getZoom();
-
-                    window.maps[id].map.setBounds(window.maps[id].map.geoObjects.getBounds());
-                    window.maps[id].map.setZoom(zoom - 1);
-                };
-
-                // move map center
-                if (Array.isArray(settings.offset) && settings.offset.length === 2) {
-                    _this.setOffset(settings.offset);
-                };
-
-                // disable touch event
-                if (settings.disableTouch) {
-                    window.maps[id].map.behaviors.disable('multiTouch');
-                };
-
-                // disable zoom event
-                if (settings.disableZoom) {
-                    window.maps[id].map.behaviors.disable('scrollZoom');
-                };
-
-                // disable drag event on mobile devices
-                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    window.maps[id].map.behaviors.disable('drag');
-                };
-
-                var layer = window.maps[id].map.layers.get(0).get(0);
-
-                _this.waitForTilesLoad(layer).then(function() {
-                    if (typeof settings.onRendered === 'function') {
-                        return new Promise(function(resolve, reject) {
-                            settings.onRendered(window.maps[id]);
-                            resolve();
-                        }).then(function() {
-                            _this.show();
-                        });
-                    } else {
+            _this.waitForTilesLoad(layer).then(function() {
+                if (typeof settings.onRendered === 'function') {
+                    return new Promise(function(resolve, reject) {
+                        settings.onRendered(window.maps[id]);
+                        resolve();
+                    }).then(function() {
                         _this.show();
-                    };
-                });
+                    });
+                } else {
+                    _this.show();
+                };
             });
         };
 
@@ -268,19 +277,56 @@ $.fn.renderMap = function(options) {
             });
         };
 
+        _this.render = function() {
+            window.ymaps.ready(function() {
+                window.maps[id] = {
+                    id: id,
+                    $el: $this,
+                    map: new ymaps.Map(_this, {
+                        center: settings.data[0].coords,
+                        zoom: settings.zoom,
+                        controls: settings.controls
+                    }, {
+                        searchControlProvider: 'yandex#search'
+                    }),
+                    markers: [],
+                    setOffset: _this.setOffset
+                };
+
+                _this.addMarkers();
+                _this.addClusters();
+                _this.centerize();
+                _this.setOffset();
+
+                if (!$this.closest('.modal').length) {
+                    _this.disableTouchEvents();
+                };
+
+                _this.waitLoading();
+            });
+        };
+
         _this.show = function() {
             $this.addClass('is-ready');
         };
 
-        if (settings.lazy) {
-            lozad(_this, {
-                rootMargin: settings.rootMargin,
-                loaded: function(el) {
-                    _this.init();
-                }
-            }).observe();
-        } else {
+        if (id in window.maps) {
+            $this.removeClass('is-ready');
+            window.maps[id].map.destroy();
+            delete window.maps[id];
             _this.init();
+        } else {
+            if (settings.lazy) {
+                var observer = lozad(_this, {
+                    rootMargin: settings.rootMargin,
+                    loaded: function() {
+                        _this.init();
+                    }
+                });
+                observer.observe();
+            } else {
+                _this.init();
+            };
         };
     });
 };
