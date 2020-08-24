@@ -281,19 +281,6 @@ $.fn.initFormListeners = function(options) {
                 }
             });
         };
-
-        if ($(this).attr('type') == 'radio') {
-            $(this).click(function() {
-                if ($(this).attr('data-checked') !== '') {
-                    $(this).attr('data-checked', '');
-                    $parent.addClass('is-checked');
-                } else {
-                    $(this).prop('checked', false);
-                    $(this).removeAttr('data-checked');
-                    $parent.removeClass('is-checked');
-                };
-            });
-        };
     });
 
     // select once
