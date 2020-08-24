@@ -1,3 +1,6 @@
+// mode
+window.MODE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port === '9002') ? 'local' : (document.location.host === 'demo.relevant.ru') ? 'demo' : 'build';
+
 // helpers
 ;(function($) {
     @@include('language/fancybox.js')
@@ -7,12 +10,9 @@
 
     @@include('partials/debounce.js')
     @@include('partials/preloader.js')
-    @@include('partials/breakpoints.js')
     @@include('partials/form.js')
     @@include('partials/lazyLoad.js')
-    @@include('partials/scroller.js')
     @@include('partials/swiper.js')
-    @@include('partials/topper.js')
 }(jQuery));
 
 // when document ready
@@ -36,14 +36,8 @@ $(document).ready(function() {
     // swiper
     $('.js-swiper').initSwiper();
 
-    // scroller
-    $('.js-scroll').scroller();
-
-    // topper
-    $('.topper').topper();
-
     // fancybox
-    $('a[href^="#modal"]').fancybox();
+    $('a[href^="#modal"], .js-modal').fancybox();
 
     $(document).on('click', '.js-close', function(e) {
         e.preventDefault();
