@@ -37,7 +37,8 @@ button {
     outline: 0!important;
     box-shadow: none!important;
 
-    &:disabled {
+    &:disabled,
+    &[readonly] {
         opacity: $disabled-opacity;
     }
 }
@@ -169,7 +170,8 @@ input[type="radio"] {
         }
     }
 
-    &:disabled {
+    &:disabled,
+    &[readonly] {
         & + label {
             opacity: $disabled-opacity;
             pointer-events: none;
@@ -254,7 +256,8 @@ input[type="radio"] {
         }
     }
 
-    &:disabled {
+    &:disabled,
+    &[readonly] {
         & + label {
             opacity: $disabled-opacity;
             pointer-events: none;
