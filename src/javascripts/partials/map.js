@@ -55,6 +55,7 @@ $.fn.renderMap = function(options) {
         var _this = this,
             $this = $(this),
             id = $(this).attr('data-map-id') || $(this).attr('id').replace('#', ''),
+            zoom = $this.attr('data-map-zoom') || settings.zoom,
             apiKey = $(this).attr('data-api-key') || settings.apiKey;
 
         _this.waitAPI = function() {
@@ -284,7 +285,7 @@ $.fn.renderMap = function(options) {
                     $el: $this,
                     map: new ymaps.Map(_this, {
                         center: settings.data[0].coords,
-                        zoom: settings.zoom,
+                        zoom: zoom,
                         controls: settings.controls
                     }, {
                         searchControlProvider: 'yandex#search'
