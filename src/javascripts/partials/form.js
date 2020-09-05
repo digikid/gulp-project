@@ -97,8 +97,9 @@ $.fn.customSelect = function(options) {
         _this.clickListeners = function() {
             _this.$input.click(function(e) {
                 e.stopPropagation();
-                _this.$wrapper.toggleClass('is-opened');
-                $('.select').not(_this.$wrapper).removeClass('is-focused is-opened');
+                var $wrapper = $(this).closest('.select');
+                $wrapper.toggleClass('is-opened');
+                $('.select').not($wrapper).removeClass('is-focused is-opened');
             });
 
             $(document).on('click', function(e) {
@@ -110,12 +111,15 @@ $.fn.customSelect = function(options) {
 
         _this.updateListeners = function() {
             _this.$select.on('change', function() {
-                var active = $(this).val();
-                _this.$options.find('a').removeClass('is-active').filter(function() {
+                var active = $(this).val(),
+                    $wrapper = $(this).closest('.select'),
+                    $options = $wrapper.find('.select__options a');
+                    $input = $wrapper.find('.select__input');
+                $options.removeClass('is-active').filter(function() {
                     return $(this).attr('rel') === active;
                 }).addClass('is-active');
-                _this.$input.text($(this).find('option:selected').text());
-                _this.$wrapper.addClass('is-checked');
+                $input.text($(this).find('option:selected').text());
+                $wrapper.addClass('is-checked');
             });
         };
 
