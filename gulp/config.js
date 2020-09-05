@@ -137,6 +137,7 @@ module.exports = {
             js: `./src/javascripts/**/*.{js,json}`,
             html: [
                 `./src/**/*.{html,json}`,
+                `./src/includes/**`,
                 `!./src/common/**`,
                 `!./src/icomoon/**/*.*`
             ],
