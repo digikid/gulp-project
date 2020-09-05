@@ -5,23 +5,34 @@
 
 /* Global */
 
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 html,
 body {
     height: 100%;
 }
 
-body {
-    font-family: $font-family;
-    font-size: $font-size;
+html {
     font-feature-settings: 'pnum' on, 'lnum' on;
-    line-height: $line-height;
-    color: $text;
-    background: $body-background;
+    text-rendering: optimizeLegibility;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
-    -webkit-text-size-adjust: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font: #{$font-size}/#{$line-height} $font-family;
+    color: $text;
+    background: $body-background;
 
     &:before {
         display: none;
@@ -35,7 +46,8 @@ body {
     }
 }
 
-a, button {
+a,
+button {
     @include transition(color, border-color, background, opacity);
 }
 
@@ -50,15 +62,19 @@ a {
     }
 }
 
-img, svg {
+img,
+svg {
     max-width: 100%;
+    height: auto;
+    border: 0;
 }
 
 svg {
     fill: none;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 
     &, li {
