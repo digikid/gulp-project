@@ -193,7 +193,7 @@
 }
 
 @mixin shadow($color: $shadow-color, $depth: $shadow-depth, $x: $shadow-x, $y: $shadow-y, $blur: $shadow-blur, $spread: $shadow-spread) {
-    box-shadow: $x $y $blur $spread rgba($color, $depth);
+    box-shadow: $x $y $blur $spread #{rgba($color, $depth)};
 }
 
 @mixin col($items, $gutter: 15px) {
@@ -335,9 +335,11 @@
 }
 
 @mixin backface-fix() {
-    -webkit-backface-visibility: hidden;
-    -webkit-transform: translate3d(0,0,0);
+    //-webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translateZ(0);
     -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
 }
 
 @mixin hover() {
