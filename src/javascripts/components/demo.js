@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     // run only in demo mode
-    if (window.MODE !== 'build') {
+    if (window._MODE !== 'build') {
 
         // disable form submit
         $('form').on('submit', function(e) {
