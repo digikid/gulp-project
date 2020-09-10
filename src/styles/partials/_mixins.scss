@@ -353,3 +353,9 @@
        @content;
     }
 }
+
+@mixin laptop($width: map-get($breakpoints, xl), $height: 800px) {
+    @media screen and (min-width: $width) and (max-height: $height) {
+        @content;
+    }
+}
