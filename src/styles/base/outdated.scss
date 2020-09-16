@@ -25,7 +25,7 @@
     a {
         text-decoration: underline;
 
-        &:hover, &:focus, &:active {
+        @include hover() {
             text-decoration: none;
         }
     }
