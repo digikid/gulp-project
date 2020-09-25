@@ -27,16 +27,9 @@ module.exports = (gulp, plugins, config) => {
                     year: now.year
                 }
             }))
-            .pipe(plugins.inject(gulp.src([
-                    `${config.paths.output.js}/${config.files.polyfills}`,
-                    `${config.paths.output.vendor.root}/${config.files.bootstrap}`,
-                    `${config.paths.output.vendor.root}/**/jquery.min*.js`,
-                    `${config.paths.output.vendor.root}/**/*.{css,js}`,
-                    `${config.paths.output.css}/${config.files.css.split(`.`)[0]}*.css`,
-                    `${config.paths.output.css}/**/*.css`,
-                    `${config.paths.output.js}/${config.files.js.split(`.`)[0]}*.js`,
-                    `${config.paths.output.js}/**/*.js`
-                ], {allowEmpty: true}), {
+            .pipe(plugins.inject(gulp.src(injects, {
+                allowEmpty: true
+            }), {
                 ignorePath: `dist/`,
                 addRootSlash: false,
                 removeTags: true,
