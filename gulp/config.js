@@ -93,6 +93,7 @@ module.exports = {
                 `./src/import/**/*.*`,
                 `./src/video/**/*.*`,
                 `./src/upload/**/*.*`,
+                `./src/ajax/**/*.*`,
                 `./src/**/*.php`
             ],
             icomoon: {
@@ -149,6 +150,7 @@ module.exports = {
                 `./src/import/**/*.*`,
                 `./src/video/**/*.*`,
                 `./src/upload/**/*.*`,
+                `./src/ajax/**/*.*`,
                 `./src/**/*.php`
             ],
             icomoon: `./src/icomoon/**/*.*`,
