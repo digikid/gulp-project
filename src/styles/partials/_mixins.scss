@@ -288,6 +288,31 @@
     }
 }
 
+@mixin fit-to-parent() {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@mixin img-filler($fit: contain) {
+    img {
+        @include fit-to-parent();
+        object-fit: $fit;
+        @content;
+    }
+}
+
+@mixin img-cover($fit: cover) {
+    @include img-filler($fit) {
+        @content;
+    }
+}
+
 @mixin bg-filler($url: null, $size: contain, $position: center) {
     background: {
         @if ($url) {
@@ -296,20 +321,14 @@
         size: $size;
         position: $position;
         repeat: no-repeat;
-    };
+    }
     @content;
 }
 
 @mixin bg-cover($url: null, $size: cover, $position: center) {
-    background: {
-        @if ($url) {
-            image: url($url);
-        };
-        size: $size;
-        position: $position;
-        repeat: no-repeat;
-    };
-    @content;
+    @include bg-filler($url, $size, $position) {
+        @content;
+    }
 }
 
 @mixin retina() {
