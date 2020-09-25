@@ -33,13 +33,15 @@ input[type="email"],
 input[type="number"],
 textarea,
 button {
-    appearance: none;
-    outline: 0!important;
-    box-shadow: none!important;
+    .form & {
+        appearance: none;
+        outline: 0!important;
+        box-shadow: none!important;
 
-    &:disabled,
-    &[readonly] {
-        opacity: $disabled-opacity;
+        &:disabled,
+        &[readonly] {
+            opacity: $disabled-opacity;
+        }
     }
 }
 
@@ -48,16 +50,18 @@ input[type="tel"],
 input[type="email"],
 input[type="number"],
 textarea {
-    @include autofill() {
-        box-shadow: 0 0 0 30px white inset !important;
-    }
+    .form & {
+        @include autofill() {
+            box-shadow: 0 0 0 30px white inset !important;
+        }
 
-    &:focus {
-        border-color: $input-border-color-focus;
-    }
+        &:focus {
+            border-color: $input-border-color-focus;
+        }
 
-    @include placeholder() {
-        color: $placeholder-color;
+        @include placeholder() {
+            color: $placeholder-color;
+        }
     }
 
     .js-focus & {
@@ -71,214 +75,230 @@ input[type="text"],
 input[type="tel"],
 input[type="email"],
 input[type="number"],
-textarea,
-.select__input,
-.select__dropdown {
-    width: 100%;
-    max-width: 100%;
-    font-size: $input-font-size;
-    padding: $input-padding;
-    border-radius: $input-radius;
-    border: $input-border-width solid $input-border-color;
-    @include transition(border-color);
+textarea {
+    .form & {
+        width: 100%;
+        max-width: 100%;
+        font-size: $input-font-size;
+        padding: $input-padding;
+        border-radius: $input-radius;
+        border: $input-border-width solid $input-border-color;
+        @include transition(border-color);
 
-    @include mo(xs) {
-        padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
-        padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
+        @include mo(xs) {
+            padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
+        }
     }
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
+    .form & {
+        -moz-appearance: textfield;
 
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-        appearance: none;
-        margin: 0;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            appearance: none;
+            margin: 0;
+        }
     }
 }
 
 textarea {
-    min-height: $textarea-height;
+    .form & {
+        min-height: $textarea-height;
+    }
 }
 
 label {
-    max-width: 100%;
-    display: inline-block;
-    margin-bottom: $form-gutter / 2;
+    .form & {
+        max-width: 100%;
+        display: inline-block;
+        margin-bottom: $form-gutter / 2;
+    }
 }
 
 input[type="checkbox"],
 input[type="radio"],
 input[type="file"],
 select {
-    visibility: hidden;
-    display: none;
+    .form & {
+        visibility: hidden;
+        display: none;
+    }
 }
 
 input[type="checkbox"],
 input[type="radio"] {
-    & + label {
-        position: relative;
-        font-size: $input-font-size;
-        padding-left: $input-size * $input-offset-factor;
-        cursor: pointer;
-        margin-bottom: 0;
-
-        &:before, &:after {
-            position: absolute;
-            top: ($input-font-size * $line-height - $input-size) / 2;
-            left: 0;
-            @include transition();
-        }
-
-        &:before {
-            content: '';
-            border: $input-border-width solid $border;
-            border-radius: $input-radius / 2;
-            width: $input-size;
-            height: $input-size;
-            display: inline-flex;
-            vertical-align: middle;
-        }
-
-        &:after {
-            content: '';
-            display: block;
-            opacity: 0;
-            @include transition();
-        }
-    }
-
-    &:checked {
+    .form & {
         & + label {
+            position: relative;
+            font-size: $input-font-size;
+            padding-left: $input-size * $input-offset-factor;
+            cursor: pointer;
+            margin-bottom: 0;
+
+            &:before, &:after {
+                position: absolute;
+                top: ($input-font-size * $line-height - $input-size) / 2;
+                left: 0;
+                @include transition();
+            }
+
+            &:before {
+                content: '';
+                border: $input-border-width solid $border;
+                border-radius: $input-radius / 2;
+                width: $input-size;
+                height: $input-size;
+                display: inline-flex;
+                vertical-align: middle;
+            }
+
             &:after {
-                opacity: 1;
+                content: '';
+                display: block;
+                opacity: 0;
+                @include transition();
             }
         }
 
-        &.switch {
+        &:checked {
             & + label {
-                &:before {
-                    background: $switcher-active-bg;
-                }
                 &:after {
-                    background: $switcher-active-color;
-                    transform: translate($switcher-x-active, $switcher-y);
+                    opacity: 1;
+                }
+            }
+
+            &.switch {
+                & + label {
+                    &:before {
+                        background: $switcher-active-bg;
+                    }
+                    &:after {
+                        background: $switcher-active-color;
+                        transform: translate($switcher-x-active, $switcher-y);
+                    }
                 }
             }
         }
-    }
 
-    &:disabled,
-    &[readonly] {
-        & + label {
-            opacity: $disabled-opacity;
-            pointer-events: none;
+        &:disabled,
+        &[readonly] {
+            & + label {
+                opacity: $disabled-opacity;
+                pointer-events: none;
+            }
         }
     }
 }
 
 input[type="checkbox"] {
-    & + label {
-        &:after {
-            width: round($input-size / 4);
-            height: round($input-size / 2);
-            transform-origin: 50% 50%;
-            border: solid $checkbox-color;
-            border-width: 0 $checkbox-thickness $checkbox-thickness 0;
-            transform: rotate(45deg) translate($input-size / 2.5, -$input-size / 8);
-        }
-    }
-    &:checked {
+    .form & {
         & + label {
-            &:before {
-                border-color: $checkbox-color;
-            }
-        }
-    }
-
-    &.switch {
-        & + label {
-            display: inline-block;
-            padding-left: $input-size * ($input-offset-factor + 1);
-
-            &:before {
-                width: $switcher-width;
-                background: $switcher-bg;
-                border-radius: $input-size;
-                border-width: $switcher-border-width;
-                border-color: $switcher-border-color;
-            }
-
             &:after {
-                opacity: 1;
-                width: $input-size * $switcher-dot-factor;
-                height: $input-size * $switcher-dot-factor;
-                border: 0;
+                width: round($input-size / 4);
+                height: round($input-size / 2);
+                transform-origin: 50% 50%;
+                border: solid $checkbox-color;
+                border-width: 0 $checkbox-thickness $checkbox-thickness 0;
+                transform: rotate(45deg) translate($input-size / 2.5, -$input-size / 8);
+            }
+        }
+        &:checked {
+            & + label {
+                &:before {
+                    border-color: $checkbox-color;
+                }
+            }
+        }
+
+        &.switch {
+            & + label {
+                display: inline-block;
+                padding-left: $input-size * ($input-offset-factor + 1);
+
+                &:before {
+                    width: $switcher-width;
+                    background: $switcher-bg;
+                    border-radius: $input-size;
+                    border-width: $switcher-border-width;
+                    border-color: $switcher-border-color;
+                }
+
+                &:after {
+                    opacity: 1;
+                    width: $input-size * $switcher-dot-factor;
+                    height: $input-size * $switcher-dot-factor;
+                    border: 0;
+                    border-radius: 50%;
+                    background: $switcher-color;
+                    transform: translate($switcher-x, $switcher-y);
+                }
+            }
+
+            &:checked {
+                & + label {
+                    &:before {
+                        border-color: $switcher-active-border-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+input[type="radio"] {
+    .form & {
+        & + label {
+            &:after {
+                display: table;
+                width: $input-size * $radio-factor;
+                height: $input-size * $radio-factor;
                 border-radius: 50%;
-                background: $switcher-color;
-                transform: translate($switcher-x, $switcher-y);
+                background: $radio-color;
+                transform: translate($input-size * (1 - $radio-factor) / 2, $input-size * (1 - $radio-factor) / 2);
+                line-height: $input-size;
+            }
+            &:before {
+                border-radius: 50%;
             }
         }
 
         &:checked {
             & + label {
                 &:before {
-                    border-color: $switcher-active-border-color;
+                    border-color: $radio-color;
                 }
             }
         }
-    }
-}
 
-input[type="radio"] {
-    & + label {
-        &:after {
-            display: table;
-            width: $input-size * $radio-factor;
-            height: $input-size * $radio-factor;
-            border-radius: 50%;
-            background: $radio-color;
-            transform: translate($input-size * (1 - $radio-factor) / 2, $input-size * (1 - $radio-factor) / 2);
-            line-height: $input-size;
-        }
-        &:before {
-            border-radius: 50%;
-        }
-    }
-
-    &:checked {
-        & + label {
-            &:before {
-                border-color: $radio-color;
+        &:disabled,
+        &[readonly] {
+            & + label {
+                opacity: $disabled-opacity;
+                pointer-events: none;
             }
-        }
-    }
-
-    &:disabled,
-    &[readonly] {
-        & + label {
-            opacity: $disabled-opacity;
-            pointer-events: none;
         }
     }
 }
 
 input[type="file"] {
-    & + label {
-        width: auto;
-        border: $input-border-width solid $input-border-color;
-        padding: $input-padding;
-        border-radius: $input-radius;
-        cursor: pointer;
-        margin: 0;
-        @include truncate();
-        @include transition(border-color);
+    .form & {
+        & + label {
+            width: auto;
+            border: $input-border-width solid $input-border-color;
+            padding: $input-padding;
+            border-radius: $input-radius;
+            cursor: pointer;
+            margin: 0;
+            @include truncate();
+            @include transition(border-color);
 
-        @include mo(xs) {
-            padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
-            padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            @include mo(xs) {
+                padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+                padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            }
         }
     }
 
@@ -311,7 +331,6 @@ input[type="file"] {
 
     &.is-focused,
     &.is-checked {
-
         label {
             top: nth($input-padding, 1) / 2;
             font-size: $input-font-size * 0.6;
@@ -360,9 +379,24 @@ input[type="file"] {
         }
     }
 
+    &__input,
+    &__dropdown {
+        width: 100%;
+        max-width: 100%;
+        font-size: $input-font-size;
+        padding: $input-padding;
+        border-radius: $input-radius;
+
+        @include mo(xs) {
+            padding-left: round(nth($input-padding, 2) * $input-padding-xs-factor);
+            padding-right: round(nth($input-padding, 2) * $input-padding-xs-factor);
+        }
+    }
+
     &__input {
         position: relative;
         color: $placeholder-color;
+        border: $input-border-width solid $input-border-color;
         padding-right: $select-angle-size + nth($input-padding, 2) * 2!important;
         cursor: pointer;
         z-index: 1;
