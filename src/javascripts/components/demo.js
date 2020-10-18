@@ -32,7 +32,7 @@ $(document).ready(function() {
         $('.menu__item').each(function() {
             var path = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 
-            if ($(this).find('a').attr('href') === path) {
+            if ($(this).find('a').attr('href') === path && !$(this).siblings('.is-active').length) {
                 $(this).addClass('is-active');
             };
         });
