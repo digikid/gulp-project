@@ -28,7 +28,11 @@ module.exports = (gulp, plugins, config) => {
             gulp.src(path[ext])
                 .pipe(plugins.plumber())
                 .pipe(plugins.concat(config.files[ext]))
-                .pipe(plugins.if(ext === 'js', plugins.uglify(), plugins.cleanCss()))
+                .pipe(plugins.if(ext === 'js', plugins.terser({
+                    output: {
+                        comments: false
+                    }
+                }), plugins.cleanCss()))
                 .pipe(plugins.rename(path => {
                     path.basename += `.min`;
                 }))

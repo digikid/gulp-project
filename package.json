@@ -46,7 +46,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-sass-unicode": "^1.0.5",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
+    "gulp-terser": "^1.4.0",
     "gulp-webp": "^4.0.1",
     "gulp-zip": "^4.2.0",
     "imagemin-giflossy": "^5.1.10",

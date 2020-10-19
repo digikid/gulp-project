@@ -15,7 +15,11 @@ module.exports = (gulp, plugins, config) => {
                 }))
                 .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.init()))
                 .pipe(plugins.if(merge, plugins.if(path === config.paths.src.js.polyfills, plugins.concat(config.files.polyfills), plugins.concat(config.files.js))))
-                .pipe(plugins.if(minify || config.minify.js, plugins.uglify(), plugins.beautify.js({
+                .pipe(plugins.if(minify || config.minify.js, plugins.terser({
+                    output: {
+                        comments: false
+                    }
+                }), plugins.beautify.js({
                     indent_size: 4,
                     max_preserve_newlines: 2
                 })))
