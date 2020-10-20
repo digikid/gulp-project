@@ -44,41 +44,33 @@ $.fn.initSwiper = function(options) {
             id = $(this).attr('data-swiper-id') || $(this).attr('id'),
             thumbs = $(this).attr('data-swiper-thumbs');
 
-        if (window.swipers[id] !== undefined) {
-            return;
-        };
+        if (window.swipers[id] || !id) return;
 
         if (!window.swipers[thumbs]) {
             $('[data-swiper-id="' + thumbs + '"]').initSwiper(options);
         };
 
-        _this.swiperInstance = null;
-        _this.routes = [];
-
         _this.createRoutes = function() {
+            _this.routes = [];
+
             $this.children().each(function(i, item) {
-                var id = $(item).attr('data-id') || $(item).attr('data-object-id');
-                if (id) {
-                    _this.routes.push({
-                        id: id,
-                        index: i
-                    });
-                };
+                _this.routes.push({
+                    id: $(this).attr('data-slide-id') || $(this).index(),
+                    index: i
+                });
             });
         };
 
         _this.getIndexById = function(id) {
-            var route = _this.routes.filter(function(slide) {
-                return slide.id.toString() === id.toString();
+            var route = _this.routes.filter(function(route) {
+                return route.id.toString() === id.toString();
             });
             return route.length ? route[0].index : 0;
         };
 
         _this.slideToId = function(id) {
-            if (_this.swiperInstance) {
-                var slideIndex = _this.getIndexById(id);
-                _this.swiperInstance.slideToLoop(slideIndex);
-            };
+            var slideIndex = _this.getIndexById(id);
+            window.swipers[id].swiper.slideToLoop(slideIndex);
         };
 
         _this.buildLayout = function() {
@@ -86,6 +78,20 @@ $.fn.initSwiper = function(options) {
             $this.wrapInner('<div class="swiper-container"><div class="swiper-wrapper"></div></div>');
             $this.find('.swiper-wrapper').after('<a class="swiper-control swiper-control--prev"></a><a class="swiper-control swiper-control--next"></a><div class="swiper-pagination"></div>');
             $this.append('<div class="swiper-button-prev"></div><div class="swiper-button-next"></div>');
+        };
+
+        _this.destroy = function() {
+            if (window.swipers[id] !== undefined) {
+                window.swipers[id].swiper.destroy(true, true);
+                window.swipers[id] = undefined;
+            };
+        };
+
+        _this.init = function() {
+            _this.createRoutes();
+            _this.buildLayout();
+
+            _this.$container = $this.find('.swiper-container');
 
             _this.afterLayoutOptions = {
                 pagination: {
@@ -99,7 +105,7 @@ $.fn.initSwiper = function(options) {
                 },
                 on: {
                     init: function() {
-                        if (settings.on !== undefined && settings.on.init !== undefined && typeof settings.on.init === 'function') {
+                        if (settings.on && settings.on.init && typeof settings.on.init === 'function') {
                             settings.on.init(this);
                         };
 
@@ -110,21 +116,9 @@ $.fn.initSwiper = function(options) {
                     }
                 }
             };
-        };
-
-        _this.destroy = function(id) {
-            if (window.swipers[id] !== undefined) {
-                window.swipers[id].swiper.destroy(true, true);
-                window.swipers[id] = undefined;
-                _this.swiperInstance = null;
-            };
-        };
-
-        _this.init = function() {
-            _this.createRoutes();
-            _this.buildLayout();
 
             _this.dataOptions = $this.attr('data-swiper-options') ? JSON.parse($this.attr('data-swiper-options')) : {};
+
             _this.params = $.extend(true, {}, settings, _this.afterLayoutOptions, _this.dataOptions);
 
             if (thumbs && window.swipers[thumbs]) {
@@ -133,14 +127,13 @@ $.fn.initSwiper = function(options) {
                 };
             };
 
-            _this.swiperInstance = new Swiper($this.find('.swiper-container'), _this.params);
-
             window.swipers[id] = {
                 id: id,
-                swiper: _this.swiperInstance,
+                swiper: new Swiper(_this.$container, _this.params),
                 routes: _this.routes,
                 getIndexById: _this.getIndexById,
-                slideToId: _this.slideToId
+                slideToId: _this.slideToId,
+                destroy: _this.destroy
             };
 
             if (typeof _this.params.onReady === 'function') {
