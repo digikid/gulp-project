@@ -1,3 +1,6 @@
+// device detect
+window._DETECT = $.fn.deviceDetector.getInfo();
+
 // mode
 window._MODE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port === '9002') ? 'local' : (document.location.host === 'demo.relevant.ru') ? 'demo' : 'build';
 
@@ -32,11 +35,7 @@ if (window._MODE === 'build') {
 // when document ready
 $(document).ready(function() {
 
-    // detect browser
-    var detect = $.fn.deviceDetector.getInfo();
-
     // DOM manipulations
-
 
     // wrap table
     $('.wysiwyg table').wrap('<div class="table-wrapper"><div class="table-inner"></div></div>');
