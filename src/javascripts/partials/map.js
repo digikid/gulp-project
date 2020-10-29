@@ -47,15 +47,14 @@ $.fn.renderMap = function(options) {
         window.isMapAPIReady = false;
     };
 
-    if (!settings.data) {
-        return;
-    };
+    if (!settings.data) return;
 
     return this.each(function() {
         var _this = this,
             $this = $(this),
             id = $(this).attr('data-map-id') || $(this).attr('id').replace('#', ''),
             zoom = $this.attr('data-map-zoom') || settings.zoom,
+            itemId = +$this.attr('data-object-id') || +$this.attr('data-item-id'),
             apiKey = $(this).attr('data-api-key') || settings.apiKey;
 
         _this.waitAPI = function() {
@@ -70,11 +69,14 @@ $.fn.renderMap = function(options) {
         _this.init = function() {
             var apiURL = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (apiKey ? '&amp;apikey=' + apiKey : '');
 
+            $this.removeClass('is-ready');
+
             if (!window.isMapAPIReady) {
                 $.getScript(apiURL, _this.waitAPI);
             } else {
                 _this.render();
             };
+
             $(window).resize(_this.resizeListeners).trigger('resize');
         };
 
@@ -108,7 +110,7 @@ $.fn.renderMap = function(options) {
                         iconPane: 'overlaps'
                     } : {
                         iconLayout: 'default#image',
-                        iconImageHref: (settings.data.length > 1 && i === 0) ? layout.active.image : layout.default.image,
+                        iconImageHref: +object.id === itemId ? layout.active.image : layout.default.image,
                         iconImageSize: settings.markers.image.size,
                         iconImageOffset: settings.markers.image.offset
                     };
@@ -178,9 +180,21 @@ $.fn.renderMap = function(options) {
             clusterer.add(_this.markers);
 
             window.maps[id].map.geoObjects.add(clusterer);
-            window.maps[id].map.setBounds(clusterer.getBounds(), {
-                checkZoomRange: true
-            });
+
+            if (itemId) {
+                var center = settings.data.filter(function(item) {
+                    return +item.id === itemId;
+                })[0].coords,
+                    zoom = window.maps[id].map.getZoom();
+
+                window.maps[id].map.setCenter(center, zoom, {
+                    checkZoomRange: true
+                });
+            } else {
+                window.maps[id].map.setBounds(clusterer.getBounds(), {
+                    checkZoomRange: true
+                });
+            };
         };
 
         _this.centerize = function() {
@@ -211,18 +225,14 @@ $.fn.renderMap = function(options) {
         };
 
         _this.disableTouchEvents = function() {
-
-            // disable multitouch
             if (settings.disableTouch) {
                 window.maps[id].map.behaviors.disable('multiTouch');
             };
 
-            // disable zoom event
             if (settings.disableZoom) {
                 window.maps[id].map.behaviors.disable('scrollZoom');
             };
 
-            // disable drag event on mobile devices
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                 window.maps[id].map.behaviors.disable('drag');
             };
@@ -311,10 +321,13 @@ $.fn.renderMap = function(options) {
             $this.addClass('is-ready');
         };
 
-        if (id in window.maps) {
-            $this.removeClass('is-ready');
+        _this.destroy = function() {
             window.maps[id].map.destroy();
             delete window.maps[id];
+        };
+
+        if (id in window.maps) {
+            _this.destroy();
             _this.init();
         } else {
             if (settings.lazy) {
