@@ -53,9 +53,14 @@ $.fn.renderMap = function(options) {
         var _this = this,
             $this = $(this),
             id = $(this).attr('data-map-id') || $(this).attr('id').replace('#', ''),
+            single = $this.attr('data-single') !== undefined,
             zoom = $this.attr('data-map-zoom') || settings.zoom,
             itemId = +$this.attr('data-object-id') || +$this.attr('data-item-id'),
             apiKey = $(this).attr('data-api-key') || settings.apiKey;
+
+        _this.data = itemId && single ? settings.data.filter(function(item) {
+            return +item.id === itemId;
+        }) : settings.data;
 
         _this.waitAPI = function() {
             if (window.ymaps && window.ymaps.Map) {
@@ -100,7 +105,7 @@ $.fn.renderMap = function(options) {
                 }
             };
 
-            $.each(settings.data, function(i, object) {
+            $.each(_this.data, function(i, object) {
                 var properties = settings.markers.content.id ? {
                         iconContent: settings.markers.content.before + object[settings.markers.content.id] + settings.markers.content.after
                     } : {};
@@ -163,7 +168,7 @@ $.fn.renderMap = function(options) {
         };
 
         _this.addClusters = function() {
-            if (!settings.clusters || !settings.markers || settings.data.length < 2) return;
+            if (!settings.clusters || !settings.markers || _this.data.length < 2) return;
 
             var clusterer = new ymaps.Clusterer({
                 hasBalloon: false,
@@ -182,7 +187,7 @@ $.fn.renderMap = function(options) {
             window.maps[id].map.geoObjects.add(clusterer);
 
             if (itemId) {
-                var center = settings.data.filter(function(item) {
+                var center = _this.data.filter(function(item) {
                     return +item.id === itemId;
                 })[0].coords,
                     zoom = window.maps[id].map.getZoom();
@@ -198,7 +203,7 @@ $.fn.renderMap = function(options) {
         };
 
         _this.centerize = function() {
-            if (settings.data.length < 2 || settings.clusters) return;
+            if (_this.data.length < 2 || settings.clusters) return;
 
             var zoom = window.maps[id].map.getZoom();
 
@@ -294,7 +299,7 @@ $.fn.renderMap = function(options) {
                     id: id,
                     $el: $this,
                     map: new ymaps.Map(_this, {
-                        center: settings.data[0].coords,
+                        center: _this.data[0].coords,
                         zoom: zoom,
                         controls: settings.controls
                     }, {
