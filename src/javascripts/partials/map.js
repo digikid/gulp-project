@@ -186,7 +186,7 @@ $.fn.renderMap = function(options) {
 
             window.maps[id].map.geoObjects.add(clusterer);
 
-            if (itemId) {
+            if (itemId && window.matchMedia('(min-width: 768px)').matches) {
                 var center = _this.data.filter(function(item) {
                     return +item.id === itemId;
                 })[0].coords,
