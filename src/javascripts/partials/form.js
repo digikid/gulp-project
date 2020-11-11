@@ -47,6 +47,12 @@ $.fn.customSelect = function(options) {
         }
     }, options);
 
+    var total = $(this).length;
+
+    if (!window.selectsTotal) {
+        window.selectsTotal = 0;
+    };
+
     return this.each(function() {
         var _this = this;
 
@@ -94,18 +100,21 @@ $.fn.customSelect = function(options) {
             _this.$simpleBar = new SimpleBar(_this.$dropdown[0], settings.scrollbar);
         };
 
+        _this.destroyScrollbar = function() {
+            _this.$simpleBar.unMount();
+            _this.$simpleBar = null;
+        };
+
+        _this.updateScrollbar = function() {
+            _this.$simpleBar.recalculate();
+        };
+
         _this.clickListeners = function() {
             _this.$input.click(function(e) {
                 e.stopPropagation();
-                var $wrapper = $(this).closest('.select');
+                var $wrapper = $(this).closest('.select'));
                 $wrapper.toggleClass('is-opened');
                 $('.select').not($wrapper).removeClass('is-focused is-opened');
-            });
-
-            $(document).on('click', function(e) {
-                $('.select').removeClass('is-focused is-opened');
-            }).on('afterShow.fb', function(e, instance, slide) {
-                _this.initScrollbar();
             });
         };
 
@@ -130,6 +139,18 @@ $.fn.customSelect = function(options) {
             _this.initScrollbar();
             _this.clickListeners();
             _this.updateListeners();
+
+            window.selectsTotal++;
+
+            if (window.selectsTotal === total) {
+                $(document).on('click', function(e) {
+                    $('.select').removeClass('is-focused is-opened');
+                }).on('afterShow.fb', function(e, instance, slide) {
+                    $(slide.$content).find('.select').each(function() {
+                        var scrollbar = new SimpleBar($(this).find('.select__dropdown')[0], settings.scrollbar);
+                    });
+                });
+            };
         };
 
         _this.init();
