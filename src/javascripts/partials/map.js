@@ -33,8 +33,11 @@ $.fn.renderMap = function(options) {
         apiKey: null,
         clusters: false,
         rootMargin: '200px 0px',
-        disableTouch: true,
-        disableZoom: true,
+        events: {
+            touch: false,
+            zoom: false,
+            drag: !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)
+        },
         onRendered: null,
         onMarkerClick: null
     }, options);
@@ -229,16 +232,22 @@ $.fn.renderMap = function(options) {
             window.maps[id].map.setCenter(geoCenter);
         };
 
-        _this.disableTouchEvents = function() {
-            if (settings.disableTouch) {
+        _this.initMapEvents = function() {
+            if (settings.events) {
+                if (!settings.events.touch) {
+                    window.maps[id].map.behaviors.disable('multiTouch');
+                };
+
+                if (!settings.events.zoom) {
+                    window.maps[id].map.behaviors.disable('scrollZoom');
+                };
+
+                if (!settings.events.drag) {
+                    window.maps[id].map.behaviors.disable('drag');
+                };
+            } else {
                 window.maps[id].map.behaviors.disable('multiTouch');
-            };
-
-            if (settings.disableZoom) {
-                window.maps[id].map.behaviors.disable('scrollZoom');
-            };
-
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                window.maps[id].map.behaviors.disable('multiTouch');
                 window.maps[id].map.behaviors.disable('drag');
             };
         };
@@ -315,7 +324,7 @@ $.fn.renderMap = function(options) {
                 _this.setOffset();
 
                 if (!$this.closest('.modal').length) {
-                    _this.disableTouchEvents();
+                    _this.initMapEvents();
                 };
 
                 _this.waitLoading();
