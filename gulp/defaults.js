@@ -11,5 +11,6 @@ module.exports = {
     },
     compress: false,
     main: false,
-    host: `default`
+    host: `default`,
+    mode: `dev`
 };

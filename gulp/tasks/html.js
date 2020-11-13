@@ -24,7 +24,8 @@ module.exports = (gulp, plugins, config) => {
                 basepath: config.paths.src.html.partials,
                 context: {
                     title: config.title,
-                    year: now.year
+                    year: now.year,
+                    mode: config.mode
                 }
             }))
             .pipe(plugins.inject(gulp.src(injects, {
