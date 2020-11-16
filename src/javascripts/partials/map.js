@@ -258,7 +258,7 @@ $.fn.renderMap = function(options) {
             _this.waitForTilesLoad(layer).then(function() {
                 if (typeof settings.onRendered === 'function') {
                     return new Promise(function(resolve, reject) {
-                        settings.onRendered(window.maps[id]);
+                        settings.onRendered(window.maps[id], $this);
                         resolve();
                     }).then(function() {
                         _this.show();
