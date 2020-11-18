@@ -2,11 +2,6 @@ const { promises: fs } = require(`fs`);
 
 module.exports = (gulp, plugins, config) => {
     return async done => {
-
-        if (config.icomoon === undefined) {
-            config.icomoon = [];
-        };
-
         try {
             const json = await fs.readFile(config.paths.src.icomoon.json, `utf8`, (e, data) => data);
 
@@ -44,7 +39,7 @@ module.exports = (gulp, plugins, config) => {
 
                 await fs.writeFile(sassConfig, sassConfigDataUpdated, `utf8`, e => console.log(e));
 
-                config.icomoon = icomoon.icons.map(item => item.properties.name);
+                config.icomoon = icomoon.icons.map(item => item.properties.name).reverse();
 
                 gulp.series(copyFonts, buildSass)(done);
             })();

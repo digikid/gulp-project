@@ -25,7 +25,8 @@ module.exports = (gulp, plugins, config) => {
                 context: {
                     title: config.title,
                     year: now.year,
-                    mode: config.mode
+                    mode: config.mode,
+                    icomoon: config.icomoon
                 }
             }))
             .pipe(plugins.inject(gulp.src(injects, {

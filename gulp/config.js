@@ -247,5 +247,6 @@ module.exports = {
         }
     },
     repo: pjson.repository.url.replace(`.git`, ``),
+    icomoon: [],
     ...args
 };
