@@ -191,6 +191,9 @@ module.exports = {
             tippy: [
                 `./node_modules/tippy.js/dist/tippy.umd.min.js`,
                 `./node_modules/tippy.js/dist/tippy.css`
+            ],
+            animateCSS: [
+                `./node_modules/animate.css/animate.css`
             ]
         },
         deploy: {
