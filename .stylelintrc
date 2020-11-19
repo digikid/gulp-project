@@ -82,6 +82,8 @@
       "at-rules"
     ],
     "order/properties-order": [
+      "content",
+      "quotes",
       "font",
       "font-family",
       "src",
@@ -168,8 +170,6 @@
       "list-style-position",
       "list-style-type",
       "list-style-image",
-      "content",
-      "quotes",
       "counter-reset",
       "counter-increment",
       "resize",
