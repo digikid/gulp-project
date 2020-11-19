@@ -1,5 +1,5 @@
 {
-  "name": "{{name}}",
+  "name": "gulp-project",
   "version": "1.4.0",
   "description": "",
   "main": "gulpfile.js",
@@ -54,6 +54,10 @@
     "imagemin-pngquant": "^7.0.0",
     "imagemin-zopfli": "^6.0.0",
     "lighthouse": "^6.2.0",
+    "stylelint": "^13.8.0",
+    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0",
     "vinyl-ftp": "^0.6.1",
     "yargs": "^13.3.2"
   },
@@ -61,20 +65,9 @@
     "start": "gulp",
     "deploy": "gulp deploy"
   },
-  "browserslist": [
-    "last 2 versions",
-    "Firefox ESR",
-    "> 1%",
-    "ie >= 9",
-    "iOS >= 8",
-    "Android >= 4"
-  ],
   "repository": {
     "type": "git",
-    "url": "{{repo}}/{{name}}.git"
-  },
-  "bugs": {
-    "url": "{{repo}}/{{name}}/issues"
+    "url": "https://github.com/digikid/gulp-project.git"
   },
   "author": "Alexander Dovlatov <dev@digkid.ru> (https://dev.digikid.ru/)",
   "license": "ISC"
