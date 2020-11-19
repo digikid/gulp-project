@@ -106,7 +106,6 @@
 
 @mixin transition($transitions...) {
     $unfolded-transitions: ();
-    transition: $unfolded-transitions;
 
     @if length($transitions) > 0 {
         @each $transition in $transitions {
@@ -115,6 +114,10 @@
     } @else {
         $unfolded-transitions: append($unfolded-transitions, unfold-transition(all), comma);
     }
+
+    /* stylelint-disable */
+    transition: $unfolded-transitions;
+    /* stylelint-enable */
 }
 
 @mixin triangle($direction: bottom, $size: 6px, $border-color: $border) {
