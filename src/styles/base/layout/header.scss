@@ -1,0 +1,7 @@
+@import '../../partials';
+
+.header {
+    @include ie() {
+        padding-top: 66px;
+    }
+}

@@ -75,6 +75,7 @@ $_precision: 10;
     @if $position == 0 {
         $position: length($list);
     }
+
     @return nth($list, $position);
 }
 
@@ -84,7 +85,6 @@ $_precision: 10;
     $easing: $easing;
     $delay: null;
     $defaults: ($property, $duration, $easing, $delay);
-
     $unfolded-transition: ();
 
     @for $i from 1 through length($defaults) {
@@ -94,9 +94,11 @@ $_precision: 10;
             $p: nth($transition, $i);
         } @else {
             $p: nth($defaults, $i);
-        };
+        }
 
+        /* stylelint-disable */
         $unfolded-transition: append($unfolded-transition, $p);
+        /* stylelint-enable */
     }
 
     @return $unfolded-transition;
@@ -132,6 +134,7 @@ $_precision: 10;
 
 @function ms_get_screen($search, $position: 'current') {
     $result: ms_search_screens($search);
+
     @return map-get($result, $position);
 }
 

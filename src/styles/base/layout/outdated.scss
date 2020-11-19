@@ -1,0 +1,33 @@
+@import '../../partials';
+
+.outdated {
+    font-size: 12px;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    padding: 15px 0;
+    background: $primary;
+
+    @include ie() {
+        display: block;
+    }
+
+    &, a {
+        color: $white;
+    }
+
+    a {
+        text-decoration: underline;
+
+        @include hover() {
+            text-decoration: none;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+}

@@ -1,0 +1,100 @@
+@import '../partials';
+
+// @import '../../../node_modules/normalize.css/normalize';
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+html {
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font: #{$font-size}/#{$line-height} $font-family;
+    color: $text;
+    background: $body-background;
+
+    &:before {
+        display: none;
+        visibility: hidden;
+
+        @each $breakpoint, $width in $breakpoints {
+            @include mo(#{$breakpoint}) {
+                content: '#{$breakpoint}';
+            }
+        }
+    }
+}
+
+a,
+button {
+    @include transition(color, border-color, background, opacity);
+}
+
+a {
+    color: $primary;
+    text-decoration: none;
+    outline: 0 !important;
+
+    @include hover() {
+        color: lighten($primary, 10%);
+        text-decoration: none;
+    }
+}
+
+img,
+svg {
+    max-width: 100%;
+    height: auto;
+    border: 0;
+}
+
+svg {
+    fill: none;
+}
+
+ul,
+ol {
+    list-style: none;
+
+    &, li {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+code {
+    font-size: 70%;
+    color: $primary;
+    vertical-align: middle;
+    margin: 0 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background: $gray-200;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    background-color: $gray-200;
+}
+
+figure {
+    overflow: hidden;
+}

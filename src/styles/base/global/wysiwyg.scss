@@ -1,0 +1,269 @@
+@import '../../partials';
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: bold;
+    line-height: 1.35;
+    margin-bottom: 1.5rem;
+
+    @include mo(xs) {
+        margin-bottom: 1rem;
+    }
+}
+
+h1, .h1 {
+    @include ms(lg) {
+        font-size: 2rem;
+    }
+}
+
+h2, .h2 {
+    font-size: 2rem;
+
+    @include ms(lg) {
+        font-size: 1.75rem;
+    }
+}
+
+h3, .h3 {
+    font-size: 1.5rem;
+}
+
+h4, .h4 {
+    font-size: 1.35rem;
+}
+
+h5, .h5 {
+    font-size: 1.15rem;
+}
+
+.wysiwyg {
+    & > *:first-child {
+        margin-top: 0;
+    }
+
+    & > *:last-child {
+        margin-bottom: 0;
+    }
+
+    h2, h3, h4, h5, h6,
+    .h2, .h3, .h4, .h5, .h6 {
+        margin-top: 2.5rem;
+
+        @include ms(lg) {
+            margin-top: 1.5rem;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    form, hr, p img, ul, ol {
+        margin: 1.5rem 0;
+    }
+
+    ul, ol {
+        padding: 0;
+
+        @include mo(xs) {
+            margin: 1rem 0;
+        }
+
+        ol, ul {
+            margin-left: 2rem;
+        }
+
+        li {
+            position: relative;
+            margin-bottom: 0.75rem;
+            padding-left: 2rem;
+
+            @include mo(xs) {
+                padding-left: 1.5rem;
+            }
+
+            &:before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
+    ol {
+        list-style-position: inside;
+        counter-reset: num;
+
+        & > ol {
+            counter-reset: num2;
+
+            & > li {
+                &:before {
+                    content: counter(num2) '.';
+                    counter-increment: num2;
+                }
+            }
+
+            > ol {
+                counter-reset: num3;
+
+                & > li {
+                    &:before {
+                        content: counter(num3) '.';
+                        counter-increment: num3;
+                    }
+                }
+            }
+        }
+
+        & > li {
+            &:before {
+                color: $gray-400;
+                content: counter(num) '.';
+                counter-increment: num;
+            }
+        }
+    }
+
+    ul {
+        li {
+            &:before {
+                top: ($font-size * $line-height - $ul-size) / 2;
+                width: $ul-size;
+                height: $ul-size;
+                content: '';
+                border-radius: 50%;
+                background: $primary;
+            }
+        }
+    }
+
+    p, li, table {
+        a {
+            text-decoration: underline;
+
+            @include hover() {
+                text-decoration: none;
+            }
+        }
+    }
+
+    p {
+        small {
+            font-size: 90%;
+
+            a {
+                color: $gray-400;
+            }
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    a {
+        @each $format in $formats-list {
+            &[href$='.#{$format}']:not(.noicon) {
+
+            }
+        }
+    }
+
+    figure {
+        margin: 2rem 0;
+
+        @include mo(xs) {
+            margin-right: -$gutter;
+            margin-left: -$gutter;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        figcaption {
+            a {
+
+            }
+        }
+    }
+
+    table {
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+
+        thead {
+            font-weight: 600;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid $border;
+        }
+
+        td {
+            &[colspan] {
+                font-weight: bold;
+            }
+        }
+    }
+
+    blockquote {
+        padding: 2rem 2.625rem;
+        border-left: 5px solid $gray-300;
+        border-radius: $radius;
+        background: $gray-100;
+
+        @include mo(xs) {
+            padding: 1.5rem 2rem;
+        }
+    }
+
+    code {
+        font-size: 85%;
+    }
+
+    .btn {
+        margin-right: $form-gutter / 2;
+        margin-bottom: $form-gutter / 2;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        @include mo(xs) {
+            margin: 0 0 $form-gutter / 2;
+        }
+    }
+}
+
+.table {
+    &-wrapper {
+        margin: 2rem 0 1.5rem;
+        padding-bottom: 0;
+
+        @include touch-scroll();
+
+        @include mo(xs) {
+            width: calc(100% + #{$gutter * 2});
+            margin-right: -$gutter;
+            margin-left: -$gutter;
+        }
+    }
+
+    &-inner {
+        display: inline-flex;
+
+        @include mo(xs) {
+            padding: 0 $gutter;
+        }
+    }
+}

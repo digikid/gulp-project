@@ -27,7 +27,7 @@
             @if ($current-size <= 0) {
                 @include ms($next) {
                     @content;
-                };
+                }
             } @else {
                 @media screen and (min-width: $current-size) and (max-width: $next-size - 1) {
                     @content;
@@ -68,7 +68,7 @@
 }
 
 @mixin mr() {
-    @media screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
         @content;
     }
 }

@@ -1,0 +1,41 @@
+@import '../../partials';
+
+.form {
+    width: 100%;
+    max-width: 100%;
+
+    &__control {
+        position: relative;
+        width: 100%;
+        margin-bottom: $form-gutter;
+
+        @include transition(opacity);
+
+        @include mo(xs) {
+            margin-bottom: round($form-gutter * 0.75);
+        }
+
+        &.is-disabled {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .form__group & {
+            width: auto;
+            margin-right: $form-gutter;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__submit {
+        margin-top: $form-gutter * 1.5;
+    }
+}

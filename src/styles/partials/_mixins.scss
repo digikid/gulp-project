@@ -1,18 +1,20 @@
+@import '../config';
 @import '../icons';
 
 @mixin font-face($name, $path, $weight: 400, $style: normal, $exts: eot woff2 woff ttf svg) {
     $src: null;
 
     $extmods: (
-        eot: "?",
-        svg: "#" + str-replace($name, " ", "_")
+        eot: '?',
+        svg: '#' + str-replace($name, ' ', '_')
     );
 
     $formats: (
-        otf: "opentype",
-        ttf: "truetype"
+        otf: 'opentype',
+        ttf: 'truetype'
     );
 
+    /* stylelint-disable */
     @each $ext in $exts {
         $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
         $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
@@ -21,20 +23,21 @@
 
     @font-face {
         font-family: quote($name);
-        font-style: $style;
-        font-weight: $weight;
         src: $src;
+        font-weight: $weight;
+        font-style: $style;
     }
+    /* stylelint-enable */
 }
 
 @mixin icomoon-base {
-    font-family: 'icomoon'!important;
-    speak: none;
-    font-style: normal;
+    font-family: $icomoon-font-family !important;
     font-weight: normal;
+    font-style: normal;
     font-variant: normal;
-    text-transform: none;
     line-height: 1;
+    text-transform: none;
+    speak: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -46,6 +49,7 @@
 
     &:#{$position} {
         content: map-get($icons, $icon);
+
         @include icomoon-base();
 
         @if $replace {
@@ -57,8 +61,8 @@
 }
 
 @mixin fa-base {
-    display: inline-block;
     font: normal normal normal 14px/1 FontAwesome!important;
+    display: inline-block;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -71,6 +75,7 @@
 
     &:#{$position} {
         content: map-get($fa-icons, $icon);
+
         @include fa-base;
 
         @if $replace {
@@ -83,23 +88,25 @@
 
 @mixin clearfix {
     *zoom: 1;
+
     &:after {
-        content: '';
-        display: table;
         line-height: 0;
+        display: table;
         clear: both;
+        content: '';
     }
 }
 
 @mixin truncate($overflow: ellipsis) {
-    display: block;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: $overflow;
+    display: block;
+    overflow: hidden;
 }
 
 @mixin transition($transitions...) {
     $unfolded-transitions: ();
+    transition: $unfolded-transitions;
 
     @if length($transitions) > 0 {
         @each $transition in $transitions {
@@ -107,18 +114,16 @@
         }
     } @else {
         $unfolded-transitions: append($unfolded-transitions, unfold-transition(all), comma);
-    };
-
-    transition: $unfolded-transitions;
+    }
 }
 
 @mixin triangle($direction: bottom, $size: 6px, $border-color: $border) {
     $directions: top, right, bottom, left;
-
-    content: '';
     display: inline-block;
-    height: 0;
     width: 0;
+    height: 0;
+    content: '';
+
     @include transition(transform);
 
     @for $i from 1 through length($directions) {
@@ -134,6 +139,13 @@
 
 @mixin chevron($direction: bottom, $size: 6px, $border-color: $border, $thickness: 1px) {
     $rotation: 45deg;
+    display: inline-block;
+    width: $size;
+    height: $size;
+    content: '';
+    transform: rotate($rotation);
+    border: solid $border-color;
+    border-width: $thickness $thickness 0 0;
 
     @if $direction == right {
         $rotation: 45deg;
@@ -145,13 +157,6 @@
         $rotation: 315deg;
     }
 
-    content: '';
-    display: inline-block;
-    height: $size;
-    width: $size;
-    border: solid $border-color;
-    border-width: $thickness $thickness 0 0;
-    transform: rotate($rotation);
     @include transition(transform);
 
     @content;
@@ -162,22 +167,27 @@
         opacity: 1;
         @content;
     }
+
     &:-moz-placeholder {
         opacity: 1;
         @content;
     }
+
     &::-moz-placeholder {
         opacity: 1;
         @content;
     }
+
     &:-ms-input-placeholder {
         opacity: 1;
         @content;
     }
+
     &::-ms-input-placeholder {
         opacity: 1;
         @content;
     }
+
     &::-webkit-input-placeholder {
         opacity: 1;
         @content;
@@ -198,12 +208,14 @@
 
 @mixin col($items, $gutter: 15px) {
     @if $items != 1 {
+        margin-right: $gutter;
+
         @if unit($gutter) == '%' {
             width: #{(100% - $gutter * ($items - 1)) / $items};
         } @else {
             width: calc((100% - #{$gutter * ($items - 1)}) / #{$items});
         }
-        margin-right: $gutter;
+
         &:nth-child(#{$items}n) {
             margin-right: 0;
         }
@@ -225,8 +237,8 @@
     }
 
     &::-webkit-scrollbar {
-        background-color: transparent;
         display: none;
+        background-color: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -243,11 +255,10 @@
 }
 
 @mixin scrollbar($color: #ccc, $size: 6px) {
-    -webkit-appearance: none;
+    appearance: none;
     -webkit-overflow-scrolling: auto;
 
     &::-webkit-scrollbar {
-
         &, * {
             background: transparent;
         }
@@ -256,11 +267,11 @@
             display: block;
         }
 
-        &:vertical {
+        &::vertical {
             width: $size * 3;
         }
 
-        &:horizontal {
+        &::horizontal {
             height: $size * 3;
         }
 
@@ -272,12 +283,12 @@
 
         &-thumb {
             width: $size;
+            border: $size solid transparent;
+            border-radius: $size * 4;
             background: $color;
             background-clip: padding-box;
-            border-radius: $size * 4;
-            border: $size solid transparent;
 
-            &:window-inactive {
+            &::window-inactive {
                 background: lighten($color, 5%);
             }
 
@@ -289,20 +300,21 @@
 }
 
 @mixin fit-to-parent() {
-    display: block;
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
+    display: block;
     width: 100%;
     height: 100%;
 }
 
 @mixin img-filler($fit: contain) {
     img {
-        @include fit-to-parent();
         object-fit: $fit;
+
+        @include fit-to-parent();
         @content;
     }
 }
@@ -315,13 +327,15 @@
 
 @mixin bg-filler($url: null, $size: contain, $position: center) {
     background: {
-        @if ($url) {
-            image: url($url);
-        };
         size: $size;
         position: $position;
         repeat: no-repeat;
     }
+
+    @if ($url) {
+        background-image: url($url);
+    }
+
     @content;
 }
 
@@ -338,7 +352,7 @@
 }
 
 @mixin bg-2x($image) {
-    @media screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    @media screen and (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
         background-image: url($image);
     }
 }
@@ -355,10 +369,10 @@
 
 @mixin backface-fix() {
     //-webkit-transform: translate3d(0,0,0);
-    -webkit-transform: translateZ(0);
-    -webkit-transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
+    transform: translateZ(0);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000;
 }
 
 @mixin hover() {
@@ -369,12 +383,6 @@
 
 @mixin ie() {
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-       @content;
-    }
-}
-
-@mixin laptop($width: map-get($breakpoints, xl), $height: 800px) {
-    @media screen and (min-width: $width) and (max-height: $height) {
         @content;
     }
 }
