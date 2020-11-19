@@ -68,10 +68,10 @@
     }
 
     &:before {
-        transform: translateY($gutter + $thickness) rotate(45deg);
+        transform: translateY($burger-gutter + $burger-thickness) rotate(45deg);
     }
 
     &:after {
-        transform: translateY(-($gutter + $thickness)) rotate(-45deg);
+        transform: translateY(-($burger-gutter + $burger-thickness)) rotate(-45deg);
     }
 }
