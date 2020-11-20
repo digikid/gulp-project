@@ -1,13 +1,27 @@
-@import "../../styles/config";
-@import "../../styles/partials";
+@import '../../styles/config';
+@import '../../styles/partials';
+@import '../../../node_modules/normalize.css/normalize';
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500');
 
-@import "../../../node_modules/normalize.css/normalize";
-
+$white: #fff;
+$text: #222;
 $primary: #f23e30;
 $green: #2ab973;
-$yellow: #FFAC05;
+$yellow: #ffac05;
 $blue: #2181ff;
 $peach: #f9edd7;
+
+$terminal-bg: #1d1f21;
+$terminal-bar-bg: rgba($white, 0.75);
+$terminal-cursor: #fff;
+$terminal-button-red-bg: #ff0040;
+$terminal-button-red-border: #d73031;
+$terminal-button-orange-bg: #ffcf00;
+$terminal-button-orange-border: #d7911e;
+$terminal-button-green-bg: #00e567;
+$terminal-button-green-border: #23a124;
+
+$heart-size: 16px;
 
 /* Common */
 
@@ -79,15 +93,27 @@ $peach: #f9edd7;
     from {
         background-position: 0 0;
     }
+
     to {
         background-position: -100% 0;
     }
 }
 
+@keyframes blink {
+    from,
+    to {
+        background: 0 0;
+    }
+
+    50% {
+        background: $terminal-cursor;
+    }
+}
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body,
@@ -99,19 +125,21 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 18px;
     line-height: 1.5;
-    @include bg-filler('../common/images/clouds.svg', cover, bottom center);
+    background-color: $white;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    @include bg-filler('../common/images/clouds.svg', cover, bottom center);
 }
 
 .container {
     width: 1140px;
     max-width: 100%;
-    padding: 0 15px;
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
+    padding: 0 15px;
 
     @include ms(xl) {
         width: 960px;
@@ -133,30 +161,27 @@ body {
 .wrapper {
     position: relative;
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     min-height: 100vh;
-    animation: fadeIn .8s ease-in-out forwards;
-    overflow: hidden;
+    animation: fadeIn 0.8s ease-in-out forwards;
 
     &:after {
         content: '';
-        display: block;
         position: absolute;
+        z-index: -2;
         top: 0;
-        left: 0;
         right: 0;
         bottom: 0;
+        left: 0;
+        display: block;
         width: 100%;
         height: 100%;
-        z-index: -1;
         opacity: 0;
-        animation: fadeIn .8s ease-in-out forwards;
-    }
+        animation: fadeIn 0.8s ease-in-out forwards;
 
-    &:after {
-        z-index: -2;
         @include bg-filler('../common/images/badge.svg', 10%, top 5vh right 5%);
 
         @include mo(xs) {
@@ -166,16 +191,17 @@ body {
 }
 
 figure {
-    display: block;
     position: absolute;
+    z-index: -1;
+    right: -9%;
+    bottom: -1%;
+    display: block;
     width: 71%;
     padding-bottom: 37%;
-    bottom: -1%;
-    right: -9%;
     opacity: 0;
-    z-index: -1;
+    animation: fadeIn 0.8s ease-in-out forwards;
+
     @include bg-filler('../common/images/developer.svg');
-    animation: fadeIn .8s ease-in-out forwards;
 
     @include ms(lg) {
         display: none;
@@ -202,6 +228,10 @@ footer {
 
     p {
         margin-bottom: 5px;
+    }
+
+    a {
+        color: $text;
     }
 }
 
@@ -263,9 +293,9 @@ a {
 }
 
 ul, ol {
-    list-style: none;
-    padding: 0;
     margin: 20px 0;
+    padding: 0;
+    list-style: none;
 
     li {
         position: relative;
@@ -279,9 +309,9 @@ ol {
     li {
         &:before {
             content: counter(num) '. ';
-            counter-increment: num;
             display: inline-block;
             margin-right: 5px;
+            counter-increment: num;
         }
     }
 }
@@ -309,23 +339,30 @@ p {
 }
 
 .files {
-    columns: 2;
 
     $types: html, css, js, json, zip, component;
+    columns: 2;
+
+    @include ms(lg) {
+        columns: 1;
+    }
 
     .section--globals &,
     .section--zip & {
         columns: 1;
     }
 
-
-    @include ms(lg) {
-        columns: 1;
-    }
-
     &__item {
-        padding-left: 40px;
         margin-bottom: 7px;
+        padding-left: 40px;
+
+        @each $type in $types {
+            &--#{$type} {
+                &:before {
+                    background-image: url('../common/images/#{$type}.svg');
+                }
+            }
+        }
 
         &:before {
             content: '';
@@ -335,15 +372,8 @@ p {
             display: inline-block;
             width: 26px;
             height: 26px;
-            @include bg-filler();
-        }
 
-        @each $type in $types {
-            &--#{$type} {
-                &:before {
-                    background-image: url('../common/images/#{$type}.svg');
-                }
-            }
+            @include bg-filler();
         }
     }
 
@@ -356,17 +386,17 @@ p {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    list-style: none;
     margin-top: 25px;
+    list-style: none;
 
     &__item {
-        width: auto;
-        display: inline-flex;
-        background: $green;
         color: $white;
-        padding: 5px 12px;
+        display: inline-flex;
+        width: auto;
         margin: 0 10px 10px 0;
+        padding: 5px 12px;
         border-radius: 5px;
+        background: $green;
 
         &:before {
             display: none;
@@ -383,13 +413,11 @@ p {
 }
 
 .heart {
-    $size: 16px;
-
-    display: inline-block;
     position: relative;
     top: 3px;
-    width: $size;
-    height: $size * .9;
+    display: inline-block;
+    width: $heart-size;
+    height: $heart-size * 0.9;
     margin: 0 5px;
     animation: pulse 1s infinite;
 
@@ -397,15 +425,15 @@ p {
     &:after {
         content: '';
         position: absolute;
-        left: $size / 2;
         top: 0;
-        width: $size / 2;
-        height: $size * .8;
-        background: $primary;
-        border-radius: $size / 2 $size / 2 0 0;
+        left: $heart-size / 2;
+        width: $heart-size / 2;
+        height: $heart-size * 0.8;
         transform: rotate(-45deg);
         transform-origin: 0 100%;
         animation: pulsecolor 1s infinite;
+        border-radius: $heart-size / 2 $heart-size / 2 0 0;
+        background: $primary;
     }
 
     &:after {
@@ -417,5 +445,77 @@ p {
 
 .modified {
     font-size: 13px;
-    opacity: .25;
+    opacity: 0.25;
+}
+
+.terminal {
+    overflow: hidden;
+    width: 540px;
+    max-width: 100%;
+    min-height: 200px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 13px 17px -6px rgba(0, 0, 0, 0.38);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 8px;
+    background: #1d1f21;
+
+    &__window {
+        font-size: 13px;
+        text-align: left;
+    }
+
+    &__bar {
+        line-height: 36px;
+        height: 33px;
+        padding-top: 1px;
+        padding-left: 8px;
+        background: $terminal-bar-bg;
+    }
+
+    &__button {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 1px solid;
+        border-radius: 50%;
+
+        &--red {
+            margin: 0 2px;
+            border-color: $terminal-button-red-border;
+            background: $terminal-button-red-bg;
+        }
+
+        &--orange {
+            margin: 0 2px;
+            border-color: $terminal-button-orange-border;
+            background: $terminal-button-orange-bg;
+        }
+
+        &--green {
+            margin: 0 2px;
+            border-color: $terminal-button-green-border;
+            background: $terminal-button-green-bg;
+        }
+    }
+
+    &__body {
+        font-family: monospace, Quicksand, sans-serif;
+        line-height: 25px;
+        color: $white;
+        padding: 8px;
+    }
+
+    &__command {
+        color: $white;
+    }
+
+    &__cursor {
+        vertical-align: middle;
+        display: inline-block;
+        width: 0.5em;
+        height: 1.1em;
+        margin-top: -4px;
+        animation: 1s blink step-end infinite;
+    }
 }

@@ -178,7 +178,8 @@ module.exports = (gulp, plugins, config) => {
                                     vendor: files.vendor.length,
                                     authors: files.authors.length,
                                     copyright: config.common.copyright,
-                                    repo: config.git ? config.repo : null,
+                                    repo: config.repo,
+                                    version: config.version,
                                     modules,
                                     modulesFile
                                 }
