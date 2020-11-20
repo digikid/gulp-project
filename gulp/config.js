@@ -4,6 +4,9 @@ const args = require(`./helpers/args`);
 module.exports = {
     title: `Новый проект`,
     name: pjson.name,
+    version: pjson.version,
+    repo: pjson.repository.url.replace(`.git`, ``),
+    icomoon: [],
     files: {
         bootstrap: `bootstrap.custom.min.css`,
         css: `build.css`,
@@ -249,7 +252,5 @@ module.exports = {
             lossy: 2
         }
     },
-    repo: pjson.repository.url.replace(`.git`, ``),
-    icomoon: [],
     ...args
 };
