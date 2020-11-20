@@ -39,7 +39,7 @@ module.exports = (gulp, plugins, config) => {
 
                 await fs.writeFile(sassConfig, sassConfigDataUpdated, `utf8`, e => console.log(e));
 
-                config.icomoon = icomoon.icons.map(item => item.properties.name).reverse();
+                config.icomoon = icomoon.icons.map(item => item.properties.name);
 
                 gulp.series(copyFonts, buildSass)(done);
             })();
