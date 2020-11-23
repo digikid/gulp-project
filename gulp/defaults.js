@@ -3,7 +3,6 @@ module.exports = {
     zip: false,
     webp: false,
     sourcemaps: false,
-    git: false,
     minify: {
         css: false,
         js: false,
@@ -11,6 +10,7 @@ module.exports = {
     },
     compress: false,
     main: false,
+    open: `index`,
     host: `default`,
     mode: `dev`
 };

@@ -6,14 +6,8 @@ const getParam = a => argv[a] !== undefined ? argv[a] : false;
 let args = {};
 
 Object.keys(defaults).forEach(param => {
-    if ((param === `host` || param === `mode`) && typeof getParam(param) !== `string`) {
-        return;
-    };
-
     if (param === `minify`) {
-        if (!getParam(param)) {
-            return;
-        };
+        if (!getParam(param)) return;
 
         if (args.minify === undefined) {
             args.minify = {...defaults.minify};
@@ -21,11 +15,11 @@ Object.keys(defaults).forEach(param => {
 
         getParam(param).split(`,`).forEach(param => args.minify[param] = true);
     } else {
-        if (param === `mode` && !getParam(param)) {
+        if ((param === `host` || param === `mode` || param === `open`) && !getParam(param)) {
             args[param] = defaults[param];
+        } else {
+            args[param] = getParam(param);
         };
-
-        args[param] = getParam(param);
     };
 });
 

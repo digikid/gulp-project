@@ -210,6 +210,8 @@ module.exports = {
         server: {
             baseDir: `./dist`
         },
+        open: 'external',
+        startPath: `/${args.open}.html`,
         tunnel: false,
         online: true,
         host: `localhost`,
