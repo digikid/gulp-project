@@ -131,6 +131,7 @@ module.exports = (gulp, plugins, config) => {
                                 id: id,
                                 title,
                                 name: item.name,
+                                path: item.relativePath,
                                 size: item.size,
                                 type: item.extension
                             };
