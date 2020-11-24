@@ -1,5 +1,5 @@
 const os = require('os');
-const ftp = require('../../ftp');
+const ftp = require('../ftp');
 
 const browser = os.platform() === 'linux' ? 'google-chrome' : (os.platform() === 'darwin' ? 'google chrome' : (os.platform() === 'win32' ? 'chrome' : 'firefox'));
 
