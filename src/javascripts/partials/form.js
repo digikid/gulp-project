@@ -69,11 +69,13 @@ $.fn.customSelect = function(options) {
 
             $.each(_this.$select.find('option'), function() {
                 var $item = _this.$item.clone(),
+                    text = $(this).text(),
+                    value = $(this).val(),
                     isSelected = $(this).attr('selected'),
                     isPlaceholder = $(this).val() === settings.placeholder || $(this).attr('disabled');
 
                 if (isPlaceholder || isSelected) {
-                    _this.$input.html($(this).text());
+                    _this.$input.html(text);
 
                     if (isSelected) {
                         _this.$wrapper.addClass('is-checked');
@@ -81,12 +83,13 @@ $.fn.customSelect = function(options) {
                     } else return;
                 };
 
-                $item.html($(this).text()).attr('rel', $(this).val()).on('click', function(e) {
+                $item.text(text).attr('rel', value).on('click', function(e) {
                     e.preventDefault();
-                    var $option = $(this);
-                    _this.$select.find('option').attr('selected', false).filter(function() {
-                        return $(this).val() === $option.attr('rel');
+
+                    _this.$select.val(value).find('option').attr('selected', false).filter(function() {
+                        return $(this).val() === value;
                     }).attr('selected', true);
+
                     _this.$select.trigger('change');
                 }).appendTo(_this.$options);
             });
