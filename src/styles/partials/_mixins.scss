@@ -320,6 +320,8 @@
 }
 
 @mixin img-filler($fit: contain) {
+    position: relative;
+
     img {
         object-fit: $fit;
 
@@ -355,13 +357,13 @@
 }
 
 @mixin retina() {
-    @include media-retina() {
+    @include mr() {
         @content;
     }
 }
 
 @mixin bg-2x($image) {
-    @media screen and (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    @include mr() {
         background-image: url($image);
     }
 }
