@@ -1,3 +1,6 @@
+@@if(config.babel) {
+@@include('import/modules.js')}
+
 // device detect
 window._DETECT = $.fn.deviceDetector.getInfo();
 
