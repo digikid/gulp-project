@@ -190,14 +190,18 @@ $.fn.renderMap = function(options) {
             window.maps[id].map.geoObjects.add(clusterer);
 
             if (itemId && window.matchMedia('(min-width: 768px)').matches) {
-                var center = _this.data.filter(function(item) {
-                    return +item.id === itemId;
-                })[0].coords,
-                    zoom = window.maps[id].map.getZoom();
+                var zoom = window.maps[id].map.getZoom(),
+                    center = _this.data.filter(function(item) {
+                        return +item.id === itemId;
+                    });
 
-                window.maps[id].map.setCenter(center, zoom, {
-                    checkZoomRange: true
-                });
+                if (center.length) {
+                    center = center[0].coords;
+
+                    window.maps[id].map.setCenter(center, zoom, {
+                        checkZoomRange: true
+                    });
+                };
             } else {
                 window.maps[id].map.setBounds(clusterer.getBounds(), {
                     checkZoomRange: true
