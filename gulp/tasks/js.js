@@ -9,8 +9,7 @@ module.exports = (gulp, plugins, config) => {
                     prefix: `@@`,
                     basepath: config.paths.src.js.partials,
                     context: {
-                        title: config.title,
-                        name: config.name
+                        config
                     }
                 }))
                 .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.init()))

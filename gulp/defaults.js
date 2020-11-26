@@ -8,6 +8,7 @@ module.exports = {
         js: false,
         html: false
     },
+    babel: false,
     compress: false,
     main: false,
     open: `index`,

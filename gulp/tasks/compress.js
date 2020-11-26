@@ -1,4 +1,8 @@
 const del = require(`del`);
+const browserify = require(`browserify`);
+const babelify = require(`babelify`);
+const source = require(`vinyl-source-stream`);
+const buffer = require(`vinyl-buffer`);
 
 module.exports = (gulp, plugins, config) => {
     return done => {
@@ -32,11 +36,42 @@ module.exports = (gulp, plugins, config) => {
                     output: {
                         comments: false
                     }
-                }), plugins.cleanCss()))
+                })))
+                .pipe(plugins.if(ext === 'css', plugins.cleanCss()))
                 .pipe(plugins.rename(path => {
                     path.basename += `.min`;
                 }))
                 .pipe(gulp.dest(config.paths.output[ext]))
+                .on(`end`, cb);
+        };
+
+        const babelJS = (cb) => {
+            browserify({
+                entries: [`${config.paths.output.js}/${config.files.js}`],
+                transform: [
+                    babelify.configure({
+                        presets: [
+                            '@babel/env'
+                        ],
+                        plugins: [
+                            ['@babel/transform-runtime']
+                        ],
+                        compact: false
+                    }),
+                ]
+            })
+                .bundle()
+                .pipe(source(config.files.js))
+                .pipe(buffer())
+                .pipe(plugins.terser({
+                    output: {
+                        comments: false
+                    }
+                }))
+                .pipe(plugins.rename(path => {
+                    path.basename += `.min`;
+                }))
+                .pipe(gulp.dest(config.paths.output.js))
                 .on(`end`, cb);
         };
 
@@ -53,7 +88,7 @@ module.exports = (gulp, plugins, config) => {
         const removeCSS = cb => remove('css');
         const removeJS = cb => remove('js');
 
-        const tasks = [compressCSS, compressJS, removeCSS, removeJS];
+        const tasks = [compressCSS, removeCSS, config.babel ? babelJS : compressJS, removeJS];
 
         gulp.series(...tasks)(done);
     };
