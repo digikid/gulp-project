@@ -1,19 +1,12 @@
 @import '../../partials';
 
 .outdated {
-    font-size: 12px;
-    position: fixed;
-    z-index: 99999;
-    top: 0;
-    left: 0;
-    display: none;
     width: 100%;
-    padding: 15px 0;
+    position: relative;
+    font-size: 12px;
     background: $primary;
-
-    @include ie() {
-        display: block;
-    }
+    padding: 15px 0;
+    z-index: 999;
 
     &, a {
         color: $white;
