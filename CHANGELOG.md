@@ -4,7 +4,7 @@
 
 [1.5.0]: https://github.com/digikid/gulp-project/releases/tag/1.5.0
 
-## 1.5.0 - 2020-12-01
+## [1.5.0] - 2020-12-01
 
 ### Добавлено
 - Компиляция JS кода в стандарт ES5 через Babel.
