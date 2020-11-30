@@ -1,4 +1,4 @@
-# Пансионат «Забота о близких»
+# gulp-project
 
 ![GitHub release](https://img.shields.io/github/release/digikid/gulp-project.svg)
 [![dependencies Status](https://david-dm.org/digikid/gulp-project/status.svg)](https://david-dm.org/digikid/gulp-project)
