@@ -1,17 +1,34 @@
 module.exports = {
-    merge: false,
-    zip: false,
-    webp: false,
-    sourcemaps: false,
-    minify: {
-        css: false,
-        js: false,
-        html: false
+    args: {
+        merge: {
+            css: false,
+            js: false
+        },
+        minify: {
+            css: false,
+            js: false
+        },
+        babel: false,
+        compress: false,
+        sourcemaps: false,
+        webp: false,
+        zip: false,
+        main: false,
+        index: false,
+        debug: false,
+        preset: `global`,
+        open: `index`,
+        host: `default`,
+        mode: `dev`
     },
-    babel: false,
-    compress: false,
-    main: false,
-    open: `index`,
-    host: `default`,
-    mode: `dev`
+    presets: {
+        deploy: {
+            babel: true,
+            compress: true,
+            mode: `build`
+        },
+        lighthouse: {
+            compress: true
+        }
+    }
 };

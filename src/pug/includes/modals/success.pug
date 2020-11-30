@@ -1,0 +1,12 @@
+extends ../../layouts/modal
+
+block variables
+    - var title = "Спасибо за обращение"
+    - var id = "success"
+
+block content
+    p Мы получили вашу заявку и в ближайшее время с вами свяжется наш специалист.
+
+block footer
+    .modal__footer
+        a(href="#" class="btn js-close") Понятно

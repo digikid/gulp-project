@@ -1,5 +1,6 @@
 const pjson = require(`../package.json`);
 const args = require(`./helpers/args`);
+const now = require(`./helpers/now`);
 
 module.exports = {
     title: `Новый проект`,
@@ -11,7 +12,7 @@ module.exports = {
         bootstrap: `bootstrap.custom.min.css`,
         css: `build.css`,
         js: `build.js`,
-        polyfills: `polyfills.js`,
+        polyfills: `polyfills.min.js`,
         zip: {
             src: `${pjson.name}-src.zip`,
             output: `${pjson.name}-dist.zip`
@@ -19,22 +20,6 @@ module.exports = {
     },
     common: {
         theme: `default`,
-        aliases: [{
-            title: `Главная страница`,
-            name: `home.html`
-        }, {
-            title: `Каталог`,
-            name: `catalog.html`
-        }, {
-            title: `Карточка объекта`,
-            name: `card.html`
-        }, {
-            title: `Статья`,
-            name: `article.html`
-        }, {
-            title: `Страница не найдена`,
-            name: `404.html`
-        }],
         files: {
             css: `Таблица стилей CSS`,
             js: `Файл JavaScript`,
@@ -42,18 +27,16 @@ module.exports = {
             output: `Архив с версткой`,
             html: `Новая страница`
         },
+        aliases: {
+            home: `Главная страница`,
+            catalog: `Каталог`,
+            404: `Страница не найдена`
+        },
         import: `Подключаемые компоненты`,
         first: [`home.html`],
         last: [`404.html`, `template.html`, `ui.html`],
-        authors: [{
-            name: `Александр Довлатов`,
-            job: `Верстальщик`,
-            contacts: [{
-                title: `@digikid`,
-                href: `https://t.me/digikid`
-            }]
-        }],
-        copyright: `Интернет-агентство «Relevant»`
+        authors: [],
+        copyright: ``
     },
     paths: {
         root: `./`,
@@ -77,7 +60,7 @@ module.exports = {
             js: {
                 root: `./src/javascripts/**/*.{js,json}`,
                 base: [
-                    `./src/javascripts/base/**/*.{js,json}`,
+                    `./src/javascripts/base/*.{js,json}`,
                     `./src/javascripts/*.{js,json}`,
                     `!./src/javascripts/polyfills/**/*.{js,json}`
                 ],
@@ -86,17 +69,20 @@ module.exports = {
                 partials: `./src/javascripts/`
             },
             html: {
-                root: `./src/*.html`,
-                partials: `./src/includes/`
+                root: `./src/html/*.html`,
+                partials: `./src/html/includes/`
             },
-            img: `./src/images/**/*.*`,
+            pug: {
+                root: `./src/pug/*.pug`,
+                partials: `./src/pug/includes/`
+            },
+            img: `./src/images/**`,
             steady: [
-                `./src/fonts/**/*.*`,
-                `./src/templates/**/*.*`,
-                `./src/import/**/*.*`,
-                `./src/video/**/*.*`,
-                `./src/upload/**/*.*`,
-                `./src/ajax/**/*.*`,
+                `./src/fonts/**`,
+                `./src/templates/**`,
+                `./src/video/**`,
+                `./src/upload/**`,
+                `./src/ajax/**`,
                 `./src/**/*.php`
             ],
             icomoon: {
@@ -113,7 +99,7 @@ module.exports = {
                 sass: `./src/common/styles`,
                 partials: `./src/common/includes`
             },
-            import: `.src/import/modules.json`
+            data: `./src/data`
         },
         output: {
             root: `./dist`,
@@ -127,7 +113,7 @@ module.exports = {
             }
         },
         watch: {
-            root: `./src/**/*.*`,
+            root: `./src/**`,
             sass: {
                 root: [
                     `./src/styles/**/*.{scss,sass}`,
@@ -141,23 +127,23 @@ module.exports = {
             js: `./src/javascripts/**/*.{js,json}`,
             html: [
                 `./src/**/*.{html,json}`,
-                `./src/includes/**`,
+                `./src/html/includes/**`,
                 `!./src/common/**`,
-                `!./src/icomoon/**/*.*`
+                `!./src/icomoon/**`
             ],
-            img: `./src/images/**/*.*`,
-            vectors: `./src/vectors/**/*.*`,
+            pug: `./src/**/*.pug`,
+            img: `./src/images/**`,
+            vectors: `./src/vectors/**`,
             steady: [
-                `./src/fonts/**/*.*`,
-                `./src/templates/**/*.*`,
-                `./src/import/**/*.*`,
-                `./src/video/**/*.*`,
-                `./src/upload/**/*.*`,
-                `./src/ajax/**/*.*`,
+                `./src/fonts/**`,
+                `./src/templates/**`,
+                `./src/video/**`,
+                `./src/upload/**`,
+                `./src/ajax/**`,
                 `./src/**/*.php`
             ],
-            icomoon: `./src/icomoon/**/*.*`,
-            vendor: `./src/vendor/**/*.*`,
+            icomoon: `./src/icomoon/**`,
+            vendor: `./src/vendor/**`,
             common: [
                 `./src/common/**/*.html`,
                 `./src/common/styles/**/*.scss`,
@@ -165,11 +151,14 @@ module.exports = {
             ]
         },
         vendor: {
-            device: [
-                `./node_modules/js.device.detector/dist/jquery.device.detector.min.js`
+            animateCSS: [
+                `./node_modules/animate.css/animate.css`
             ],
             jquery: [
                 `./node_modules/jquery/dist/jquery.min.js`
+            ],
+            device: [
+                `./node_modules/js.device.detector/dist/jquery.device.detector.min.js`
             ],
             fancybox: [
                 `./node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js`,
@@ -185,6 +174,9 @@ module.exports = {
             mask: [
                 `./node_modules/jquery-mask-plugin/dist/jquery.mask.min.js`
             ],
+            datepicker: [
+                `./node_modules/air-datepicker/dist/js/datepicker.min.js`
+            ],
             swiper: [
                 `./node_modules/swiper/js/swiper.min.js`
             ],
@@ -194,9 +186,6 @@ module.exports = {
             tippy: [
                 `./node_modules/tippy.js/dist/tippy.umd.min.js`,
                 `./node_modules/tippy.js/dist/tippy.css`
-            ],
-            animateCSS: [
-                `./node_modules/animate.css/animate.css`
             ]
         },
         deploy: {
@@ -204,55 +193,116 @@ module.exports = {
             main: `./dist/**/*.{html,css,js}`,
             base: `dist/`
         },
-        clean: `./dist`
+        temp: [`./temp`],
+        clean: [`./dist`, `./temp`, `./reports`]
     },
-    webserver: {
-        server: {
-            baseDir: `./dist`
+    plugins: {
+        webserver: {
+            server: {
+                baseDir: `./dist`
+            },
+            open: `external`,
+            startPath: `/${args.open}.html`,
+            tunnel: false,
+            online: true,
+            host: `localhost`,
+            ghostMode: false,
+            port: 9002,
+            logPrefix: `app_dev`
         },
-        open: 'external',
-        startPath: `/${args.open}.html`,
-        tunnel: false,
-        online: true,
-        host: `localhost`,
-        ghostMode: false,
-        port: 9002,
-        logPrefix: `app_dev`
-    },
-    lighthouse: {
-        path: `./reports`,
-        port: 8080,
-        chromeLauncherPort: 9222,
-        config: {
-            extends: `lighthouse:default`
+        lighthouse: {
+            path: `./reports`,
+            port: 8080,
+            chromeLauncherPort: 9222,
+            config: {
+                extends: `lighthouse:default`
+            },
+            flags: {
+                chromeFlags: [`--show-paint-rects`],
+                output: `html`
+            }
         },
-        flags: {
-            chromeFlags: [`--show-paint-rects`],
-            output: `html`
+        imagemin: {
+            mozjpeg: {
+                progressive: true,
+                quality: 90
+            },
+            pngquant: {
+                speed: 1,
+                quality: [0.95, 1]
+            },
+            svgo: {
+                plugins: [{
+                    removeViewBox: false
+                }]
+            },
+            giflossy: {
+                optimizationLevel: 3,
+                optimize: 3,
+                lossy: 2
+            }
+        },
+        sass: {
+            outputStyle: `expanded`,
+            errLogToConsole: true
+        },
+        base64: {
+            exclude: [
+                `/sprite/`,
+                `/images/`,
+                `/symbols/`,
+                `/vendor/`
+            ]
+        },
+        cleanCss: {},
+        inject: {
+            ignorePath: `dist/`,
+            addRootSlash: false,
+            removeTags: true,
+            empty: true
+        },
+        beautify: {
+            html: {
+                max_preserve_newlines: 5,
+                end_with_newline: true,
+                indent_inner_html: true,
+                space_before_conditional: true,
+                indent_empty_lines: true
+            },
+            js: {
+                indent_size: 4,
+                max_preserve_newlines: 2
+            }
+        },
+        terser: {
+            output: {
+                comments: false
+            }
+        },
+        babelify: {
+            presets: [
+                `@babel/env`
+            ],
+            plugins: [
+                [
+                    `@babel/transform-runtime`
+                ]
+            ],
+            compact: false
+        },
+        icomoonBuilder: {
+            templateType: `map`
         }
     },
-    compressors: {
-        jpegtran: {
-            progressive: true
-        },
-        mozjpeg: {
-            progressive: true,
-            quality: 90
-        },
-        pngquant: {
-            speed: 1,
-            quality: [0.95, 1]
-        },
-        svgo: {
-            plugins: [{
-                removeViewBox: false
-            }]
-        },
-        giflossy: {
-            optimizationLevel: 3,
-            optimize: 3,
-            lossy: 2
+    ftp: {
+        default: {
+            host: null,
+            user: null,
+            password: null,
+            dest: null,
+            uri: null
         }
     },
+    now,
     ...args
 };

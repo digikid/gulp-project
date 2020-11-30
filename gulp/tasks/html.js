@@ -1,21 +1,39 @@
-const now = require(`../helpers/now`);
+const chalk = require(`chalk`);
 
 module.exports = (gulp, plugins, config) => {
     return done => {
 
-        const injects = !config.compress ? [
-            `${config.paths.output.js}/${config.files.polyfills}`,
-            `${config.paths.output.vendor.root}/${config.files.bootstrap}`,
-            `${config.paths.output.vendor.root}/**/jquery.min*.js`,
-            `${config.paths.output.vendor.root}/**/*.{css,js}`,
-            `${config.paths.output.css}/${config.files.css.split(`.`)[0]}*.css`,
-            `${config.paths.output.css}/**/*.css`,
-            `${config.paths.output.js}/${config.files.js.split(`.`)[0]}*.js`,
-            `${config.paths.output.js}/**/*.js`
-        ] : [
-            `${config.paths.output.css}/${config.files.css.split(`.`)[0]}*.css`,
-            `${config.paths.output.js}/${config.files.js.split(`.`)[0]}*.js`,
-        ];
+        if (config.debug) {
+            console.log(`${chalk.bold(`Сборка HTML файлов...`)}`);
+        };
+
+        const paths = {
+            polyfills: [
+                `${config.paths.output.js}/${config.files.polyfills}`
+            ],
+            vendor: {
+                css: [
+                    `${config.paths.output.vendor.css}/**/${config.files.bootstrap}`,
+                    `${config.paths.output.vendor.css}/**/*.css`
+                ],
+                js: [
+                    `${config.paths.output.vendor.js}/**/jquery.min*.js`,
+                    `${config.paths.output.vendor.js}/**/*.js`
+                ],
+            },
+            output: {
+                css: [
+                    `${config.paths.output.css}/${config.files.css.split(`.`)[0]}*.css`,
+                    `${config.paths.output.css}/**/*.css`
+                ],
+                js: [
+                    `${config.paths.output.js}/${config.files.js.split(`.`)[0]}*.js`,
+                    `${config.paths.output.js}/**/*.js`
+                ]
+            }
+        };
+
+        const injects = config.compress ? [...paths.output.css, ...paths.output.js] : config.babel ? [...paths.vendor.css, ...paths.output.css, ...paths.output.js] : [...paths.polyfills, ...paths.vendor.css, ...paths.vendor.js, ...paths.output.css, ...paths.output.js];
 
         return gulp.src(config.paths.src.html.root)
             .pipe(plugins.plumber())
@@ -24,31 +42,15 @@ module.exports = (gulp, plugins, config) => {
                 basepath: config.paths.src.html.partials,
                 context: {
                     title: config.title,
-                    year: now.year,
+                    year: config.now.year,
                     mode: config.mode,
                     icomoon: config.icomoon
                 }
             }))
             .pipe(plugins.inject(gulp.src(injects, {
                 allowEmpty: true
-            }), {
-                ignorePath: `dist/`,
-                addRootSlash: false,
-                removeTags: true,
-                empty: true
-            }))
-            .pipe(plugins.if(config.minify.html, plugins.htmlmin({
-                collapseWhitespace: true,
-                minifyCSS: true,
-                minifyJS: true,
-                processConditionalComments: true,
-                removeComments: true
-            }), plugins.beautify.html({
-                max_preserve_newlines: 5,
-                end_with_newline: true,
-                indent_inner_html: true,
-                space_before_conditional: true
-            })))
+            }), config.plugins.inject))
+            .pipe(plugins.beautify.html(plugins.beautify.html))
             .pipe(gulp.dest(config.paths.output.root));
     };
 };

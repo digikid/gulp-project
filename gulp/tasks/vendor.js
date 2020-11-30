@@ -1,5 +1,12 @@
+const chalk = require(`chalk`);
+
 module.exports = (gulp, plugins, config) => {
     return done => {
+
+        if (config.debug) {
+            console.log(`${chalk.bold(`Копирование модулей и библиотек...`)}`);
+        };
+
         const vendors = {
             js: [],
             css: []
@@ -25,15 +32,16 @@ module.exports = (gulp, plugins, config) => {
             };
         };
 
-        const moveFiles = (source, dest, cb) => {
-            if (!source.length) {
+        const moveFiles = (path, dest, cb) => {
+            if (path.length) {
+                return gulp.src(path)
+                    .pipe(plugins.plumber())
+                    .pipe(gulp.dest(dest))
+                    .on(`end`, cb);
+            } else {
                 cb();
                 return;
             };
-            gulp.src(source)
-                .pipe(plugins.plumber())
-                .pipe(gulp.dest(dest))
-                .on(`end`, cb);
         };
 
         const moveVendorJs = cb => moveFiles(vendors.js, config.paths.output.vendor.js, cb);

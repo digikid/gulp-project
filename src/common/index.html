@@ -38,8 +38,6 @@
                         @@if(globals) {
                         <ul class="files">
                             @@loop('file.html', '/data/globals.json')
-                            @@if(modules) {
-                            <li class="files__item files__item--json">@@modules [ <a target="_blank" href="import/@@modulesFile">@@modulesFile</a> ]</li>}
                         </ul>}
                     </div>
                 </section>
@@ -114,7 +112,8 @@
 
         <footer>
             <div class="container">
-                <p>&copy; @@year @@copyright.</p>
+                @@if(copyright) {
+                <p>&copy; @@year @@copyright.</p>}
                 <p class="modified">Разработано на основе <a target="_blank" href="https://github.com/digikid/gulp-project">gulp-project</a>, версия @@version.<br>Дата и время последней сборки проекта: @@now.date в @@now.time (@@now.day).</p>
             </div>
         </footer>

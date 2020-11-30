@@ -1,25 +1,32 @@
-const vinyl = require(`vinyl-ftp`);
+const upload = require(`vinyl-ftp`);
 const log = require(`fancy-log`);
-
-const ftp = require(`../ftp`);
+const chalk = require(`chalk`);
 
 module.exports = (gulp, plugins, config) => {
     return done => {
-        const path = config.main ? config.paths.deploy.main : config.paths.deploy.source;
+        if (config.debug) {
+            console.log(`${chalk.bold(`Запрос FTP соединения...`)}`);
+        };
+
+        const {ftp, host: ftpHost} = config;
+        const {host, user, password, dest} = ftp[ftpHost];
+
+        const deploy = config.paths.deploy;
+        const path = config.main ? deploy.main : deploy.source;
 
         return gulp.src(path, {
-            base: config.paths.deploy.base,
-            buffer: false
-        })
-        .pipe(vinyl
-            .create({
-                host: ftp[config.host].host,
-                user: ftp[config.host].user,
-                password: ftp[config.host].password,
-                parallel: 1,
-                log: log
+                base: deploy.base,
+                buffer: false
             })
-            .dest(ftp[config.host].dest)
-        );
+            .pipe(upload
+                .create({
+                    host: host,
+                    user: user,
+                    password: password,
+                    parallel: 1,
+                    log: log
+                })
+                .dest(dest)
+            );
     };
 };

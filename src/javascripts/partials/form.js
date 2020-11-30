@@ -1,3 +1,50 @@
+// prevent default
+$.fn.preventDefault = function(e) {
+    e = e || window.event;
+
+    if (e.preventDefault) {
+        e.preventDefault();
+    };
+
+    e.returnValue = false;
+};
+
+// prevent default for scroll keys
+$.fn.preventDefaultForScrollKeys = function (e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    };
+};
+
+// disable scroll
+$.fn.disableScroll = function() {
+    if (window.addEventListener) {
+        window.addEventListener('DOMMouseScroll', $.fn.preventDefault, false);
+    };
+
+    document.addEventListener('wheel', $.fn.preventDefault, { passive: false });
+    window.addEventListener('onwheel', $.fn.preventDefault, {passive: false});
+    window.addEventListener('onmousewheel', $.fn.preventDefault, {passive: false});
+    document.addEventListener('onmousewheel', $.fn.preventDefault, {passive: false});
+    window.addEventListener('ontouchmove', $.fn.preventDefault, {passive: false});
+    document.addEventListener('onkeydown', $.fn.preventDefaultForScrollKeys, {passive: false});
+};
+
+// enable scroll
+$.fn.enableScroll = function() {
+    if (window.removeEventListener) {
+        window.removeEventListener('DOMMouseScroll', $.fn.preventDefault, false);
+    };
+
+    document.removeEventListener('wheel', $.fn.preventDefault, { passive: false });
+    window.removeEventListener('onwheel', $.fn.preventDefault, {passive: false});
+    window.removeEventListener('onmousewheel', $.fn.preventDefault, {passive: false});
+    document.removeEventListener('onmousewheel', $.fn.preventDefault, {passive: false});
+    window.removeEventListener('ontouchmove', $.fn.preventDefault, {passive: false});
+    document.removeEventListener('onkeydown', $.fn.preventDefaultForScrollKeys, {passive: false});
+};
+
 // set cursor position
 $.fn.setCursorPosition = function(pos) {
     this.each(function(index, elem) {
@@ -52,6 +99,8 @@ $.fn.customSelect = function(options) {
     if (!window.selectsTotal) {
         window.selectsTotal = 0;
     };
+
+    if (!total) return;
 
     return this.each(function() {
         var _this = this;
@@ -125,7 +174,7 @@ $.fn.customSelect = function(options) {
             _this.$select.on('change', function() {
                 var active = $(this).val(),
                     $wrapper = $(this).closest('.select'),
-                    $options = $wrapper.find('.select__options a');
+                    $options = $wrapper.find('.select__options a'),
                     $input = $wrapper.find('.select__input');
                 $options.removeClass('is-active').filter(function() {
                     return $(this).attr('rel') === active;
@@ -309,6 +358,19 @@ $.fn.initFormListeners = function(options) {
                 }
             });
         };
+
+        // if ($(this).attr('type') == 'radio') {
+        //     $(this).click(function() {
+        //         if ($(this).attr('data-checked') !== '') {
+        //             $(this).attr('data-checked', '');
+        //             $parent.addClass('is-checked');
+        //         } else {
+        //             $(this).prop('checked', false);
+        //             $(this).removeAttr('data-checked');
+        //             $parent.removeClass('is-checked');
+        //         };
+        //     });
+        // };
     });
 
     // select once
@@ -343,5 +405,51 @@ $.fn.initFormListeners = function(options) {
 
     // custom select
     $('select').customSelect();
+
+    // datepicker
+    var datepickerOpts = {
+        language: 'ru',
+        autoClose: true,
+        minDate: new Date(),
+        onShow: function() {
+            $.fn.disableScroll();
+        },
+        onHide: function() {
+            $.fn.enableScroll();
+        }
+    };
+
+    $('form').each(function() {
+        var _this = this;
+
+        _this.$checkIn = $(this).find('[data-check-in]');
+        _this.checkInInstance = _this.$checkIn.datepicker(datepickerOpts).data('datepicker');
+
+        _this.$checkOut = $(this).find('[data-check-out]');
+        _this.checkOutInstance = _this.$checkOut.datepicker(datepickerOpts).data('datepicker');
+
+        if (_this.checkInInstance && _this.checkOutInstance) {
+
+            _this.checkInInstance.update({
+                onSelect: function(formattedDate, date, inst) {
+                    if (date) {
+                        _this.checkOutInstance.update({
+                            minDate: new Date(date.setDate(date.getDate() + 1))
+                        });
+                    };
+                }
+            });
+
+            _this.checkOutInstance.update({
+                onSelect: function(formattedDate, date, inst) {
+                    if (date) {
+                        _this.checkInInstance.update({
+                            maxDate: new Date(date.setDate(date.getDate() - 1))
+                        });
+                    };
+                }
+            });
+        };
+    });
 
 };

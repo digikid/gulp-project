@@ -1,7 +1,7 @@
 $.fn.initLazyLoading = function(options) {
 
     var settings = $.extend(true, {}, {
-        rootMargin: '200px 0px',
+        rootMargin: '60px 0px',
         loadingClass: 'is-loading',
         loadedClass: 'is-loaded',
         appearedClass: 'is-appeared',

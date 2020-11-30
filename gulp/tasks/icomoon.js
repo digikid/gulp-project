@@ -1,9 +1,14 @@
 const { promises: fs } = require(`fs`);
+const chalk = require(`chalk`);
 
 module.exports = (gulp, plugins, config) => {
     return async done => {
         try {
             const json = await fs.readFile(config.paths.src.icomoon.json, `utf8`, (e, data) => data);
+
+            if (config.debug) {
+                console.log(`${chalk.bold(`Добавление иконок...`)}`);
+            };
 
             (async () => {
                 const icomoon = JSON.parse(json);
@@ -11,9 +16,7 @@ module.exports = (gulp, plugins, config) => {
 
                 const buildSass = cb => {
                     gulp.src(config.paths.src.icomoon.json)
-                        .pipe(plugins.icomoonBuilder({
-                            templateType: `map`
-                        }))
+                        .pipe(plugins.icomoonBuilder(config.plugins.icomoonBuilder))
                         .pipe(plugins.rename(config.paths.src.icomoon.fileName))
                         .pipe(gulp.dest(config.paths.src.icomoon.output))
                         .on(`end`, cb);

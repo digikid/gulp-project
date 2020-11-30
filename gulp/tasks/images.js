@@ -3,10 +3,14 @@ const imageminMozjpeg = require(`imagemin-mozjpeg`);
 const imageminZopfli = require(`imagemin-zopfli`);
 const imageminGiflossy = require(`imagemin-giflossy`);
 
+const chalk = require(`chalk`);
+
 module.exports = (gulp, plugins, config) => {
     return done => {
 
-        if (config.main) done();
+        if (config.debug) {
+            console.log(`${chalk.bold(`Оптимизация и сжатие изображений...`)}`);
+        };
 
         const imageminPlugins = {
             pngquant: imageminPngquant,
@@ -14,11 +18,10 @@ module.exports = (gulp, plugins, config) => {
             zopfli: imageminZopfli,
             giflossy: imageminGiflossy,
             gifsicle: plugins.imagemin.gifsicle,
-            svgo: plugins.imagemin.svgo,
-            jpegtran: plugins.imagemin.jpegtran
+            svgo: plugins.imagemin.svgo
         };
 
-        const compress = Object.keys(config.compressors).map(compressor => imageminPlugins[compressor](config.compressors[compressor]));
+        const compress = Object.keys(config.plugins.imagemin).map(compressor => imageminPlugins[compressor](config.plugins.imagemin[compressor]));
 
         return gulp.src(config.paths.src.img)
             .pipe(plugins.changed(config.paths.output.img))

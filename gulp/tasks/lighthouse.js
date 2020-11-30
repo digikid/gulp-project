@@ -7,50 +7,59 @@ const lighthouse = require(`lighthouse`);
 const chromeLauncher = require(`chrome-launcher`);
 const { write } = require(`lighthouse/lighthouse-cli/printer`);
 const reportGenerator = require(`lighthouse/lighthouse-core/report/report-generator`);
+const chalk = require(`chalk`);
 
 module.exports = (gulp, plugins, config) => {
     return done => {
 
+        if (config.debug) {
+            console.log(`${chalk.bold(`Формирование отчетов Lighthouse...`)}`);
+        };
+
+        const params = config.plugins.lighthouse;
+
         async function getNameHTMLFiles() {
             const files = await fs.readdir(config.paths.output.root);
 
-            return files.filter(item => item.endsWith(`.html`) && !item.includes(`index.html`));
+            return config.open ? [`${config.open}.html`] : files.filter(item => item.endsWith(`.html`) && !item.includes(`index.html`));
         };
 
         async function launchChrome() {
             const chrome = await chromeLauncher.launch({
                 chromeFlags: [
-                    `--headless`, `--disable-gpu`, `--disable-extensions`
+                    `--headless`,
+                    `--disable-gpu`,
+                    `--disable-extensions`
                 ]
             });
 
-            config.lighthouse.chromeLauncherPort = chrome.port;
+            params.chromeLauncherPort = chrome.port;
 
             return chrome;
         };
 
         async function launchLighthouse(url) {
             const result = await lighthouse(url, {
-                ...config.lighthouse.flags,
-                port: config.lighthouse.chromeLauncherPort
-            }, config.lighthouse.config);
+                ...params.flags,
+                port: params.chromeLauncherPort
+            }, params.config);
 
             return result;
         };
 
         async function runLighthouse(fileName) {
-            const result = await launchLighthouse(`http://localhost:${config.lighthouse.port}/${fileName}`);
+            const result = await launchLighthouse(`http://localhost:${params.port}/${fileName}`);
 
-            await write(reportGenerator.generateReportHtml(result.lhr), `html`, path.join(config.lighthouse.path, fileName));
+            await write(reportGenerator.generateReportHtml(result.lhr), `html`, path.join(params.path, fileName));
         };
 
         async function generateReports(cb) {
-            await del(config.lighthouse.path);
-            await fs.mkdir(config.lighthouse.path);
+            await del(params.path);
+            await fs.mkdir(params.path);
 
             server.init({
                 server: config.paths.output.root,
-                port: config.lighthouse.port,
+                port: params.port,
                 notify: false,
                 open: false,
                 cors: true
@@ -62,7 +71,7 @@ module.exports = (gulp, plugins, config) => {
             try {
                 for (const file of files) {
                     await runLighthouse(file);
-                    await open(path.join(config.lighthouse.path, file));
+                    await open(path.join(params.path, file));
                 };
             } catch (e) {
                 console.error(e);

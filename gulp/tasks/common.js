@@ -2,8 +2,7 @@ const { promises: fs } = require(`fs`);
 
 const dree = require(`dree`);
 const del = require(`del`);
-
-const now = require('../helpers/now');
+const chalk = require(`chalk`);
 
 const readFile = async (path, encoding = `utf-8`) => fs.readFile(path, { encoding });
 
@@ -15,12 +14,20 @@ const createDirectory = path => fs.mkdir(path).catch(err => {
 
 module.exports = (gulp, plugins, config) => {
     return done => {
-        readFile(`${config.paths.src.root}/index.html`).then(() => done()).catch(e => {
-            readFile(`${config.paths.src.common.root}/index.html`).then(async () => {
-                createDirectory(`${config.paths.src.common.root}/data`);
 
-                const modules = await fs.access(config.paths.src.import).then(() => config.common.import).catch(e => false);
-                const modulesFile = /[^/]*$/.exec(config.paths.src.import)[0];
+        if (!config.index) {
+            done();
+            return;
+        };
+
+        readFile(`${config.paths.src.common.root}/index.html`)
+            .catch(e => done())
+            .then(async () => {
+                if (config.debug) {
+                    console.log(`${chalk.bold(`Генерация списка страниц проекта...`)}`);
+                };
+
+                createDirectory(`${config.paths.src.common.root}/data`);
 
                 const globalFiles = [
                     config.minify.css || config.compress ? config.files.css.replace(`.css`, `.min.css`) : config.files.css,
@@ -55,13 +62,19 @@ module.exports = (gulp, plugins, config) => {
                 files.html = html.filter(item => config.common.first.includes(item.name)).concat(html.filter(item => !config.common.first.includes(item.name) && !config.common.last.includes(item.name))).concat(html.filter(item => config.common.last.includes(item.name))).map((item, id) => {
                     return {
                         id, ...item
-                    };
+                    }
                 });
 
                 const titles = files.html.map(async item => {
-                    await fs.readFile(`${config.paths.output.root}/${item.name}`, `utf-8`).then(data => {
-                        item.title = config.common.aliases.map(alias => alias.name).includes(item.name) ? config.common.aliases.filter(alias => alias.name === item.name)[0].title : data.includes(`<title>`) ? data.split(`<title>`)[1].split(`</title>`)[0] : config.common.files.html;
+                    const aliases = config.common.aliases;
+
+                    const id = item.name.replace(`.html`, ``);
+
+                    const title = await fs.readFile(`${config.paths.output.root}/${item.name}`, `utf-8`).then(data => {
+                        return (id in aliases) ? aliases[id] : data.includes(`<title>`) ? data.split(`<title>`)[1].split(`</title>`)[0] : config.common.files.html;
                     });
+
+                    item.title = title;
                 });
 
                 Promise.all(titles).then(() => {
@@ -140,16 +153,11 @@ module.exports = (gulp, plugins, config) => {
 
                     files.authors = config.common.authors;
 
-                    if (config.compress) {
-                        del(config.paths.output.vendor.root);
-                    };
-
                     const jsonFiles = Object.keys(files).map(file => {
                         return createFile(`${config.paths.src.common.data}/${file}.json`, JSON.stringify(files[file]));
                     });
 
                     Promise.all(jsonFiles).then(() => {
-
                         const commonSass = cb => gulp.src(`${config.paths.src.common.sass}/**/*.scss`)
                             .pipe(plugins.plumber())
                             .pipe(plugins.sass())
@@ -169,20 +177,18 @@ module.exports = (gulp, plugins, config) => {
                                     title: config.title,
                                     name: config.name,
                                     theme: config.common.theme,
-                                    now: now,
-                                    year: now.year,
+                                    now: config.now,
+                                    year: config.now.year,
                                     merge: config.merge,
                                     zip: config.zip,
+                                    copyright: config.common.copyright,
+                                    repo: config.repo,
+                                    version: config.version,
                                     pages: files.html.length,
                                     globals: files.globals.length,
                                     components: files.components.length,
                                     vendor: files.vendor.length,
-                                    authors: files.authors.length,
-                                    copyright: config.common.copyright,
-                                    repo: config.repo,
-                                    version: config.version,
-                                    modules,
-                                    modulesFile
+                                    authors: files.authors.length
                                 }
                             }))
                             .pipe(plugins.beautify.html({
@@ -197,10 +203,8 @@ module.exports = (gulp, plugins, config) => {
                             .on(`end`, cb);
 
                         gulp.parallel(commonSass, commonHtml, commonImages)(done);
-
                     });
-                }).catch(e => done());
-            }).catch(e => done());
-        });
+                });
+            });
     };
 };

@@ -1,40 +1,40 @@
+const chalk = require(`chalk`);
+
 module.exports = (gulp, plugins, config) => {
     return done => {
 
-        const sassCompiler = (path, merge, cb) =>
+        if (config.debug) {
+            console.log(`${chalk.bold(`Сборка CSS файлов...`)}`);
+        };
+
+        const merge = config.merge.css;
+        const minify = config.minify.css;
+        const paths = config.paths.src.sass;
+
+        const compileSass = (path, cb) =>
             gulp.src(path)
-            .pipe(plugins.plumber())
-            .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.init()))
-            .pipe(plugins.sass({
-                outputStyle: `expanded`,
-                errLogToConsole: true
-            }))
-            .on(`error`, plugins.sass.logError)
-            .pipe(plugins.base64({
-                exclude: [
-                    `/sprite/`,
-                    `/images/`,
-                    `/symbols/`,
-                    `/vendor/`
-                ]
-            }))
-            .pipe(plugins.sassUnicode())
-            .pipe(plugins.autoprefixer())
-            .pipe(plugins.if(merge, plugins.concat(config.files.css)))
-            .pipe(plugins.groupCssMediaQueries())
-            .pipe(plugins.if(config.minify.css, plugins.cleanCss(), plugins.cssbeautify()))
-            .pipe(plugins.if(config.minify.css, plugins.rename((path) => {
-                path.basename += `.min`;
-            })))
-            .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.write()))
-            .pipe(gulp.dest(config.paths.output.css))
-            .on(`end`, cb);
+                .pipe(plugins.plumber())
+                .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.init()))
+                .pipe(plugins.sass(config.plugins.sass))
+                .on(`error`, plugins.sass.logError)
+                .pipe(plugins.base64(config.plugins.base64))
+                .pipe(plugins.sassUnicode())
+                .pipe(plugins.autoprefixer())
+                .pipe(plugins.if(merge || (path !== paths.components), plugins.concat(config.files.css)))
+                .pipe(plugins.groupCssMediaQueries())
+                .pipe(plugins.if(minify, plugins.cleanCss(), plugins.cssbeautify()))
+                .pipe(plugins.if(config.sourcemaps, plugins.sourcemaps.write()))
+                .pipe(plugins.if(minify, plugins.rename((path) => {
+                    path.basename += `.min`;
+                })))
+                .pipe(gulp.dest(config.paths.output.css))
+                .on(`end`, cb);
 
-        const compileSassAll = cb => sassCompiler(config.paths.src.sass.root, true, cb);
-        const compileSassBase = cb => sassCompiler(config.paths.src.sass.base, true, cb);
-        const compileSassComponents = cb => sassCompiler(config.paths.src.sass.components, false, cb);
+        const compileSassAll = cb => compileSass(paths.root, cb);
+        const compileSassBase = cb => compileSass(paths.base, cb);
+        const compileSassComponents = cb => compileSass(paths.components, cb);
 
-        const tasks = config.merge ? [compileSassAll] : [compileSassBase, compileSassComponents];
+        const tasks = merge ? [compileSassAll] : [compileSassBase, compileSassComponents];
 
         gulp.parallel(...tasks)(done);
     };
