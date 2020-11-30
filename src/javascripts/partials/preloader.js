@@ -2,6 +2,7 @@ $.fn.preloader = function(options) {
 
     var settings = $.extend(true, {}, {
         cssClass: 'is-ready',
+        limit: 0,
         onReady: null
     }, options);
 
@@ -33,9 +34,25 @@ $.fn.preloader = function(options) {
         $(document).trigger('allContentIsLoaded');
     } else {
         window.onload = function() {
-            setTimeout(function() {
+            if (window.onloadTimeout) {
+                clearTimeout(window.onloadTimeout);
+            };
+
+            window.onloadTimeout = setTimeout(function() {
                 $(document).trigger('allContentIsLoaded');
             }, 0);
         };
+    };
+
+    if (settings.limit) {
+        window.preloadTimeout = setTimeout(function() {
+            if (window.preloadTimeout) {
+                clearTimeout(window.preloadTimeout);
+            };
+
+            if (!$this.hasClass(settings.cssClass)) {
+                $this.addClass(settings.cssClass);
+            };
+        }, 3000);
     };
 };
