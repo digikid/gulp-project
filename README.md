@@ -188,22 +188,23 @@ gulp-project                        # Корневая директория
 
 ### Список основных параметров
 
-Параметр  | Тип |   По умолчанию | Описание
-------------- | ------------- | ------------- | -------------
-merge  | object | false | Объединять файлы из директорий `/base` и `/components` в один файл
-minify  | object | false | Минифицировать файлы
-sourcemaps | boolean | false | Генерировать карты кода для CSS / JS файлов
-compress | boolean |false | Объединить и минифицировать CSS / JS файлы (production mode)
-babel | boolean | false | Компиляция JS кода в стандарт ES5
-main  | boolean | false | Выборочная сборка файлов, указанных в параметре `config.paths.deploy.main`
-webp  | boolean | false | Конвертировать все изображения в формат WebP
-index  | boolean | false | Генерировать страницу со списком файлов проекта
-zip  | boolean | false | Создать zip-архив с файлами проекта
-debug | boolean | false | Режим отладки
-preset  | string | 'global' | Название активного пресета
-open  | string | 'index' | Стартовая страница в браузере (задается без расширения .html)
-host  | string | 'default' | Ключ объекта с настройками FTP для загрузки файлов (`config.ftp`)
-mode  | string | 'dev' | Название режима, доступно глобально в HTML / JS файлах как @@mode
+Параметр   | Тип     | По умолчанию | Описание
+---------- | --------| ------------ | -------------------------------------------------------------------------
+merge      | object  | false        | Объединять файлы из директорий `/base` и `/components` в один файл
+minify     | object  | false        | Минифицировать файлы
+sourcemaps | boolean | false        | Генерировать карты кода для CSS / JS файлов
+compress   | boolean | false        | Объединить и минифицировать CSS / JS файлы (production mode)
+babel      | boolean | false        | Компиляция JS кода в стандарт ES5
+main       | boolean | false        | Выборочная сборка файлов, указанных в параметре `config.paths.deploy.main`
+force      | boolean | false        | Пропустить задачу сборки перед загрузкой файлов на сервер
+webp       | boolean | false        | Конвертировать все изображения в формат WebP
+index      | boolean | false        | Генерировать страницу со списком файлов проекта
+zip        | boolean | false        | Создать zip-архив с файлами проекта
+debug      | boolean | false        | Режим отладки (debug mode)
+preset     | string  | 'global'     | Название активного пресета
+open       | string  | 'index'      | Стартовая страница в браузере (задается без расширения .html)
+host       | string  | 'default'    | Ключ объекта с настройками FTP для загрузки файлов (`config.ftp`)
+mode       | string  | 'dev'        | Название режима, доступно глобально в HTML / JS файлах как @@mode
 
 <a name="command-line"></a>
 
