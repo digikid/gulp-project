@@ -12,6 +12,12 @@ module.exports = (gulp, plugins, config) => {
         const path = config.main ? deploy.main : deploy.source;
 
         if (config.debug) {
+            if (config.main) {
+                const resolutions = path.replace(`./dist/**/*.{`, ``).replace(`}`, ``).split(`,`).map(resolution => `.${resolution}`).join(`, `);
+
+                console.log(`${chalk.bold.bgYellowBright(`Выборочная загрузка`)}\nТак как установлен параметр [${chalk.bold.blue(`main`)}], будут загружены только файлы с разрешениями ${chalk.bold(resolutions)}.\nУстановить тип файлов для выборочной загрузки можно в параметре [${chalk.bold.blue(`config.paths.deploy.main`)}].`);
+            };
+
             console.log(chalk.bold(`Загрузка файлов на сервер ${host}...`));
         };
 

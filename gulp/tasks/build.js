@@ -2,7 +2,11 @@ const chalk = require(`chalk`);
 
 module.exports = (gulp, plugins, config) => {
     if (config.debug) {
-        console.log(`${chalk.bold(`Запуск сборки...`)}`);
+        if (config.force) {
+            console.log(`${chalk.bold.bgYellowBright(`Сборка пропущена`)}\nТак как установлен параметр [${chalk.bold.blue(`force`)}], повторная сборка файлов была пропущена.`);
+        } else {
+            console.log(`${chalk.bold(`Запуск сборки...`)}`);
+        };
     };
 
     let tasks = [
