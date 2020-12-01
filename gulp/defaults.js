@@ -14,6 +14,7 @@ module.exports = {
         webp: false,
         zip: false,
         main: false,
+        force: false,
         index: false,
         debug: false,
         preset: `global`,
