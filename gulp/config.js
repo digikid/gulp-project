@@ -190,7 +190,7 @@ module.exports = {
         },
         deploy: {
             source: `./dist/**/*`,
-            main: `./dist/**/*.{html,css,js}`,
+            main: `./dist/**/*.{html,css,js,hbs}`,
             base: `dist/`
         },
         temp: [`./temp`],
