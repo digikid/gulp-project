@@ -69,8 +69,8 @@ module.exports = {
                 partials: `./src/javascripts/`
             },
             html: {
-                root: `./src/html/*.html`,
-                partials: `./src/html/includes/`
+                root: `./src/*.html`,
+                partials: `./src/includes/`
             },
             pug: {
                 root: `./src/pug/*.pug`,
@@ -127,7 +127,7 @@ module.exports = {
             js: `./src/javascripts/**/*.{js,json}`,
             html: [
                 `./src/**/*.{html,json}`,
-                `./src/html/includes/**`,
+                `./src/includes/**`,
                 `!./src/common/**`,
                 `!./src/icomoon/**`
             ],
