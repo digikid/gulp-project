@@ -9,6 +9,7 @@ if ($.fn.datepicker) {
 };
 
 @@include('partials/debounce.js')
+@@include('partials/throttle.js')
 @@include('partials/preloader.js')
 @@include('partials/form.js')
 @@include('partials/lazyLoad.js')
