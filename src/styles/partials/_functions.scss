@@ -141,3 +141,16 @@ $_precision: 10;
 @function ms_get_screen_size($search, $position: 'current') {
     @return map-get($breakpoints, ms_get_screen($search, $position));
 }
+
+@function zerofill($i, $n: 2) {
+    $f: pow(10, $n - 1);
+    $out: null;
+
+    @while $f >= 1 {
+        $out: $out#{floor($i / $f)};
+        $i: $i - floor($i / $f) * $f;
+        $f: $f / 10;
+    };
+
+    @return $out;
+}
