@@ -1,0 +1,83 @@
+$datepickerDayCellSize: 32px !default;
+$datepickerWidth: 250px !default;
+$datepickerMinBodyHeight: 175px !default;
+$datepickerBorderRadius: 10px !default;
+$datepickerPadding: 6px !default;
+$datepickerZIndex: 10000 !default;
+
+$datepickerFontFamily: $font-family !default;
+$datepickerFontSize: 14px !default;
+
+$datepickerYearsPerRow: 4 !default;
+
+$datepickerTextColor: (
+  button: $green,
+  otherMonth: #dedede,
+  otherMonthInRange: #ccc,
+  disabled: #aeaeae,
+  currentDate: $green,
+  common: #4a4a4a,
+  dayNames: $green,
+  navArrows: #9c9c9c
+) !default;
+
+$datepickerBG: (
+  selected: $green,
+  selectedHover: darken($green, 5),
+  inRange: rgba($green, .1),
+  hover: #f0f0f0
+) !default;
+
+$datepickerBorderColor: (
+  nav: $gray-100,
+  inline: #d7d7d7,
+  default: $white
+) !default;
+
+$datepickerNavigationHeight: 32px !default;
+$datepickerNavigationButtonsOffset: 2px !default;
+
+$datepickerPointerSize: 10px !default;
+$datepickerPointerOffset: 10px !default;
+
+// Transitions
+$datepickerTransitionSpeed: .3s !default;
+$datepickerTransitionEase: ease !default;
+$datepickerTransitionOffset: 8px !default;
+
+// Objects
+%otherMonth {
+  color: map_get($datepickerTextColor, otherMonth);
+
+  &:hover {
+    color: darken(map_get($datepickerTextColor, otherMonth), 10);
+  }
+
+  &.-disabled- {
+    &.-focus- {
+      color: map_get($datepickerTextColor, otherMonth);
+    }
+  }
+
+  &.-selected- {
+    color: #fff;
+    background: lighten(map_get($datepickerBG, selected), 15);
+    &.-focus- {
+      background: lighten(map_get($datepickerBG, selected), 10);
+    }
+  }
+
+  &.-in-range- {
+    background-color: map_get($datepickerBG, inRange);
+    color: darken(map_get($datepickerTextColor, otherMonth), 7);
+
+    &.-focus- {
+      background-color: rgba(map_get($datepickerBG, inRange), .2);
+    }
+  }
+
+  &:empty {
+    background: none;
+    border: none;
+  }
+}
