@@ -1,6 +1,3 @@
-@import '../config';
-@import '../icons';
-
 @mixin font-face($name, $path, $weight: 400, $style: normal, $exts: eot woff2 woff ttf svg) {
     $src: null;
 
@@ -18,7 +15,7 @@
     @each $ext in $exts {
         $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
         $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-        $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+        $src: append($src, url(quote($path + '.' + $extmod)) format(quote($format)), comma);
     }
 
     @font-face {
@@ -42,7 +39,7 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin icomoon($icon, $position: 'before', $replace: false) {
+@mixin icomoon($icon, $position: before, $replace: false) {
     @if $replace {
         font-size: 0;
     }
@@ -68,7 +65,7 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin fa($icon, $position: 'before', $replace: false) {
+@mixin fa($icon, $position: before, $replace: false) {
     @if $replace {
         font-size: 0;
     }
