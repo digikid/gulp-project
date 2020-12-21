@@ -1,71 +1,145 @@
-@mixin ms($screen) {
-    $size: ms_get_screen_size($screen);
+@mixin ms($breakpoint, $orientation: null) {
+    $size: ms_get_screen_size($breakpoint);
 
     @if ($size) {
         @if ($size > 2) {
-            @media screen and (max-width: $size - 1) {
-                @content;
-            }
+            @if ($orientation) {
+                @media screen and (max-width: $size - 1) and (orientation: $orientation) {
+                    @content;
+                };
+            } @else {
+                @media screen and (max-width: $size - 1) {
+                    @content;
+                };
+            };
         } @else  {
             @warn 'can\'t have @media smaller than `#{$size}`';
-        }
+        };
     } @else {
-        @warn 'media type not found: #{$screen}';
-    }
-}
+        @warn 'media type not found: #{$breakpoint}';
+    };
+};
 
-@mixin mo($screen) {
-    $previous: ms_get_screen($screen, 'previous');
-    $current: ms_get_screen($screen, 'current');
-    $next: ms_get_screen($screen, 'next');
+@mixin msp($breakpoint) {
+    @include ms($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin msl($breakpoint) {
+    @include ms($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin mo($breakpoint, $orientation: null) {
+    $previous: ms_get_screen($breakpoint, 'previous');
+    $current: ms_get_screen($breakpoint, 'current');
+    $next: ms_get_screen($breakpoint, 'next');
 
     $current-size: ms_get_screen_size($current);
     $next-size: ms_get_screen_size($next);
 
-    @if ($current) {
-        @if ($next) {
-            @if ($current-size <= 0) {
-                @include ms($next) {
+    @if ($breakpoint) {
+        @if ($current) {
+            @if ($next) {
+                @if ($current-size <= 0) {
+                    @include ms($next, $orientation) {
+                        @content;
+                    };
+                } @else {
+                    @if ($orientation) {
+                        @media screen and (min-width: $current-size) and (max-width: $next-size - 1) and (orientation: $orientation) {
+                            @content;
+                        };
+                    } @else {
+                        @media screen and (min-width: $current-size) and (max-width: $next-size - 1) {
+                            @content;
+                        };
+                    };
+                };
+            } @else if ($previous) {
+                @include ml($previous, $orientation) {
                     @content;
-                }
-            } @else {
-                @media screen and (min-width: $current-size) and (max-width: $next-size - 1) {
-                    @content;
-                }
-            }
-        } @else if ($previous) {
-            @include ml($previous) {
-                @content;
-            }
-        }
+                };
+            };
+        } @else {
+            @warn 'media type not found: #{$breakpoint}';
+        };
     } @else {
-        @warn 'media type not found: #{$screen}';
-    }
-}
+        @if ($orientation) {
+            @media screen and (orientation: $orientation) {
+                @content;
+            };
+        };
+    };
+};
 
-@mixin ml($screen) {
-    @if (ms_get_screen($screen)) {
-        $next-size: ms_get_screen_size($screen, 'next');
+@mixin mop($breakpoint) {
+    @include mo($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin mol($breakpoint) {
+    @include mo($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin ml($breakpoint, $orientation: null) {
+    @if (ms_get_screen($breakpoint)) {
+        $next-size: ms_get_screen_size($breakpoint, 'next');
 
         @if ($next-size) {
-            @media screen and (min-width: $next-size) {
-                @content;
-            }
+            @if ($orientation) {
+                @media screen and (min-width: $next-size) and (orientation: $orientation) {
+                    @content;
+                };
+            } @else {
+                @media screen and (min-width: $next-size) {
+                    @content;
+                };
+            };
         } @else {
-            @warn 'no breakpoint after `#{$screen}`';
-        }
+            @warn 'no breakpoint after `#{$breakpoint}`';
+        };
     } @else {
-        @warn 'media type not found: #{$screen}';
-    }
-}
+        @warn 'media type not found: #{$breakpoint}';
+    };
+};
 
-@mixin mc($breakpoints) {
-    @each $screen in $breakpoints {
-        @include mo($screen) {
+@mixin mlp($breakpoint) {
+    @include ml($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin mll($breakpoint) {
+    @include ml($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin mc($breakpoints, $orientation: null) {
+    @each $breakpoint in $breakpoints {
+        @include mo($breakpoint, $orientation) {
             @content;
-        }
-    }
-}
+        };
+    };
+};
+
+@mixin mcp($breakpoints) {
+    @include mc($breakpoints, portrait) {
+        @content;
+    };
+};
+
+@mixin mcl($breakpoints) {
+    @include mc($breakpoints, landscape) {
+        @content;
+    };
+};
 
 @mixin mr() {
     @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
