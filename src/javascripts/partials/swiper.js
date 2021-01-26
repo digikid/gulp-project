@@ -1,17 +1,7 @@
 $.fn.initSwiper = function(options) {
 
     var settings = $.extend(true, {}, {
-        slidesPerView: 1,
-        spaceBetween: 16,
         watchOverflow: true,
-        breakpoints: {
-            768: {
-                slidesPerView: 2
-            },
-            1320: {
-                slidesPerView: 3
-            }
-        },
         onReady: null
     }, options);
 

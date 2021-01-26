@@ -10,7 +10,17 @@ $.fn.initFormListeners();
 $('.js-lazy').initLazyLoading();
 
 // swiper
-$('.js-swiper').initSwiper();
+$('.js-swiper').initSwiper({
+    spaceBetween: 15,
+    breakpoints: {
+        768: {
+            slidesPerView: 2
+        },
+        1320: {
+            slidesPerView: 3
+        }
+    },
+});
 
 // fancybox
 $('a[href^="#modal"], .js-modal').fancybox();
