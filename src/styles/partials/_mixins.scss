@@ -34,6 +34,7 @@
     font-variant: normal;
     line-height: 1;
     text-transform: none;
+    text-rendering: auto;
     speak: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -58,9 +59,15 @@
 }
 
 @mixin fa-base {
-    font: normal normal normal 14px/1 FontAwesome!important;
+    font-family: FontAwesome !important;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
     display: inline-block;
+    text-transform: none;
     text-rendering: auto;
+    speak: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
