@@ -19,7 +19,7 @@ $('.js-swiper').initSwiper({
         1320: {
             slidesPerView: 3
         }
-    },
+    }
 });
 
 // fancybox
