@@ -27,6 +27,19 @@
     /* stylelint-enable */
 }
 
+@mixin font-size($min-size, $max-size, $min-screen: 320) {
+    @each $key, $value in $containers {
+        $index: index(($containers), ($key $value));
+
+        @if $index == length($containers) {
+            $max-width: strip-unit($value) - $min-screen;
+            $size: strip-unit($max-size - $min-size);
+
+            font-size: calc(#{$min-size}px + #{$size} * ((100vw - #{$min-screen}px) / #{$max-width}));
+        }
+    }
+}
+
 @mixin icomoon-base {
     font-family: $icomoon-font-family !important;
     font-weight: normal;
