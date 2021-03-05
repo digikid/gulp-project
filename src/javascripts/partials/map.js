@@ -29,9 +29,9 @@ $.fn.renderMap = function(options) {
             },
             onClick: null
         },
-        lazy: true,
         apiKey: null,
         clusters: false,
+        lazy: true,
         rootMargin: '200px 0px',
         events: {
             touch: false,
@@ -348,7 +348,7 @@ $.fn.renderMap = function(options) {
             _this.destroy();
             _this.init();
         } else {
-            if (settings.lazy) {
+            if (settings.lazy && window.lozad) {
                 var observer = lozad(_this, {
                     rootMargin: settings.rootMargin,
                     loaded: function() {
