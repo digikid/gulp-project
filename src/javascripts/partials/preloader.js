@@ -53,6 +53,6 @@ $.fn.preloader = function(options) {
             if (!$this.hasClass(settings.cssClass)) {
                 $this.addClass(settings.cssClass);
             };
-        }, 3000);
+        }, settings.limit);
     };
 };
