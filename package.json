@@ -81,10 +81,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://githab.com/digikid/gulp-project.git"
+    "url": "https://github.com/digikid/gulp-project.git"
   },
   "bugs": {
-    "url": "https://githab.com/digikid/gulp-project/issues"
+    "url": "https://github.com/digikid/gulp-project/issues"
   },
   "author": "Alexander Dovlatov <dev@digkid.ru> (https://dev.digikid.ru/)",
   "license": "ISC"
