@@ -9,6 +9,14 @@ const config = require(`../../config`);
 const { mergeDeep, capitalize } = require(`./utils`);
 const getArgv = require(`./getArgv`);
 
+const {
+    FTP_HOST,
+    FTP_USER,
+    FTP_PASSWORD,
+    FTP_DEST,
+    FTP_URI
+} = process.env;
+
 const presets = `presets` in config ? mergeDeep({}, defaults.presets, config.presets) : defaults.presets;
 const preset = getArgv(`preset`) || currentTask;
 
@@ -20,11 +28,6 @@ let types = {};
 let args = {};
 
 let params;
-
-if (currentTask === `deploy` && !(`ftp` in config)) {
-    console.log(`${chalk.bold.whiteBright.bgRedBright(`Параметры не заданы`)}\nНевозможно запустить задачу, т.к. в файле ${chalk.italic.bgWhiteBright(`/config.js`)} не указаны параметры FTP.`);
-    process.exit();
-};
 
 if (debug) {
     console.log(`${chalk.bold(`Инициализация параметров...`)}`);
@@ -132,6 +135,13 @@ if (debug && args.babel) {
 
 if (args.compress) {
     setAllParams(`minify`, false);
+};
+
+if (currentTask === `deploy`) {
+    if (!FTP_HOST || !FTP_USER || !FTP_PASSWORD || !FTP_DEST || !FTP_URI) {
+        console.log(`${chalk.bold.whiteBright.bgRedBright(`Параметры не заданы`)}\nНевозможно запустить задачу, т.к. в файле ${chalk.italic.bgWhiteBright(`/.env`)} не указаны параметры FTP.`);
+        process.exit();
+    };
 };
 
 args.presets = {presets};

@@ -23,11 +23,6 @@ module.exports = {
         mode: `dev`
     },
     presets: {
-        deploy: {
-            babel: true,
-            compress: true,
-            mode: `build`
-        },
         lighthouse: {
             compress: true
         }

@@ -2,6 +2,14 @@ const pjson = require(`../package.json`);
 const args = require(`./helpers/args`);
 const now = require(`./helpers/now`);
 
+const {
+    FTP_HOST,
+    FTP_USER,
+    FTP_PASSWORD,
+    FTP_DEST,
+    FTP_URI
+} = process.env;
+
 module.exports = {
     title: `Новый проект`,
     name: pjson.name,
@@ -296,11 +304,11 @@ module.exports = {
     },
     ftp: {
         default: {
-            host: null,
-            user: null,
-            password: null,
-            dest: null,
-            uri: null
+            host: FTP_HOST,
+            user: FTP_HOST,
+            password: FTP_HOST,
+            dest: FTP_HOST,
+            uri: FTP_HOST
         }
     },
     now,
