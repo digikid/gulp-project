@@ -1,3 +1,4 @@
+
 # gulp-project
 
 ![GitHub release](https://img.shields.io/github/release/digikid/gulp-project.svg)
@@ -474,26 +475,47 @@ npm i package-name
 
 ## Загрузка файлов на сервер
 
-Перед загрузкой файлов на сервер необходимо задать параметр  `config.ftp`.
-
-```
-config: {
-    ftp: {
-        default: {
-            host: 'XXX.XX.XX.XX',
-            user: 'username',
-            password: '******',
-            dest: `/httpdocs/domain.com/${pjson.name}/`,
-            uri: `http://domain.com/${pjson.name}`
-        }
-    }
-}
-```
+Перед загрузкой файлов на сервер необходимо задать параметры FTP в `.env` файле.
 
 Для установления FTP соединения и загрузки файлов на сервер запустите команду:
 
 ```shell
 gulp deploy
+```
+
+**Добавление FTP-хоста**
+
+По умолчанию загрузка файлов происходит на хост `default`.
+Если необходимо создать еще один хост, добавьте параметры в `.env` файл:
+
+```
+FTP_CUSTOM_HOST=HOSTNAME
+FTP_CUSTOM_USER=USER
+FTP_CUSTOM_PASSWORD=PASSWORD
+FTP_CUSTOM_DEST=DEST
+FTP_CUSTOM_URI=URL
+```
+
+После этого импортируйте параметры в файл `config.ftp`, в качестве ключа задайте название хоста:
+
+```
+config: {
+    ftp: {
+        custom: {
+            host: process.env.FTP_CUSTOM_HOST,
+            user: process.env.FTP_CUSTOM_USER,
+            password: process.env.FTP_CUSTOM_PASSWORD,
+            dest: process.env.FTP_CUSTOM_DEST,
+            uri: process.env.FTP_CUSTOM_URI
+        }
+    }
+}
+```
+
+Для загрузки файлов на хост `custom` запустите команду:
+
+```shell
+gulp deploy --host custom
 ```
 
 **Выборочная загрузка**
@@ -508,19 +530,9 @@ gulp deploy --main
 
 **Production mode**
 
-Для загрузки файлов в режиме production mode запустите команду:
+По умолчанию перед загрузкой файлов включена компрессия файлов и компиляция в ES5, поэтому передавать параметры `--compress` и `--babel` не нужно.
 
-```shell
-gulp deploy --compress
-```
-
-Компрессия + последующая компиляция JS файлов в стандарт ES5 (для поддержки устаревших браузеров):
-
-```shell
-gulp deploy --compress --babel
-```
-
-Для комбинирования параметров вы можете использовать пресет `config.presets.deploy`.
+Если вы хотите изменить это поведение, отредактируйте пресет `config.presets.deploy`.
 
 <a name="zip"></a>
 
