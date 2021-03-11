@@ -161,6 +161,7 @@ gulp-project                        # Корневая директория
 │   └── home.html                   # Главная страница
 ├── .browserslistrc                 # Список поддерживаемых браузеров
 ├── .editorconfig                   # Настройки IDE
+├── .env                            # Переменные окружения
 ├── .eslintrc                       # Настройки ESLint
 ├── .gitignore                      # Игнорируемые файлы в git
 ├── .stylelintignore                # Игнорируемые файлы Stylelint
