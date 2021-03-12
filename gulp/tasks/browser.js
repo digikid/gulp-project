@@ -11,7 +11,7 @@ module.exports = (gulp, plugins, config) => {
             uri = uri.substring(0, uri.length - 1);
         };
 
-        const path = config.open === `index` ? `${uri}/${config.open}.html` : uri;
+        const path = config.open !== `index` ? `${uri}/${config.open}.html` : uri;
 
         if (config.debug) {
             console.log(`${chalk.bold(`Открываю страницу ${chalk.italic(path)} в браузере...`)}`);
