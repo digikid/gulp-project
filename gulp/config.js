@@ -305,10 +305,10 @@ module.exports = {
     ftp: {
         default: {
             host: FTP_HOST,
-            user: FTP_HOST,
-            password: FTP_HOST,
-            dest: FTP_HOST,
-            uri: FTP_HOST
+            user: FTP_USER,
+            password: FTP_PASSWORD,
+            dest: FTP_DEST,
+            uri: FTP_URI
         }
     },
     now,
