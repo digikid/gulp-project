@@ -18,7 +18,7 @@ $.fn.renderMap = function(options) {
                 after: ''
             },
             image: {
-                path: document.location.origin + '/images/',
+                path: window._MARKERS_PATH || document.location.origin + '/images/',
                 default: 'marker',
                 active: 'marker-active',
                 visited: 'marker-visited',
