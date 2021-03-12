@@ -35,16 +35,26 @@ module.exports = (gulp, plugins, config) => {
 
         const injects = config.compress ? [...paths.output.css, ...paths.output.js] : config.babel ? [...paths.vendor.css, ...paths.output.css, ...paths.output.js] : [...paths.polyfills, ...paths.vendor.css, ...paths.vendor.js, ...paths.output.css, ...paths.output.js];
 
+        const {
+            title,
+            description,
+            mode,
+            icomoon
+        } = config;
+
+        const { year } = config.now;
+
         return gulp.src(config.paths.src.html.root)
             .pipe(plugins.plumber())
             .pipe(plugins.fileInclude({
                 prefix: `@@`,
                 basepath: config.paths.src.html.partials,
                 context: {
-                    title: config.title,
-                    year: config.now.year,
-                    mode: config.mode,
-                    icomoon: config.icomoon
+                    title,
+                    description,
+                    mode,
+                    icomoon,
+                    year
                 }
             }))
             .pipe(plugins.inject(gulp.src(injects, {

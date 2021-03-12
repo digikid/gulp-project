@@ -13,6 +13,7 @@ const {
 module.exports = {
     title: `Новый проект`,
     name: pjson.name,
+    description: ``,
     version: pjson.version,
     repo: pjson.repository.url.replace(`.git`, ``),
     icomoon: [],
