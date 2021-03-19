@@ -162,3 +162,34 @@ $_precision: 10;
 
     @return $number;
 }
+
+@function color-map($color, $variations: 10) {
+    $colors: ();
+
+    $maxVar: 36;
+    $mid: $variations / 2;
+    $dist: $mid - 1;
+    $step: $maxVar / $dist;
+
+    @for $i from 1 through $dist {
+        $percent: $maxVar - ($step * ($i - 1));
+        $darken: ($variations - $i) * 100;
+        $lighten: $i * 100;
+
+        $colors: map-merge(
+            $colors, (
+                #{$lighten}: lighten($color, $percent),
+                #{$darken}:  darken($color, $percent)
+            )
+        );
+    }
+
+    $colors: map-merge($colors, (50: lighten($color, 38.7)));
+    $colors: map-merge($colors, (#{$variations / 2 * 100}: $color));
+
+    @return $colors;
+}
+
+@function color($color, $value: 500) {
+    @return map-get(color-map($color), #{$value});
+}
