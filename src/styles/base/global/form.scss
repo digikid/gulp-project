@@ -528,16 +528,6 @@ input[type='file'] {
         }
     }
 
-    @each $type, $color in $colors {
-        @if $color == $primary {
-            @include button-bg($type, $color);
-        } @else {
-            &--#{$type} {
-                @include button-bg($type, $color);
-            }
-        }
-    }
-
     &--light {
         color: $text;
         text-shadow: none;

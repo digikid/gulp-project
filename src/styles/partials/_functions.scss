@@ -184,7 +184,7 @@ $_precision: 10;
         );
     }
 
-    $colors: map-merge($colors, (50: lighten($color, 38.7)));
+    $colors: map-merge($colors, (#{50}: lighten($color, 38.7)));
     $colors: map-merge($colors, (#{$variations / 2 * 100}: $color));
 
     @return $colors;
