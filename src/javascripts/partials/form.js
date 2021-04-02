@@ -318,6 +318,11 @@ $.fn.phoneMask = function(options) {
     });
 };
 
+$.fn.showSuccessModal = function() {
+    $.fancybox.close();
+    $.fancybox.open($('#modal-success'));
+};
+
 // init form listeners
 $.fn.initFormListeners = function(options) {
 
