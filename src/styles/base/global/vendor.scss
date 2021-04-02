@@ -104,7 +104,11 @@
     }
 }
 
-@import '../../vendor/swiper/swiper';
+$themeColor: $primary;
+
+@import '../../../../node_modules/swiper/scss/functions';
+@import '../../../../node_modules/swiper/swiper';
+@import '../../../../node_modules/swiper/components/pagination/pagination';
 
 .js-swiper {
     position: relative;
@@ -115,11 +119,57 @@
         animation: fadeIn 0.3s ease-in-out forwards;
     }
 
-    .swiper-container {
-        overflow: hidden;
-        width: calc(100% + #{$gutter * 2});
-        margin: -1 * $gutter;
-        padding: $gutter;
+    .swiper {
+        &-container {
+            width: 100%;
+            overflow: hidden;
+            width: calc(100% + #{$gutter * 2});
+            margin: -1 * $gutter;
+            padding: $gutter;
+        }
+
+        &-pagination-fraction,
+        &-pagination-custom,
+        &-container-horizontal > .swiper-pagination-bullets {
+            position: static;
+            margin-top: 25px;
+        }
+
+        &-horizontal {
+            & > .swiper-pagination-bullets {
+                position: static;
+                margin-top: 25px;
+
+                .swiper-pagination-bullet {
+                    margin: 0 5px;
+                    outline: 0 !important;
+                }
+            }
+        }
+
+        &-pagination {
+            &-bullet {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        &-button {
+            &-prev,
+            &-next {
+                outline: 0!important;
+            }
+        }
+
+        &-slide {
+            align-self: stretch;
+            height: auto;
+            min-height: 100%;
+        }
+
+        &-control {
+            outline: 0;
+        }
     }
 }
 
