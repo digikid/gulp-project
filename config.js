@@ -4,12 +4,13 @@ module.exports = {
             index: true
         },
         build: {
-            debug: true
+            debug: true,
+            open: `home`
         },
         deploy: {
             babel: true,
             compress: true,
             mode: `build`
-        },
+        }
     }
 };
