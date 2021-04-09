@@ -27,17 +27,11 @@
     /* stylelint-enable */
 }
 
-@mixin font-size($min-size, $max-size, $min-screen: 320) {
-    @each $key, $value in $containers {
-        $index: index(($containers), ($key $value));
+@mixin font-size($min-size, $max-size, $min-screen: 375, $max-screen: 1920) {
+    $size: strip-unit($max-size - $min-size);
+    $max-width: strip-unit($max-screen) - $min-screen;
 
-        @if $index == length($containers) {
-            $max-width: strip-unit($value) - $min-screen;
-            $size: strip-unit($max-size - $min-size);
-
-            font-size: calc(#{$min-size}px + #{$size} * ((100vw - #{$min-screen}px) / #{$max-width}));
-        }
-    }
+    font-size: calc(#{$min-size}px + #{$size} * ((100vw - #{$min-screen}px) / #{$max-width}));
 }
 
 @mixin icomoon-base {
