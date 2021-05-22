@@ -106,7 +106,6 @@
 
 $themeColor: $primary;
 
-@import '../../../../node_modules/swiper/scss/functions';
 @import '../../../../node_modules/swiper/swiper';
 @import '../../../../node_modules/swiper/components/pagination/pagination';
 
@@ -122,10 +121,12 @@ $themeColor: $primary;
     .swiper {
         &-container {
             width: 100%;
-            overflow: hidden;
-            width: calc(100% + #{$gutter * 2});
-            margin: -1 * $gutter;
-            padding: $gutter;
+
+            @include mo(xs) {
+                width: calc(100% + #{$gutter * 2});
+                margin: -1 * $gutter;
+                padding: $gutter;
+            }
         }
 
         &-pagination-fraction,
