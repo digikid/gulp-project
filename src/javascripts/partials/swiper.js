@@ -1,5 +1,4 @@
 $.fn.initSwiper = function(options) {
-
     var settings = $.extend(true, {}, {
         watchOverflow: true,
         onReady: null
@@ -123,7 +122,7 @@ $.fn.initSwiper = function(options) {
                 };
             };
 
-            _this.swiperInstance = new Swiper($this.find('.swiper-container'), _this.params);
+            _this.swiperInstance = new Swiper($this.find('.swiper-container')[0], _this.params);
 
             window.swipers[id] = {
                 id: id,
