@@ -187,7 +187,7 @@ module.exports = {
                 `./node_modules/air-datepicker/dist/js/datepicker.min.js`
             ],
             swiper: [
-                `./node_modules/swiper/js/swiper.min.js`
+                `./node_modules/swiper/swiper-bundle.min.js`
             ],
             popper: [
                 `./node_modules/@popperjs/core/dist/umd/popper.min.js`

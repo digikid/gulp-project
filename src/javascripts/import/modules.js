@@ -7,7 +7,7 @@ require('jquery-mask-plugin');
 require('@popperjs/core/dist/umd/popper.min.js');
 require('air-datepicker');
 
-const Swiper = require('swiper');
+const Swiper = require('swiper/swiper-bundle');
 const SimpleBar = require('simplebar');
 const lozad = require('lozad');
 const tippy = require('tippy.js/dist/tippy.umd.min.js');
