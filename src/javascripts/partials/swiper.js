@@ -78,12 +78,12 @@ $.fn.initSwiper = function(options) {
 
             _this.afterLayoutOptions = {
                 pagination: {
-                    el: $this.find('.swiper-pagination'),
+                    el: $this.find('.swiper-pagination')[0],
                     clickable: true
                 },
                 navigation: {
-                    nextEl: $this.find('.swiper-control--next'),
-                    prevEl: $this.find('.swiper-control--prev'),
+                    nextEl: $this.find('.swiper-control--next')[0],
+                    prevEl: $this.find('.swiper-control--prev')[0],
                     clickable: true
                 },
                 on: {
