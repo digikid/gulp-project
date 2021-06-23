@@ -290,12 +290,10 @@ module.exports = {
         },
         babelify: {
             presets: [
-                `@babel/env`
+                [`@babel/env`]
             ],
             plugins: [
-                [
-                    `@babel/transform-runtime`
-                ]
+                [`@babel/transform-runtime`]
             ],
             compact: false
         },

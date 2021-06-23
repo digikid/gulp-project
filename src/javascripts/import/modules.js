@@ -1,4 +1,9 @@
-window.jQuery = window.$ = require('jquery');
+require('core-js');
+require('regenerator-runtime/runtime');
+
+const $ = require('jquery');
+
+window.jQuery = window.$ = $;
 
 require('js.device.detector/dist/jquery.device.detector.js');
 require('intersection-observer');

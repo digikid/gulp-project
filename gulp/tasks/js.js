@@ -54,19 +54,16 @@ module.exports = (gulp, plugins, config) => {
         };
 
         const babelifyJs = cb => {
-            const path = `${config.paths.output.js}/${config.files.js}`;
-
-            browserify({
-                entries: [path],
-                transform: [
-                    babelify.configure(config.plugins.babelify),
-                ]
-            })
-            .bundle()
-            .pipe(source(config.files.js))
-            .pipe(buffer())
-            .pipe(gulp.dest(config.paths.output.js))
-            .on(`end`, cb);
+            browserify([`${config.paths.output.js}/${config.files.js}`])
+                .transform(babelify.configure(config.plugins.babelify), {
+                    global: true,
+                    ignore: [/\/node_modules\/(core-js|regenerator-runtime)\//]
+                })
+                .bundle()
+                .pipe(source(config.files.js))
+                .pipe(buffer())
+                .pipe(gulp.dest(config.paths.output.js))
+                .on(`end`, cb);
         };
 
         const minifyJs = cb => {
