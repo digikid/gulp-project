@@ -3,7 +3,7 @@
 
     $extmods: (
         eot: '?',
-        svg: '#' + str-replace($name, ' ', '_')
+        svg: '##{str-replace($name, ' ', '_')}'
     );
 
     $formats: (
