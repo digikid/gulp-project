@@ -25,9 +25,6 @@ module.exports = {
     presets: {
         lighthouse: {
             compress: true
-        },
-        build: {
-            mode: `build`
         }
     }
 };
