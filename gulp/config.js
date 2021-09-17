@@ -256,6 +256,7 @@ module.exports = {
             errLogToConsole: true
         },
         base64: {
+            maxImageSize: 1024 * 1024,
             exclude: [
                 `/sprite/`,
                 `/images/`,
