@@ -6,7 +6,7 @@ module.exports = (gulp, plugins, config) => {
     return done => {
 
         const {ftp, host: ftpHost} = config;
-        const {host, user, password, dest} = ftp[ftpHost];
+        const {host, user, password, port, dest} = ftp[ftpHost];
 
         const deploy = config.paths.deploy;
         const path = config.main ? deploy.main : deploy.source;
@@ -27,11 +27,12 @@ module.exports = (gulp, plugins, config) => {
             })
             .pipe(upload
                 .create({
-                    host: host,
-                    user: user,
-                    password: password,
+                    host,
+                    user,
+                    password,
+                    port,
                     parallel: 1,
-                    log: log
+                    log
                 })
                 .dest(dest)
             );
