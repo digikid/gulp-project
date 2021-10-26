@@ -127,10 +127,12 @@ Object.keys(config).forEach(param => {
     };
 });
 
-if (debug && args.babel) {
-    console.log(`${chalk.bold.bgYellowBright(`Конвертация в ES5 включена`)}\nВ этом режиме все модули, подключенные через параметры конфигурации, игнорируются.\nПеред началом работы импортируйте необходимые модули в файле ${chalk.italic.bgWhiteBright(`/src/javascripts/import/modules.js`)}.`);
+if (args.babel) {
+    if (debug) {
+        console.log(`${chalk.bold.bgYellowBright(`Конвертация в ES5 включена`)}\nВ этом режиме все модули, подключенные через параметры конфигурации, игнорируются.\nПеред началом работы импортируйте необходимые модули в файле ${chalk.italic.bgWhiteBright(`/src/javascripts/import/modules.js`)}.`);
+    }
 
-    setAllParams(`merge`, true);
+    args.merge.js = true;
 };
 
 if (args.compress) {
