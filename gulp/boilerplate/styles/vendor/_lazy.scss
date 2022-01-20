@@ -1,0 +1,13 @@
+@import '../partials';
+
+[data-lazy],
+[data-src],
+[data-background-image] {
+    position: relative;
+    opacity: 0;
+    background: transparent;
+
+    &[data-loaded="true"] {
+        animation: fadeIn .3s ease-in-out forwards;
+    }
+}

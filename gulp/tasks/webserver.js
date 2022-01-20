@@ -1,13 +1,42 @@
-const server = require(`browser-sync`);
-const chalk = require(`chalk`);
+const chalk = require('chalk');
+const server = require('browser-sync');
+
+const log = add('@gulp/core/log');
 
 module.exports = (gulp, plugins, config) => {
-    return done => {
-        if (config.debug) {
-            console.log(`${chalk.bold(`Запуск BrowserSync...`)}`);
-        };
+    const {
+        paths: {
+            output,
+            output: {
+                root: baseDir
+            }
+        },
+        plugins: {
+            webserver:
+            params
+        },
+        args: {
+            open,
+            abstract
+        }
+    } = config;
 
-        server.init(config.plugins.webserver);
+    const abstractPath = output.abstract.root.replace(`${baseDir}/`, '');
+
+    const startPath = (abstract && open === 'index') ? `${abstractPath}` : `/${open}.html`;
+
+    return done => {
+        log(`${chalk.bold.green('Сборка файлов завершена.')}`);
+        log(`${chalk.bold('Запуск веб-сервера...')}`);
+
+        server.init({
+            server: {
+                baseDir
+            },
+            startPath,
+            ...params
+        });
+
         done();
     };
 };

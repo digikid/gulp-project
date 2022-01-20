@@ -1,40 +1,64 @@
-const upload = require(`vinyl-ftp`);
-const log = require(`fancy-log`);
-const chalk = require(`chalk`);
+const upload = require('vinyl-ftp');
+const fancyLog = require('fancy-log');
+const chalk = require('chalk');
+
+const log = add('@gulp/core/log');
 
 module.exports = (gulp, plugins, config) => {
-    return done => {
+    const {
+        paths: {
+            output: {
+                root: base
+            },
+            deploy
+        },
+        args: {
+            host: ftpHost,
+            force
+        },
+        ftp
+    } = config;
 
-        const {ftp, host: ftpHost} = config;
-        const {host, user, password, port, dest} = ftp[ftpHost];
+    const {
+        host,
+        user,
+        password,
+        port,
+        dest
+    } = ftp[ftpHost];
 
-        const deploy = config.paths.deploy;
-        const path = config.main ? deploy.main : deploy.source;
-
-        if (config.debug) {
-            if (config.main) {
-                const resolutions = path.replace(`./dist/**/*.{`, ``).replace(`}`, ``).split(`,`).map(resolution => `.${resolution}`).join(`, `);
-
-                console.log(`${chalk.bold.bgYellowBright(`Выборочная загрузка`)}\nТак как установлен параметр [${chalk.bold.blue(`main`)}], будут загружены только файлы с разрешениями ${chalk.bold(resolutions)}.\nУстановить тип файлов для выборочной загрузки можно в параметре [${chalk.bold.blue(`config.paths.deploy.main`)}].`);
-            };
-
-            console.log(chalk.bold(`Загрузка файлов на сервер ${host}...`));
+    const path = force.length ? force.reduce((acc, path) => {
+        if (path in deploy.force) {
+            acc.push(deploy.force[path]);
         };
 
-        return gulp.src(path, {
-                base: deploy.base,
-                buffer: false
-            })
-            .pipe(upload
-                .create({
-                    host,
-                    user,
-                    password,
-                    port,
-                    parallel: 1,
-                    log
-                })
-                .dest(dest)
-            );
+        return acc;
+    }, []) : deploy.source;
+
+    return done => {
+        if (force) {
+            log(`${chalk.bold.bgYellowBright('Выборочная загрузка файлов')}\nТак как установлен параметр [${chalk.bold.blue('force')}], файлы будут загружены выборочно.`);
+        };
+
+        log(chalk.bold(`Загрузка файлов на сервер ${host}...`));
+
+        const buffer = false;
+        const parallel = 1;
+
+        const src = {
+            base,
+            buffer
+        };
+
+        const params = {
+            host,
+            user,
+            password,
+            port,
+            parallel,
+            log: fancyLog
+        };
+
+        return gulp.src(path, src).pipe(upload.create(params).dest(dest));
     };
 };

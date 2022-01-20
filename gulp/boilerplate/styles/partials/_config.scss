@@ -1,0 +1,76 @@
+@import 'functions';
+
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$containers: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px
+);
+
+$gutter: 15px;
+
+$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+$font-size:   16px;
+$font-weight: normal;
+$line-height: 1.5;
+
+$white:    #ffffff;
+$black:    #000000;
+$blue:     #037ffe;
+
+$primary:  $blue;
+$secondary: $white;
+
+$gray:     #9e9e9e;
+$gray-50:  color($gray, 50);
+$gray-100: color($gray, 100);
+$gray-200: color($gray, 200);
+$gray-300: color($gray, 300);
+$gray-400: color($gray, 400);
+$gray-500: color($gray, 500);
+$gray-600: color($gray, 600);
+$gray-700: color($gray, 700);
+$gray-800: color($gray, 800);
+$gray-900: color($gray, 900);
+
+$body-background: $white;
+$text:            $black;
+$border:          $gray-400;
+
+$duration: .15s;
+$easing: ease-in-out;
+
+$shadow-x: 0;
+$shadow-y: 0;
+$shadow-blur: 18px;
+$shadow-spread: 0;
+$shadow-color: $black;
+$shadow-depth: 0.07;
+
+$disabled-opacity: 0.2;
+
+$radius: 6px;
+
+$spinner-size: 4em;
+$spinner-color: $primary;
+
+$burger-width: 30px;
+$burger-thickness: 5px;
+$burger-gutter: 3px;
+$burger-color: $primary;
+$burger-border-radius: 0;
+$burger-transition-duration: 0.3s;
+
+$input-radius: $radius;
+$input-border: $border;
+$input-padding: 12px 16px;

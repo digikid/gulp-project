@@ -1,11 +1,17 @@
-const chalk = require(`chalk`);
+const chalk = require('chalk');
+
+const log = add('@gulp/core/log');
 
 module.exports = (gulp, plugins, config) => {
-    return done => {
-        if (config.debug) {
-            console.log(`${chalk.bold(`Очистка кеша...`)}`);
-        };
+    const { cache } = plugins;
 
-        return plugins.cache.clearAll(done);
+    return done => {
+        log(chalk.bold('Очистка кеша...'));
+
+        cache.clearAll(() => {
+            log(chalk.bold('Кеш очищен.'));
+
+            done();
+        });
     };
 };

@@ -1,0 +1,574 @@
+@use 'sass:math';
+
+@import 'partials';
+@import 'vendor';
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500');
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes shakes {
+    10% {
+        transform: translate(4px, 5px);
+    }
+
+    20% {
+        transform: translate(3px, 5px);
+    }
+
+    30% {
+        transform: translate(3px, 3px);
+    }
+
+    40% {
+        transform: translate(5px, 5px);
+    }
+
+    50% {
+        transform: translate(5px, 4px);
+    }
+
+    60% {
+        transform: translate(1px, 4px);
+    }
+
+    70% {
+        transform: translate(2px, 2px);
+    }
+
+    80% {
+        transform: translate(2px, 4px);
+    }
+
+    90% {
+        transform: translate(1px, 5px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes pulse {
+    10% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes pulseColor {
+    10% {
+        background: darken($primary, 10%);
+    }
+}
+
+@keyframes slide {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -100% 0;
+    }
+}
+
+@keyframes blink {
+    from,
+    to {
+        background: 0 0;
+    }
+
+    50% {
+        background: $terminal-cursor;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    background-color: $white;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @include bg-filler('../images/clouds.svg', cover, bottom center);
+}
+
+.container {
+    width: 1140px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 15px;
+
+    @include ms(xl) {
+        width: 960px;
+    }
+
+    @include ms(lg) {
+        width: 720px;
+    }
+
+    @include ms(md) {
+        width: 540px;
+    }
+
+    @include mo(xs) {
+        width: 100%;
+    }
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 100vh;
+    animation: fadeIn 0.8s ease-in-out forwards;
+
+    &:after {
+        content: '';
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-in-out forwards;
+
+        @include bg-filler('../images/badge.svg', 10%, top 5vh right 5%);
+
+        @include mo(xs) {
+            display: none;
+        }
+    }
+}
+
+figure {
+    position: absolute;
+    z-index: -1;
+    right: -9%;
+    bottom: -1%;
+    display: block;
+    width: 71%;
+    padding-bottom: 37%;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+
+    @include bg-filler('../images/developer.svg');
+
+    @include ms(lg) {
+        display: none;
+    }
+}
+
+main {
+    flex-grow: 1;
+    padding-top: 50px;
+
+    @include mo(xs) {
+        padding-top: 25px;
+    }
+}
+
+footer {
+    font-size: 16px;
+    padding: 75px 0 35px;
+
+    @include mo(xs) {
+        padding-top: 50px;
+        padding-bottom: 15px;
+    }
+
+    p {
+        margin-bottom: 5px;
+    }
+
+    a {
+        color: $text;
+    }
+}
+
+h1, h2, h3 {
+    @include ms(md) {
+        line-height: 1.25;
+    }
+}
+
+h1 {
+    font-size: 52px;
+    margin-top: 0;
+    margin-bottom: 35px;
+
+    @include ms(lg) {
+        font-size: 42px;
+    }
+
+    @include ms(md) {
+        font-size: 32px;
+        margin-bottom: 25px;
+    }
+
+    @include mo(xs) {
+        font-size: 28px;
+    }
+}
+
+h2, h3 {
+    @include ms(md) {
+        font-size: 22px;
+    }
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+
+    @include ms(md) {
+        margin-top: 35px;
+        margin-bottom: 15px;
+    }
+}
+
+h3 {
+    margin-top: 35px;
+
+    @include ms(md) {
+        margin-top: 25px;
+    }
+}
+
+a {
+    color: $primary;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+ul, ol {
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        position: relative;
+        margin-bottom: 5px;
+    }
+}
+
+ol {
+    counter-reset: num;
+
+    li {
+        &:before {
+            content: counter(num) '. ';
+            display: inline-block;
+            margin-right: 5px;
+            counter-increment: num;
+        }
+    }
+}
+
+p {
+    margin-bottom: 15px;
+
+    @include ms(md) {
+        margin-bottom: 10px;
+    }
+}
+
+.icon {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+
+    &--css {
+        background-image: url('../images/css.svg');
+    }
+
+    &--js {
+        background-image: url('../images/js.svg');
+    }
+}
+
+.section {
+    margin-top: 35px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &--dependencies {
+        @include ml(md) {
+            padding-right: 40%;
+        }
+    }
+}
+
+.description {
+    font-size: 130%;
+    color: rgba($text, .4);
+    margin-top: -18px;
+    margin-bottom: 48px;
+    max-width: 80%;
+
+    @include mo(xs) {
+        font-size: 100%;
+        max-width: 100%;
+        margin-bottom: 32px;
+    }
+}
+
+.files {
+    $types: html, css, js, json, zip, module;
+
+    columns: 2;
+
+    @include ms(lg) {
+        columns: 1;
+    }
+
+    .section--files &,
+    .section--zip & {
+        columns: 1;
+    }
+
+    &__item {
+        margin-bottom: 7px;
+        padding-left: 40px;
+
+        @each $type in $types {
+            &--#{$type} {
+                &:before {
+                    background-image: url('../images/#{$type}.svg');
+                }
+            }
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+
+            @include bg-filler();
+        }
+    }
+
+    p + & {
+        margin-top: 30px;
+    }
+}
+
+.dependencies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    list-style: none;
+    margin-top: 25px;
+
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: auto;
+        color: $white;
+        background: $blue;
+        margin: 0 10px 10px 0;
+        border-radius: 5px;
+        overflow: hidden;
+        transition: transform .15s ease-in-out;
+
+        &:before {
+            display: none;
+        }
+
+        &--css {
+            background: $blue;
+        }
+
+        &--js {
+            background: $green;
+        }
+
+        &:hover {
+            transform: scale(.95);
+        }
+    }
+
+    &__wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: $white;
+        text-decoration: none !important;
+    }
+
+    &__title,
+    &__version {
+        padding: 5px 10px;
+    }
+
+    &__version {
+        font-weight: 600;
+        background-color: rgba($black, .1);
+    }
+}
+
+.heart {
+    position: relative;
+    top: 3px;
+    display: inline-block;
+    width: $heart-size;
+    height: $heart-size * 0.9;
+    margin: 0 5px;
+    animation: pulse 1s infinite;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: math.div($heart-size, 2);
+        width: math.div($heart-size, 2);
+        height: $heart-size * 0.8;
+        transform: rotate(-45deg);
+        transform-origin: 0 100%;
+        animation: pulseColor 1s infinite;
+        border-radius: #{math.div($heart-size, 2)} #{math.div($heart-size, 2)} 0 0;
+        background: $primary;
+    }
+
+    &:after {
+        left: 0;
+        transform: rotate(45deg);
+        transform-origin: 100% 100%;
+    }
+}
+
+.modified {
+    font-size: 13px;
+    opacity: 0.25;
+}
+
+.terminal {
+    overflow: hidden;
+    width: 540px;
+    max-width: 100%;
+    min-height: 200px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 13px 17px -6px rgba(0, 0, 0, 0.38);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 8px;
+    background: #1d1f21;
+
+    &__window {
+        font-size: 13px;
+        text-align: left;
+    }
+
+    &__bar {
+        line-height: 36px;
+        height: 33px;
+        padding-top: 1px;
+        padding-left: 8px;
+        background: $terminal-bar-bg;
+    }
+
+    &__button {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 1px solid;
+        border-radius: 50%;
+
+        &--red {
+            margin: 0 2px;
+            border-color: $terminal-button-red-border;
+            background: $terminal-button-red-bg;
+        }
+
+        &--orange {
+            margin: 0 2px;
+            border-color: $terminal-button-orange-border;
+            background: $terminal-button-orange-bg;
+        }
+
+        &--green {
+            margin: 0 2px;
+            border-color: $terminal-button-green-border;
+            background: $terminal-button-green-bg;
+        }
+    }
+
+    &__body {
+        font-family: monospace, Quicksand, sans-serif;
+        line-height: 25px;
+        color: $white;
+        padding: 8px;
+    }
+
+    &__command {
+        color: $white;
+    }
+
+    &__cursor {
+        vertical-align: middle;
+        display: inline-block;
+        width: 0.5em;
+        height: 1.1em;
+        margin-top: -4px;
+        animation: 1s blink step-end infinite;
+    }
+}
+
+.abstract--dark {
+    background-color: $dark-bg;
+    background-image: url('../images/dark/clouds.svg');
+    color: $dark-text;
+
+    .modified {
+        opacity: 1;
+        color: rgba($dark-text, .3);
+    }
+
+    footer a {
+        color: $yellow;
+        opacity: 1;
+    }
+}

@@ -1,37 +1,42 @@
-const chalk = require(`chalk`);
+const chalk = require('chalk');
+
+const log = add('@gulp/core/log');
 
 module.exports = (gulp, plugins, config) => {
-    if (config.debug) {
-        if (config.force) {
-            console.log(`${chalk.bold.bgYellowBright(`Сборка пропущена`)}\nТак как установлен параметр [${chalk.bold.blue(`force`)}], повторная сборка файлов была пропущена.`);
-        } else {
-            console.log(`${chalk.bold(`Запуск сборки...`)}`);
-        };
+    const { paths, args } = config;
+    const { force } = args;
+
+    if (force.length) {
+        log(`${chalk.bold.green('Режим быстрой сборки')}\nПараметр [${chalk.bold.blue('force')}] определен, поэтому будут выполнены только выбранные задачи [${chalk.bold.magenta(force.join(', '))}].`);
     };
 
-    let tasks = [
-        `clean`,
-        `icomoon`,
-        `bootstrap`,
-        `sass`,
-        `vendor`,
-        `js`,
-        `compress`,
-        `images`,
-        `steady`,
-        `html`,
-        `pug`,
-        `zip`,
-        `common`
+    let queue = [
+        'clean',
+        'icomoon',
+        'css',
+        'js',
+        'images',
+        'assets',
+        'html',
+        'inject',
+        'abstract'
     ];
 
-    if (config.main && !config.paths.deploy.main.includes(`.jpg`)) {
-        tasks = tasks.filter(task => task !== `images`);
-    };
+    const tasks = queue.filter(task => {
+        if (task === 'clean' || task === 'inject') return true;
 
-    if (!config.zip) {
-        tasks = tasks.filter(task => task !== `zip`);
-    };
+        if (task in args && !args[task]) {
+            return false;
+        };
+
+        if (force.length) {
+            return force.includes(task);
+        };
+
+        return true;
+    });
+
+    log(chalk.bold('Запуск сборки файлов...'));
 
     return gulp.series(...tasks);
 };

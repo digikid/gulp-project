@@ -1,0 +1,73 @@
+@import '../partials';
+
+@import '../../../node_modules/@fancyapps/ui/src/Fancybox/Fancybox';
+
+:root {
+    --fancybox-bg: #{rgba($black, .6)};
+    --fancybox-opacity: 1;
+}
+
+.fancybox {
+    &__container {
+        --fancybox-thumbs-ratio: 1;
+
+        --fancybox-thumbs-width: 50px;
+        --fancybox-thumbs-height: 50px;
+
+        --fancybox-accent-color: $primary;
+    }
+
+    &__thumbs {
+        .carousel__slide {
+            .fancybox__thumb {
+                &:after {
+                    border-width: 2px;
+                }
+            }
+        }
+    }
+
+    &__slide {
+        padding: 24px;
+
+        @include mo(xs) {
+            padding: 0;
+        }
+    }
+
+    &__content {
+        @include ms(lg) {
+            padding: 32px;
+        }
+
+        @include mo(xs) {
+            height: 100%;
+            padding: $gutter;
+        }
+
+        & > .carousel__button {
+            &.is-close {
+                @include mo(xs) {
+                    top: $gutter;
+                    right: $gutter;
+                }
+
+                svg {
+                    @include mo(xs) {
+                        stroke: $primary;
+                        filter: none;
+                    }
+                }
+            }
+        }
+    }
+
+    &__active {
+        height: inherit;
+    }
+
+    &-fadeIn,
+    &-fadeOut {
+        animation-duration: $duration * 2;
+    }
+}

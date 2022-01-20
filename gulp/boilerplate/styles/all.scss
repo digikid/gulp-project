@@ -1,0 +1,126 @@
+@import 'partials';
+@import 'vendor';
+
+@if (length($icomoon-icons) > 0) {
+    @font-face {
+        font-family: '#{$icomoon-font-family}';
+        src: url('../fonts/#{$icomoon-font-name}.eot?7sxir3');
+        src: url('../fonts/#{$icomoon-font-name}.eot?7sxir3#iefix') format('embedded-opentype'),
+            url('../fonts/#{$icomoon-font-name}.ttf?7sxir3') format('truetype'),
+            url('../fonts/#{$icomoon-font-name}.woff?7sxir3') format('woff'),
+            url('../fonts/#{$icomoon-font-name}.svg?7sxir3#icomoon') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    [class^='#{$icomoon-prefix}'],
+    [class*='#{$icomoon-prefix}'] {
+        @include icomoon-base();
+    }
+
+    @each $icon, $content in $icomoon-icons {
+        #{unquote('.' + $icomoon-prefix + $icon)} {
+            &:before {
+                content: $content;
+            }
+        }
+    }
+}
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+html {
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font: #{$font-size}/#{$line-height} $font-family;
+    color: $text;
+    background: $body-background;
+
+    &:before {
+        display: none;
+        visibility: hidden;
+
+        @each $breakpoint, $width in $breakpoints {
+            @include mo(#{$breakpoint}) {
+                content: '#{$breakpoint}';
+            }
+        }
+    }
+}
+
+a,
+button {
+    @include transition(color, border-color, background, opacity);
+}
+
+a {
+    color: $primary;
+    text-decoration: none;
+    outline: 0 !important;
+
+    @include hover() {
+        color: lighten($primary, 10%);
+        text-decoration: none;
+    }
+}
+
+img,
+svg {
+    max-width: 100%;
+    height: auto;
+    border: 0;
+}
+
+svg {
+    fill: none;
+}
+
+ul,
+ol {
+    list-style: none;
+
+    &, li {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+code {
+    font-size: 70%;
+    color: $primary;
+    vertical-align: middle;
+    margin: 0 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background: $gray-200;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    background-color: $gray-200;
+}
+
+figure {
+    overflow: hidden;
+}

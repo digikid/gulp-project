@@ -1,21 +1,33 @@
-const chalk = require(`chalk`);
+const chalk = require('chalk');
+
+const { defineName } = add('@gulp/utils/function');
+const { removeLastSlash } = add('@gulp/utils/path');
+
+const log = add('@gulp/core/log');
 
 module.exports = (gulp, plugins, config) => {
     return done => {
+        const { name, paths } = config;
+        const { zip } = plugins;
 
-        if (config.debug) {
-            console.log(`${chalk.bold(`Создание ZIP-архивов...`)}`);
+        log(chalk.bold('Создание ZIP-архивов...'));
+
+        const createZipFile = path => {
+            const type = (/[^/]*$/).exec(removeLastSlash(path))[0];
+            const fileName = `${name}-${type}.zip`;
+
+            return defineName(`zip: [${fileName}]`, cb => {
+                if (!type) return cb;
+
+                gulp.src([`${path}/**`, `!${path}/*.zip`])
+                    .pipe(zip(fileName))
+                    .pipe(gulp.dest(paths.output.root))
+                    .on('end', cb);
+            });
         };
 
-        const createZip = (type, cb) =>
-            gulp.src([`${config.paths[type].root}/**/*.*`, `!${config.paths[type].root}/*.zip`])
-                .pipe(plugins.zip(config.files.zip[type]))
-                .pipe(gulp.dest(config.paths.output.root))
-                .on(`end`, cb);
+        const tasks = [...new Set(paths.zip)].map(createZipFile);
 
-        const createZipSource = cb => createZip(`src`, cb);
-        const createZipOutput = cb => createZip(`output`, cb);
-
-        gulp.parallel(createZipSource, createZipOutput)(done);
+        return gulp.series('build', ...tasks)(done);
     };
 };

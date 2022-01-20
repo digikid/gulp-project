@@ -1,3 +1,1 @@
-module.exports = (gulp, plugins) => {
-    return gulp.series(`dev`);
-};
+module.exports = gulp => gulp.series('dev');

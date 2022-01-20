@@ -1,0 +1,202 @@
+@use 'sass:math';
+
+$pi: 3.14159265359;
+$_precision: 10;
+
+@function pow($base, $exp) {
+    $value: $base;
+
+    @if $exp > 1 {
+        @for $i from 2 through $exp {
+            $value: $value * $base;
+        }
+    }
+
+    @if $exp < 1 {
+        @for $i from 0 through -$exp {
+            $value: math.div($value, $base);
+        }
+    }
+
+    @return $value;
+}
+
+@function fact($num) {
+    $fact: 1;
+
+    @if $num > 0 {
+        @for $i from 1 through $num {
+            $fact: $fact * $i;
+        }
+    }
+
+    @return $fact;
+}
+
+@function _to_unitless_rad($angle) {
+    @if unit($angle) == 'deg' {
+        $angle: math.div($angle, 180deg) * $pi;
+    }
+
+    @if unit($angle) == 'rad' {
+        $angle: math.div($angle, 1rad);
+    }
+
+    @return $angle;
+}
+
+@function sin($angle) {
+    $a: _to_unitless_rad($angle);
+    $sin: $a;
+
+    @for $n from 1 through $_precision {
+        $sin: $sin + (math.div(pow(-1, $n), fact(2 * $n + 1))) * pow($a, (2 * $n + 1));
+    }
+
+    @return $sin;
+}
+
+@function cos($angle) {
+    $a: _to_unitless_rad($angle);
+    $cos: 1;
+
+    @for $n from 1 through $_precision {
+        $cos: $cos + math.div(pow(-1, $n), fact(2 * $n)) * pow($a, 2 * $n);
+    }
+
+    @return $cos;
+}
+
+@function tan($angle) {
+    @return math.div(sin($angle), cos($angle));
+}
+
+@function get-item($list, $current, $offset: 0) {
+    $position: ($current + $offset) % length($list);
+
+    @if $position == 0 {
+        $position: length($list);
+    }
+
+    @return nth($list, $position);
+}
+
+@function unfold-transition($transition) {
+    $property: all;
+    $duration: $duration;
+    $easing: $easing;
+    $delay: null;
+    $defaults: ($property, $duration, $easing, $delay);
+    $unfolded-transition: ();
+
+    @for $i from 1 through length($defaults) {
+        $p: null;
+
+        @if $i <= length($transition) {
+            $p: nth($transition, $i);
+        } @else {
+            $p: nth($defaults, $i);
+        }
+
+        /* stylelint-disable */
+        $unfolded-transition: append($unfolded-transition, $p);
+        /* stylelint-enable */
+    }
+
+    @return $unfolded-transition;
+}
+
+@function ms_search_screens($search) {
+    $keys: map-keys($breakpoints);
+    $keysCount: length($keys);
+    $prev: null;
+    $curr: null;
+    $next: null;
+
+    @for $i from 1 through $keysCount {
+        @if (nth($keys, $i) == $search) {
+            $curr: $search;
+
+            @if ($i < $keysCount) {
+                $next: nth($keys, $i + 1);
+            }
+
+            @if ($i > 1) {
+                $prev: nth($keys, $i - 1);
+            }
+        }
+    }
+
+    @return (
+        'previous': $prev,
+        'current': $curr,
+        'next': $next
+    );
+}
+
+@function ms_get_screen($search, $position: 'current') {
+    $result: ms_search_screens($search);
+
+    @return map-get($result, $position);
+}
+
+@function ms_get_screen_size($search, $position: 'current') {
+    @return map-get($breakpoints, ms_get_screen($search, $position));
+}
+
+@function zerofill($i, $n: 2) {
+    $out: null;
+    $f: pow(10, $n - 1);
+
+    @while $f >= 1 {
+        $out: $out#{floor(math.div($i, $f))};
+        $i: $i - floor(math.div($i, $f)) * $f;
+        $f: math.div($f, 10);
+    };
+
+    @return $out;
+}
+
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1)+$replace+str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    };
+
+    @return $string;
+}
+
+@function strip-unit($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+        @return math.div($number, ($number * 0 + 1));
+    }
+
+    @return $number;
+}
+
+@function color-map($color, $variations: 10) {
+    $colors: ();
+
+    $maxVar: 36;
+    $mid: math.div($variations, 2);
+    $dist: $mid - 1;
+    $step: math.div($maxVar, $dist);
+
+    @for $i from 1 through $dist {
+        $percent: $maxVar - ($step * ($i - 1));
+        $darken: ($variations - $i) * 100;
+        $lighten: $i * 100;
+
+        $colors: map-merge($colors, (#{$lighten}: lighten($color, $percent), #{$darken}: darken($color, $percent)));
+    }
+
+    $colors: map-merge($colors, (#{50}: lighten($color, 38.7)));
+    $colors: map-merge($colors, (#{math.div($variations, 2) * 100}: $color));
+
+    @return $colors;
+}
+
+@function color($color, $value: 500) {
+    @return map-get(color-map($color), #{$value});
+}

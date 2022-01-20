@@ -1,0 +1,89 @@
+@import 'partials';
+
+@keyframes onAutoFillStart {
+    from {}
+    to {}
+}
+
+@keyframes onAutoFillCancel {
+    from {}
+    to {}
+}
+
+.form {
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    input[type="number"],
+    input[type="password"],
+    textarea {
+        display: block;
+        width: 100%;
+        border: 1px solid $input-border;
+        border-radius: $input-radius;
+        padding: $input-padding;
+        @include transition(border-color);
+
+        &:focus {
+            border-color: $primary;
+        }
+
+        &:-webkit-autofill {
+            animation-name: onAutoFillStart;
+            transition: background-color 50000s ease-in-out 0s;
+        }
+
+        &:not(:-webkit-autofill) {
+            animation-name: onAutoFillCancel;
+        }
+    }
+
+    input,
+    textarea,
+    button {
+        font-variant-ligatures: none;
+        appearance: none;
+        outline: 0!important;
+        box-shadow: none!important;
+
+        &[disabled],
+        &[readonly],
+        &.is-disabled {
+            pointer-events: none;
+            opacity: $disabled-opacity;
+        }
+    }
+
+    input[type="file"] {
+        display: none;
+        visibility: hidden;
+    }
+
+    button {
+        border: 0;
+    }
+
+    select {
+        appearance: none;
+        outline: 0;
+        box-shadow: none;
+        border: 0 !important;
+        background: transparent;
+        background-image: none;
+
+        &::-ms-expand {
+            display: none;
+        }
+    }
+
+    label {
+        display: block;
+        font-size: 90%;
+        margin-bottom: 7px;
+    }
+
+    &__control {
+        margin-bottom: 12px;
+    }
+}

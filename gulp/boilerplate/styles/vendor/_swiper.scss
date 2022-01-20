@@ -1,0 +1,62 @@
+@import '../partials';
+
+$themeColor: $primary;
+
+@import '../../../node_modules/swiper/swiper';
+@import '../../../node_modules/swiper/modules/pagination/pagination';
+
+[data-swiper] {
+    position: relative;
+    opacity: 0;
+
+    &.is-ready,
+    &.is-destroyed {
+        animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .swiper {
+        width: 100%;
+
+        @include mo(xs) {
+            width: calc(100% + #{$gutter * 2});
+            margin: -1 * $gutter;
+            padding: $gutter;
+        }
+
+        &-slide {
+            align-self: stretch;
+            height: auto;
+            min-height: 100%;
+        }
+
+        &-pagination {
+            position: static;
+            margin-top: 24px;
+
+            &-bullet {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        &-button {
+            &-prev,
+            &-next {
+                outline: 0!important;
+            }
+
+            &-disabled {
+                opacity: $disabled-opacity;
+            }
+        }
+
+        &-control {
+            outline: 0;
+
+            &--prev,
+            &--next {
+
+            }
+        }
+    }
+}

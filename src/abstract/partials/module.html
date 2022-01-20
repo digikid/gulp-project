@@ -1,0 +1,5 @@
+@@if(css.path || js.path){
+<li class="files__item files__item--module">@@title
+    @@if(css.path){[ <a target="_blank" href="@@css.path">@@css.name</a> ]}
+    @@if(js.path){[ <a target="_blank" href="@@js.path">@@js.name</a> ]}
+</li>}

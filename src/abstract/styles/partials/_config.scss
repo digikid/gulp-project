@@ -1,0 +1,44 @@
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$containers: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px
+);
+
+$gutter: 15px;
+
+$black: #000;
+$white: #fff;
+$text: #222;
+$primary: #f23e30;
+$green: #2ab973;
+$yellow: #ffac05;
+$blue: #2181ff;
+$peach: #f9edd7;
+
+$terminal-bg: #1d1f21;
+$terminal-bar-bg: rgba($white, 0.75);
+$terminal-cursor: #fff;
+$terminal-button-red-bg: #ff0040;
+$terminal-button-red-border: #d73031;
+$terminal-button-orange-bg: #ffcf00;
+$terminal-button-orange-border: #d7911e;
+$terminal-button-green-bg: #00e567;
+$terminal-button-green-border: #23a124;
+
+$heart-size: 16px;
+
+$bgs: $green $blue $yellow;
+
+$dark-bg: #141414;
+$dark-text: #f1f1f1;

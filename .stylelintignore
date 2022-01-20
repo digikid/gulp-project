@@ -1,2 +1,2 @@
-src/styles/icons/**/*.scss
+src/styles/partials/_icomoon.scss
 src/styles/vendor/**/*.scss

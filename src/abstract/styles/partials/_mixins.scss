@@ -1,0 +1,346 @@
+@mixin font-face($name, $path, $weight: 400, $style: normal, $exts: eot woff2 woff ttf svg) {
+    $src: null;
+
+    $extmods: (
+        eot: '?',
+        svg: '##{str-replace($name, ' ', '_')}'
+    );
+
+    $formats: (
+        otf: 'opentype',
+        ttf: 'truetype'
+    );
+
+    /* stylelint-disable */
+    @each $ext in $exts {
+        $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+        $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+        $src: append($src, url(quote($path + '.' + $extmod)) format(quote($format)), comma);
+    }
+
+    @font-face {
+        font-family: quote($name);
+        src: $src;
+        font-weight: $weight;
+        font-style: $style;
+    }
+    /* stylelint-enable */
+}
+
+@mixin font-size($min-size, $max-size, $min-screen: 375, $max-screen: 1920) {
+    $size: strip-unit($max-size - $min-size);
+    $max-width: strip-unit($max-screen) - $min-screen;
+
+    font-size: calc(#{$min-size}px + #{$size} * ((100vw - #{$min-screen}px) / #{$max-width}));
+}
+
+@mixin icomoon-base {
+    font-family: $icomoon-font-family !important;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-transform: none;
+    text-rendering: auto;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin icomoon($icon, $position: before, $replace: false) {
+    @if $replace {
+        font-size: 0;
+    }
+
+    &:#{$position} {
+        content: map-get($icomoon-icons, $icon);
+
+        @include icomoon-base();
+
+        @if $replace {
+            font-size: 1rem;
+        }
+
+        @content;
+    }
+}
+
+@mixin fa-base {
+    font-family: FontAwesome !important;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    display: inline-block;
+    text-transform: none;
+    text-rendering: auto;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin fa($icon, $position: before, $replace: false) {
+    @if $replace {
+        font-size: 0;
+    }
+
+    &:#{$position} {
+        content: map-get($fa-icons, $icon);
+
+        @include fa-base;
+
+        @if $replace {
+            font-size: 1rem;
+        }
+
+        @content;
+    }
+}
+
+@mixin clearfix {
+    *zoom: 1;
+
+    &:after {
+        line-height: 0;
+        display: table;
+        clear: both;
+        content: '';
+    }
+}
+
+@mixin truncate($overflow: ellipsis) {
+    white-space: nowrap;
+    text-overflow: $overflow;
+    display: block;
+    overflow: hidden;
+}
+
+@mixin transition($transitions...) {
+    $unfolded-transitions: ();
+
+    @if length($transitions) > 0 {
+        @each $transition in $transitions {
+            $unfolded-transitions: append($unfolded-transitions, unfold-transition($transition), comma);
+        }
+    } @else {
+        $unfolded-transitions: append($unfolded-transitions, unfold-transition(all), comma);
+    }
+
+    /* stylelint-disable */
+    transition: $unfolded-transitions;
+    /* stylelint-enable */
+}
+
+@mixin triangle($direction: bottom, $size: 6px, $color: $border) {
+    $directions: top, right, bottom, left;
+
+    & {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 0;
+    }
+
+    @include transition(transform);
+
+    @for $i from 1 through length($directions) {
+        @if nth($directions, $i) == $direction {
+            border-#{get-item($directions, $i, -1)}: $size solid transparent;
+            border-#{get-item($directions, $i, 1)}: $size solid transparent;
+            border-#{get-item($directions, $i, 2)}: $size solid $color;
+        }
+    }
+
+    @content;
+}
+
+@mixin chevron($direction: bottom, $size: 6px, $color: $border, $thickness: 1px) {
+    $rotation: 45deg;
+
+    /* stylelint-disable */
+    @if $direction == right {
+        $rotation: 45deg;
+    } @else if $direction == bottom {
+        $rotation: 135deg;
+    } @else if $direction == left {
+        $rotation: 225deg;
+    } @else if $direction == top {
+        $rotation: 315deg;
+    }
+    /* stylelint-enable */
+
+    & {
+        content: '';
+        display: inline-block;
+        width: $size;
+        height: $size;
+        transform: rotate($rotation);
+        border: solid $color;
+        border-width: $thickness $thickness 0 0;
+    }
+
+    @include transition(transform);
+
+    @content;
+}
+
+@mixin placeholder() {
+    &::placeholder,
+    &:-moz-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder,
+    &::-ms-input-placeholder,
+    &::-webkit-input-placeholder {
+        opacity: 1;
+        @content;
+    }
+}
+
+@mixin autofill() {
+    &:-webkit-autofill {
+        &, &:hover, &:focus, &:active {
+            @content;
+        }
+    }
+}
+
+@mixin shadow($color: $shadow-color, $depth: $shadow-depth, $x: $shadow-x, $y: $shadow-y, $blur: $shadow-blur, $spread: $shadow-spread) {
+    box-shadow: $x $y $blur $spread #{rgba($color, $depth)};
+}
+
+@mixin touch-scroll($direction: x) {
+    flex-wrap: nowrap;
+    overflow-#{$direction}: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: $direction mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    @if ($direction == x) {
+        padding-bottom: 15px;
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
+@mixin touch-scroll-snap() {
+    scroll-snap-align: center;
+}
+
+@mixin fit-to-parent() {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+@mixin img-contain($fit: contain) {
+    position: relative;
+
+    img {
+        object-fit: $fit;
+
+        @include fit-to-parent();
+        @content;
+    }
+}
+
+@mixin img-filler($fit: contain) {
+    @include img-contain($fit) {
+        @content;
+    }
+}
+
+@mixin img-cover($fit: cover) {
+    @include img-contain($fit) {
+        @content;
+    }
+}
+
+@mixin bg-contain($url: null, $size: contain, $position: center) {
+    background: {
+        size: $size;
+        position: $position;
+        repeat: no-repeat;
+    }
+
+    @if ($url) {
+        background-image: url($url);
+    }
+
+    @content;
+}
+
+@mixin bg-filler($url: null, $size: contain, $position: center) {
+    @include bg-contain($url, $size, $position) {
+        @content;
+    }
+}
+
+@mixin bg-cover($url: null, $size: cover, $position: center) {
+    @include bg-contain($url, $size, $position) {
+        @content;
+    }
+}
+
+@mixin ratio($width, $height) {
+    padding-bottom: ($height / $width) * 100%;
+}
+
+@mixin replace-parent($original, $replacement, $selector: &) {
+    @at-root #{selector-replace($selector, $original, $replacement)} {
+        @content;
+    }
+}
+
+@mixin backface-fix() {
+    transform: translateZ(0);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000;
+}
+
+@mixin hover() {
+    &:hover, &:active, &:focus {
+        @content;
+    }
+}
+
+@mixin retina() {
+    @include mr() {
+        @content;
+    }
+}
+
+@mixin bg-2x($image) {
+    @include mr() {
+        background-image: url($image);
+    }
+}
+
+@mixin ie() {
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        @content;
+    }
+}
+
+@mixin edge() {
+    @supports (-ms-ime-align: auto) {
+        @content;
+    }
+}

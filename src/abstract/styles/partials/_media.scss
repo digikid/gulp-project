@@ -1,0 +1,160 @@
+@mixin ms($breakpoint, $orientation: null) {
+    $size: ms_get_screen_size($breakpoint);
+
+    @if ($size) {
+        @if ($size > 2) {
+            @if ($orientation) {
+                @media screen and (max-width: $size - 1) and (orientation: $orientation) {
+                    @content;
+                };
+            } @else {
+                @media screen and (max-width: $size - 1) {
+                    @content;
+                };
+            };
+        } @else  {
+            @warn 'can\'t have @media smaller than `#{$size}`';
+        };
+    } @else {
+        @warn 'media type not found: #{$breakpoint}';
+    };
+};
+
+@mixin msp($breakpoint) {
+    @include ms($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin msl($breakpoint) {
+    @include ms($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin mo($breakpoint, $orientation: null) {
+    $previous: ms_get_screen($breakpoint, 'previous');
+    $current: ms_get_screen($breakpoint, 'current');
+    $next: ms_get_screen($breakpoint, 'next');
+
+    $current-size: ms_get_screen_size($current);
+    $next-size: ms_get_screen_size($next);
+
+    @if ($breakpoint) {
+        @if ($current) {
+            @if ($next) {
+                @if ($current-size <= 0) {
+                    @include ms($next, $orientation) {
+                        @content;
+                    };
+                } @else {
+                    @if ($orientation) {
+                        @media screen and (min-width: $current-size) and (max-width: $next-size - 1) and (orientation: $orientation) {
+                            @content;
+                        };
+                    } @else {
+                        @media screen and (min-width: $current-size) and (max-width: $next-size - 1) {
+                            @content;
+                        };
+                    };
+                };
+            } @else if ($previous) {
+                @include ml($previous, $orientation) {
+                    @content;
+                };
+            };
+        } @else {
+            @warn 'media type not found: #{$breakpoint}';
+        };
+    } @else {
+        @if ($orientation) {
+            @media screen and (orientation: $orientation) {
+                @content;
+            };
+        };
+    };
+};
+
+@mixin mop($breakpoint) {
+    @include mo($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin mol($breakpoint) {
+    @include mo($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin ml($breakpoint, $orientation: null) {
+    @if (ms_get_screen($breakpoint)) {
+        $next-size: ms_get_screen_size($breakpoint, 'next');
+
+        @if ($next-size) {
+            @if ($orientation) {
+                @media screen and (min-width: $next-size) and (orientation: $orientation) {
+                    @content;
+                };
+            } @else {
+                @media screen and (min-width: $next-size) {
+                    @content;
+                };
+            };
+        } @else {
+            @warn 'no breakpoint after `#{$breakpoint}`';
+        };
+    } @else {
+        @warn 'media type not found: #{$breakpoint}';
+    };
+};
+
+@mixin mlp($breakpoint) {
+    @include ml($breakpoint, portrait) {
+        @content;
+    };
+};
+
+@mixin mll($breakpoint) {
+    @include ml($breakpoint, landscape) {
+        @content;
+    };
+};
+
+@mixin mc($breakpoints, $orientation: null) {
+    @each $breakpoint in $breakpoints {
+        @include mo($breakpoint, $orientation) {
+            @content;
+        };
+    };
+};
+
+@mixin mcp($breakpoints) {
+    @include mc($breakpoints, portrait) {
+        @content;
+    };
+};
+
+@mixin mcl($breakpoints) {
+    @include mc($breakpoints, landscape) {
+        @content;
+    };
+};
+
+@mixin mr() {
+    @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        @content;
+    }
+}
+
+@mixin dm() {
+    @media (prefers-color-scheme: dark) {
+        @content;
+    }
+}
+
+@mixin lm() {
+    @media (prefers-color-scheme: light) {
+        @content;
+    }
+}

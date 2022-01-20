@@ -1,27 +1,48 @@
-const os = require(`os`);
-const chalk = require(`chalk`);
+const chalk = require('chalk');
 
-const browser = os.platform() === `linux` ? `google-chrome` : (os.platform() === `darwin` ? `google chrome` : (os.platform() === `win32` ? `chrome` : `firefox`));
+const log = add('@gulp/core/log');
+
+const { browser: app } = add('@gulp/utils/os');
+
+const { removeLastSlash } = add('@gulp/utils/path');
 
 module.exports = (gulp, plugins, config) => {
+    const {
+        paths: {
+            output
+        },
+        args: {
+            host,
+            open,
+            abstract
+        },
+        ftp
+    } = config;
+
+    const path = removeLastSlash(ftp[host].uri);
+
+    let uri = (open === 'index') ? path : `${path}/${open}.html`;
+
+    const abstractPath = output.abstract.root.replace(`${output.root}/`, '');
+
+    if (open === 'index') {
+        if (abstract) {
+            uri = `${path}/${abstractPath}`;
+        } else {
+            uri = path;
+        };
+    } else {
+        uri = `${path}/${open}.html`;
+    };
+
     return done => {
-        let { uri } = config.ftp[config.host];
-
-        if (uri.slice(-1) === `/`) {
-            uri = uri.substring(0, uri.length - 1);
-        };
-
-        const path = config.open !== `index` ? `${uri}/${config.open}.html` : uri;
-
-        if (config.debug) {
-            console.log(`${chalk.bold(`Открываю страницу ${chalk.italic(path)} в браузере...`)}`);
-        };
+        log(chalk.bold(`Открываю страницу ${chalk.italic(uri)} в браузере...`));
 
         return gulp.src(__filename)
             .pipe(plugins.open({
-                uri: path,
-                app: browser
+                uri,
+                app
             }))
-            .on(`end`, done);
+            .on('end', done);
     };
 };

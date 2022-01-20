@@ -1,0 +1,15 @@
+@import 'partials';
+
+.btn {
+    display: inline-block;
+    color: $white;
+    background-color: $primary;
+    border-radius: $input-radius;
+    padding: $input-padding;
+    @include transition(background-color);
+
+    @include hover() {
+        color: $white;
+        background-color: lighten($primary, 2.5%);
+    }
+}
