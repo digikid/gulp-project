@@ -77,8 +77,6 @@ apt-get install -y libjpeg libpng
 
 Вы можете произвести настройку параметров с помощью [конфигуратора](https://github.com/digikid/create-project) либо самостоятельно через файл `./config.js`.
 
-[Настройка проекта с помощью конфигуратора](https://github.com/digikid/create-project#readme)
-
 <a name="build"></a>
 
 ## Инициализация и запуск
