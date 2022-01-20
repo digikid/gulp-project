@@ -84,7 +84,6 @@ apt-get install -y libjpeg libpng
 Перейдите в корневую директорию проекта и запустите сборку:
 
 ```shell
-cd /path/to/project/
 gulp
 ```
 
