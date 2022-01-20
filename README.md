@@ -2,7 +2,7 @@
 
 ![GitHub release](https://img.shields.io/github/release/digikid/gulp-project.svg)
 
-Автоматизированная сборка HTML-проекта.
+Автоматизированная сборка проекта с использованием Gulp и Webpack.
 
 ## Содержание
 
