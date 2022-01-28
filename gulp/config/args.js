@@ -9,6 +9,7 @@ module.exports = {
     },
     es6: false,
     babel: false,
+    rollup: false,
     webp: false,
     debug: false,
     abstract: false,

@@ -39,7 +39,7 @@ module.exports = async () => {
 
         const title = (alias in aliases) ? aliases[alias] : getHtmlTitle(data, untitled);
 
-        const path = `${paths.output[type]}/${name}`.replace(paths.output.root, '');
+        const path = `../${name}`;
 
         files.push({
             name,

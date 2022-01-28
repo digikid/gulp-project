@@ -148,7 +148,8 @@ gulp-project                        # Корневая директория
 minify     | object  | false        | Минифицировать файлы
 sourcemaps | boolean | false        | Генерировать карты кода для CSS и JS файлов
 es6        | boolean | false        | Включить поддержку ECMAScript-модулей
-babel      | boolean | false        | Компиляция JS кода в стандарт ES5
+babel      | boolean | false        | Компиляция JS в стандарт ES5
+rollup     | boolean | false        | Сборка JS с помощью [Rollup](https://rollupjs.org/)
 webp       | boolean | false        | Конвертировать все изображения в формат WebP
 abstract   | boolean | false        | Добавить страницу со списком файлов проекта
 force      | array   | []           | Список задач для режима быстрой сборки

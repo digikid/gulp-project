@@ -44,15 +44,7 @@ module.exports = (gulp, plugins, config) => {
             }
         },
         plugins: params,
-        args: {
-            sourcemaps: {
-                js: maps
-            },
-            es6,
-            babel,
-            minify,
-            mode
-        },
+        args,
         modules
     } = config;
 
@@ -66,6 +58,8 @@ module.exports = (gulp, plugins, config) => {
         fileInclude,
         beautify
     } = plugins;
+
+    const maps = args.sourcemaps.js;
 
     const fileIncludeConfig = {
         ...params.fileInclude,
@@ -173,7 +167,7 @@ module.exports = (gulp, plugins, config) => {
                 }
             });
 
-            if ((isModule && modules.babel) || (!isModule && babel)) {
+            if ((isModule && modules.babel) || (!isModule && args.babel)) {
                 rollupPlugins.push(babelPlugin(babelPluginConfig));
 
                 webpackConfig = {
@@ -203,7 +197,7 @@ module.exports = (gulp, plugins, config) => {
                 .pipe(named())
                 .pipe(webpack(webpackConfig));
 
-            return ((mode === 'build') ? rollupStream : webpackStream)();
+            return ((args.rollup && (args.mode === 'build')) ? rollupStream : webpackStream)();
         };
 
         const inputs = getInputs();
@@ -213,17 +207,17 @@ module.exports = (gulp, plugins, config) => {
             const name = path.includes('/') ? trimAfter(path, '/') : path;
             const isModule = name.includes(`.${modules.postfix}`);
             const fileName = isModule ? name : `${main}.js`;
-            const stream = es6 ? es6Stream : es5Stream;
+            const stream = args.es6 ? es6Stream : es5Stream;
 
             return stream(input, fileName, isModule);
         }));
 
         const isBeautify = file => {
-            if (!es6) {
+            if (!args.es6) {
                 if (isModule(file)) {
                     return (!modules.minify.js && !modules.babel);
                 } else {
-                    return (!minify.js && !babel);
+                    return (!args.minify.js && !args.babel);
                 };
             };
 
@@ -266,7 +260,7 @@ module.exports = (gulp, plugins, config) => {
             };
         });
 
-        const compress = defineName('js:minify', done => {
+        const minify = defineName('js:minify', done => {
             const outputs = getOutputs('minify');
 
             if (outputs.length) {
@@ -287,12 +281,12 @@ module.exports = (gulp, plugins, config) => {
 
         const tasks = [compile];
 
-        if (!es6 && (babel || modules.babel)) {
+        if (!args.es6 && (args.babel || modules.babel)) {
             tasks.push(babelify);
         };
 
-        if (minify.js || modules.minify.js) {
-            tasks.push(compress);
+        if (args.minify.js || modules.minify.js) {
+            tasks.push(minify);
         };
 
         return gulp.series(...tasks)(done);
