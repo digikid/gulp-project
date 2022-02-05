@@ -1,4 +1,4 @@
-const { writeFile } = add('@gulp/utils/fs');
+const { createDirectory, writeFile } = add('@gulp/utils/fs');
 
 const config = add('@gulp/core/config');
 
@@ -32,6 +32,8 @@ module.exports = async () => {
     });
 
     try {
+        await createDirectory(path);
+
         for (const task of tasks) {
             const json = await add(`@gulp/core/data/${task}`)();
 

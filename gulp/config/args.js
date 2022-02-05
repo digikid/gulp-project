@@ -7,7 +7,6 @@ module.exports = {
         css: false,
         js: false
     },
-    es6: false,
     babel: false,
     rollup: false,
     webp: false,

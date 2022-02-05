@@ -7,14 +7,16 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const named = require('vinyl-named');
 
-const webpack = require('webpack-stream');
+const webpackStream = require('webpack-stream');
+const terserWebpackPlugin = require('terser-webpack-plugin');
 
-const rollup = require('@rollup/stream');
-const commonJS = require('@rollup/plugin-commonjs');
-const replace = require('@rollup/plugin-replace');
+const rollupStream = require('@rollup/stream');
+const rollupCommonJSPlugin = require('@rollup/plugin-commonjs');
+const rollupReplacePlugin = require('@rollup/plugin-replace');
 
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const { babel: babelPlugin } = require('@rollup/plugin-babel');
+const { nodeResolve: rollupNodeResolvePlugin } = require('@rollup/plugin-node-resolve');
+const { babel: rollupBabelPlugin } = require('@rollup/plugin-babel');
+const { terser: rollupTerserPlugin } = require('rollup-plugin-terser');
 
 const log = add('@gulp/core/log');
 
@@ -30,8 +32,7 @@ module.exports = (gulp, plugins, config) => {
             src: {
                 js: {
                     root,
-                    main: input,
-                    partials
+                    main: mainInput
                 }
             },
             output: {
@@ -40,7 +41,7 @@ module.exports = (gulp, plugins, config) => {
         },
         files: {
             main: {
-                js: main
+                js: mainOutput
             }
         },
         plugins: params,
@@ -60,171 +61,143 @@ module.exports = (gulp, plugins, config) => {
     } = plugins;
 
     const maps = args.sourcemaps.js;
-
-    const fileIncludeConfig = {
-        ...params.fileInclude,
-        basepath: partials,
-        context: {
-            config
-        }
-    };
-
-    const rollupPlugins = [
-        replace({
-            'preventAssignment': true,
-            'process.env.NODE_ENV': JSON.stringify('production')
-        }),
-        nodeResolve(),
-        commonJS()
-    ];
-
-    const buildWebpackConfig = (options = {}) => {
-        const config = {
-            mode: 'development',
-            stats: 'errors-only',
-            devtool: (maps ? 'source-map' : false)
-        };
-
-        return {
-            ...config,
-            ...options
-        };
-    };
-
-    const webpackBabelConfig = {
-        module: {
-            rules: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: params.babel
-                }
-            }]
-        }
-    };
-
-    const babelPluginConfig = {
-        ...params.babel,
-        exclude: [
-            /\/core-js\//
-        ],
-        skipPreflightCheck: true,
-        babelHelpers: 'runtime'
-    };
+    const postfix = `.${modules.postfix}`;
 
     return done => {
         log(`${chalk.bold('Сборка JS файлов...')}`);
 
-        const getInputs = () => {
-            const tree = scanDirectory(root, {
-                extensions: ['js']
-            });
+        const tree = scanDirectory(root, {
+            extensions: ['js']
+        });
 
-            return findDeep(tree, ({ type, name }) => ((type === 'file') && (name.includes(`.${modules.postfix}`) || (name === input.replace(`${root}/`, ''))))).reduce((acc, { name, relativePath }) => {
-                const path = (relativePath === name) ? name : `${removeLastSlash(relativePath.replace(name, ''))}/${name}`;
+        const modulesInput = findDeep(tree, ({ name, type }) => (type === 'file') && (name.includes(postfix))).map(({ relativePath }) => `${root}/${relativePath}`);
 
-                acc.push(`${root}/${path}`);
+        const inputs = [mainInput, ...modulesInput];
 
-                return acc;
-            }, []);
+        const getStreamParams = input => {
+            const path = input.replace(`${root}/`, '');
+            const name = path.includes('/') ? trimAfter(path, '/') : path;
+            const isModule = name.includes(postfix);
+
+            const isBabelified = isModule ? modules.babel : args.babel;
+            const isMinified = isModule ? modules.minify.js : args.minify.js;
+
+            const outputBase = isModule ? name.replace(postfix, '') : `${mainOutput}.js`;
+            const outputName = isMinified ? outputBase.replace('.js', '.min.js'): outputBase;
+
+            return {
+                outputName,
+                isBabelified,
+                isMinified
+            };
         };
 
-        const getOutputs = filter => {
-            const tree = scanDirectory(dest, {
-                depth: 1,
-                extensions: ['js']
-            });
+        const setupWebpackStream = input => {
+            const {
+                isBabelified,
+                isMinified,
+                outputName
+            } = getStreamParams(input);
 
-            return tree.filter(({ type, name }) => (type === 'file' && !name.includes('.map'))).filter(({ name }) => {
-                if (!filter) return true;
-
-                const param = (name === `${main}.js`) ? config.args[filter] : modules[filter];
-
-                return (typeof param === 'object' && ('js' in param)) ? param.js : param;
-            }).reduce((acc, { name }) => {
-                acc.push(`${dest}/${name}`);
-
-                return acc;
-            }, []);
-        };
-
-        const es5Stream = (input, fileName, isModule) => {
-            return gulp.src(input)
-                .pipe(fileInclude(fileIncludeConfig))
-                .pipe(_if(!isModule, rename(path => ({
-                    ...path,
-                    basename: main
-                }))))
-        };
-
-        const es6Stream = (input, fileName, isModule) => {
-            let cache;
-
-            let webpackConfig = buildWebpackConfig({
+            const config = {
+                mode: isMinified ? 'production' : 'development',
+                stats: 'errors-only',
+                devtool: (maps ? 'source-map' : false),
                 output: {
-                    filename: fileName
+                    filename: outputName
                 }
-            });
+            };
 
-            if ((isModule && modules.babel) || (!isModule && args.babel)) {
-                rollupPlugins.push(babelPlugin(babelPluginConfig));
-
-                webpackConfig = {
-                    ...webpackConfig,
-                    ...webpackBabelConfig
+            if (isBabelified) {
+                config.module = {
+                    rules: [{
+                        test: /\.js$/,
+                        exclude: [
+                            /\/core-js\//
+                        ],
+                        use: {
+                            loader: 'babel-loader',
+                            options: {
+                                sourceType: 'unambiguous',
+                                ...params.babel
+                            }
+                        }
+                    }]
                 };
             };
 
-            const rollupConfig = {
+            if (isMinified) {
+                config.optimization = {
+                    minimize: true,
+                    minimizer: [
+                        new terserWebpackPlugin({
+                            extractComments: false,
+                            parallel: true,
+                            terserOptions: params.terser
+                        })
+                    ]
+                };
+            };
+
+            return gulp.src(input)
+                .pipe(named())
+                .pipe(webpackStream(config));
+        };
+
+        const setupRollupStream = input => {
+            const {
+                isBabelified,
+                isMinified,
+                outputName
+            } = getStreamParams(input);
+
+            const plugins = [
+                rollupReplacePlugin({
+                    'preventAssignment': true,
+                    'process.env.NODE_ENV': JSON.stringify('production')
+                }),
+                rollupNodeResolvePlugin(),
+                rollupCommonJSPlugin()
+            ];
+
+            let cache;
+
+            if (isBabelified) {
+                plugins.push(
+                    rollupBabelPlugin({
+                        ...params.babel,
+                        exclude: [
+                            /\/core-js\//
+                        ],
+                        skipPreflightCheck: true,
+                        babelHelpers: 'runtime'
+                    })
+                );
+            };
+
+            if (isMinified) {
+                plugins.push(rollupTerserPlugin(params.terser));
+            };
+
+            return rollupStream({
                 input,
                 cache,
-                plugins: rollupPlugins,
+                plugins,
                 output: {
                     format: 'iife',
                     sourcemap: maps
                 }
-            };
-
-            const rollupStream = () => rollup(rollupConfig)
-                .on('bundle', bundle => {
-                    cache = bundle;
-                })
-                .pipe(source(fileName))
-                .pipe(buffer());
-
-            const webpackStream = () => gulp.src(input)
-                .pipe(named())
-                .pipe(webpack(webpackConfig));
-
-            return ((args.rollup && (args.mode === 'build')) ? rollupStream : webpackStream)();
+            })
+            .on('bundle', bundle => {
+                cache = bundle;
+            })
+            .pipe(source(outputName))
+            .pipe(buffer());
         };
 
-        const inputs = getInputs();
+        const streams = merge(inputs.map(input => args.rollup ? setupRollupStream(input) : setupWebpackStream(input)));
 
-        const sources = merge(inputs.map(input => {
-            const path = input.replace(`${root}/`, '');
-            const name = path.includes('/') ? trimAfter(path, '/') : path;
-            const isModule = name.includes(`.${modules.postfix}`);
-            const fileName = isModule ? name : `${main}.js`;
-            const stream = args.es6 ? es6Stream : es5Stream;
-
-            return stream(input, fileName, isModule);
-        }));
-
-        const isBeautify = file => {
-            if (!args.es6) {
-                if (isModule(file)) {
-                    return (!modules.minify.js && !modules.babel);
-                } else {
-                    return (!args.minify.js && !args.babel);
-                };
-            };
-
-            return false;
-        };
-
-        const compile = defineName('js:compile', done => sources
+        const compile = defineName('js:compile', done => streams
             .pipe(plugins.plumber())
             .pipe(_if(maps, sourcemaps.init({
                 loadMaps: true
@@ -236,58 +209,11 @@ module.exports = (gulp, plugins, config) => {
 
                 cb();
             }))
-            .pipe(_if(isBeautify, beautify(params.beautify.js)))
-            .pipe(_if(isModule, rename(path => ({
-                ...path,
-                basename: path.basename.replace(`.${modules.postfix}`, '')
-            }))))
             .pipe(_if(maps, sourcemaps.write('.')))
             .pipe(gulp.dest(dest))
             .on('end', done));
 
-        const babelify = defineName('js:babel', done => {
-            const outputs = getOutputs('babel');
-
-            if (outputs.length) {
-                return gulp.src(outputs)
-                    .pipe(plumber())
-                    .pipe(named())
-                    .pipe(webpack(buildWebpackConfig(webpackBabelConfig)))
-                    .pipe(gulp.dest(dest))
-                    .on('end', done);
-            } else {
-                done();
-            };
-        });
-
-        const minify = defineName('js:minify', done => {
-            const outputs = getOutputs('minify');
-
-            if (outputs.length) {
-                return gulp.src(outputs)
-                    .pipe(plumber())
-                    .pipe(terser(params.terser))
-                    .pipe(rename(path => path.basename += '.min'))
-                    .pipe(gulp.dest(dest))
-                    .on('end', async () => {
-                        await del(outputs);
-
-                        done();
-                    });
-            } else {
-                done();
-            };
-        });
-
         const tasks = [compile];
-
-        if (!args.es6 && (args.babel || modules.babel)) {
-            tasks.push(babelify);
-        };
-
-        if (args.minify.js || modules.minify.js) {
-            tasks.push(minify);
-        };
 
         return gulp.series(...tasks)(done);
     };

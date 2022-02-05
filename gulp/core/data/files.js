@@ -18,7 +18,7 @@ module.exports = () => {
 
     const arr = Object.entries(files).map(([type, fileName]) => {
         const name = addPostfix(`${fileName}.${type}`, minify[type], '.min');
-        const path = `${paths.output[type]}/${name}`.replace(paths.output.root, '');
+        const path = `${paths.output[type]}/${name}`.replace(paths.output.root, '..');
         const title = aliases[type];
 
         return {

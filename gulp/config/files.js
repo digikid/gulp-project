@@ -1,5 +1,3 @@
-const { name } = add('@/package.json');
-
 module.exports = {
     main: {
         css: 'build',
@@ -7,9 +5,5 @@ module.exports = {
     },
     abstract: {
         css: 'style'
-    },
-    zip: {
-        src: `${name}-src`,
-        output: `${name}-dist`
     }
 };

@@ -23,7 +23,7 @@ module.exports = () => {
         const type = /\.(scss|sass)/.test(file.name) ? 'css' : 'js';
         const name = `${trimExt(file.name.replace(`.${postfix}`, ''))}.${type}`;
         const title = capitalize(file.name.replace(`.${file.extension}`, '').replace(`.${postfix}`, ''));
-        const path = `/${paths.output[type].replace(`${paths.output.root}/`, '')}/${name}`;
+        const path = `${paths.output[type]}/${name}`.replace(paths.output.root, '..');
 
         return {
             name,

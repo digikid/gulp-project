@@ -1,4 +1,3 @@
-const { trimExt } = add('@gulp/utils/path');
 const { scanDirectory } = add('@gulp/utils/fs');
 
 const config = add('@gulp/core/config');
@@ -7,16 +6,16 @@ module.exports = () => {
     const {
         name,
         paths,
-        aliases: {
-            zip: aliases
-        }
+        zip
     } = config;
 
     const tree = scanDirectory(paths.output.root);
 
-    const arr = tree.filter(({ type, extension }) => (type === 'file' && extension === 'zip')).map(({ name, size, relativePath }) => {
-        const title = aliases[trimExt(name)];
-        const path = `/${relativePath}`;
+    const arr = tree.filter(({ type, extension }) => (type === 'file' && extension === 'zip')).map(({ name, size }) => {
+        const item = Object.values(zip).find(item => item.name === name);
+
+        const title = (item && ('title' in item)) ? item.title : 'Неизвестный архив';
+        const path = `../${name}`;
         const type = 'zip';
 
         return {

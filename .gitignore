@@ -1,8 +1,9 @@
 .DS_Store
 .idea
-/node_modules
-/abstract/data
-/temp
-/dist
-/reports
-/psd
+*.zip
+node_modules
+temp
+dist
+reports
+psd
+src/abstract/data
