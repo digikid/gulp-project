@@ -6,5 +6,5 @@ module.exports = {
         first: ['index.html'],
         last: ['404.html', 'ui.html'],
     },
-    zip: true
+    zip: false
 };
