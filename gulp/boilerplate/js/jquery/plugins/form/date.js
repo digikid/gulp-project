@@ -29,9 +29,7 @@ export default function(options = {}) {
         const _this = this;
         const $this = $(this);
 
-        _this.init = function() {
-            new AirDatepicker(selector, settings);
-        };
+        _this.init = () => new AirDatepicker(selector, settings);
 
         _this.init();
     });

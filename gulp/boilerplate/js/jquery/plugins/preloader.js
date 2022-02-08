@@ -22,13 +22,13 @@ export default function(options = {}) {
             return;
         };
 
-        $(document).on('allContentIsLoaded', function() {
+        $(document).on('allContentIsLoaded', () => {
             window.allContentIsLoaded = true;
 
             $(document).trigger('readyChecker');
         });
 
-        $(document).on('readyChecker', function() {
+        $(document).on('readyChecker', () => {
             if (!window.swipers || $.isEmptyObject(window.swipers)) {
                 window.allSwipersIsReady = true;
             };
@@ -45,19 +45,19 @@ export default function(options = {}) {
         if (document.readyState === 'complete') {
             $(document).trigger('allContentIsLoaded');
         } else {
-            window.onload = function() {
+            window.onload = () => {
                 if (window.onloadTimeout) {
                     clearTimeout(window.onloadTimeout);
                 };
 
-                window.onloadTimeout = setTimeout(function() {
+                window.onloadTimeout = setTimeout(() => {
                     $(document).trigger('allContentIsLoaded');
                 }, 0);
             };
         };
 
         if (limit) {
-            window.preloadTimeout = setTimeout(function() {
+            window.preloadTimeout = setTimeout(() => {
                 if (window.preloadTimeout) {
                     clearTimeout(window.preloadTimeout);
                 };

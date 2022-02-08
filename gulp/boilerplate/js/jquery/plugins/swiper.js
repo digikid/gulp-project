@@ -16,7 +16,7 @@ export default function(options = {}) {
 
         const total = $(this).length;
 
-        $(document).on('swiperReady', function() {
+        $(document).on('swiperReady', () => {
             const { swipers, allSwipersIsReady } = window;
 
             const swiperIds = Object.keys(swipers);
@@ -60,7 +60,7 @@ export default function(options = {}) {
                     const { $el } = this;
                     const { on } = settings;
 
-                    if (on && 'init' in on && typeof on.init === 'function') {
+                    if (on && ('init' in on) && (typeof on.init === 'function')) {
                         on.init(this);
                     };
 
@@ -73,7 +73,7 @@ export default function(options = {}) {
             }
         });
 
-        _this.buildLayout = function() {
+        _this.buildLayout = () => {
             $this.children().wrap('<div class="swiper-slide"></div>');
             $this.wrapInner('<div class="swiper"><div class="swiper-wrapper"></div></div>');
             $this.append('<div class="swiper-navigation"><div class="swiper-controls"><a class="swiper-control swiper-control--prev"></a><a class="swiper-control swiper-control--next"></a></div><div class="swiper-pagination"></div></div>');
@@ -92,7 +92,7 @@ export default function(options = {}) {
             params.modules = [Navigation, Pagination];
         };
 
-        _this.destroy = function(id) {
+        _this.destroy = id => {
             if (window.swipers[id]) return;
 
             const { swiper } = window.swipers[id];
@@ -102,7 +102,7 @@ export default function(options = {}) {
             delete window.swipers[id];
         };
 
-        _this.init = function() {
+        _this.init = () => {
             const { onReady } = params;
 
             _this.buildLayout();

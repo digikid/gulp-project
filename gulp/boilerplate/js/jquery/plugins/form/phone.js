@@ -37,14 +37,14 @@ export default function(options = {}) {
 
         _this.keyHandlers = {
             '7': {
-                keydown: function(e) {
+                keydown: e => {
                     if (e.key === '8' && !$(e.target).val()) {
                         _this.updateMask(e.key);
                     };
                 }
             },
             '8': {
-                keydown: function(e) {
+                keydown: e => {
                     if ((e.key === '+' || e.key === '7') && !$(e.target).val()) {
                         _this.updateMask(e.key);
                     };
@@ -69,10 +69,8 @@ export default function(options = {}) {
             });
 
             _this.handlers = {
-                paste: function(e) {
-                    e.preventDefault();
-                },
-                focusout: function(e) {
+                paste: e => e.preventDefault();
+                focusout: e => {
                     if ($(e.target).val().length !== _this.mask.length) {
                         $(e.target).val('');
                     };
@@ -82,16 +80,16 @@ export default function(options = {}) {
             };
         };
 
-        _this.destroyMask = function() {
+        _this.destroyMask = () => {
             $this.unmask();
         };
 
-        _this.updateMask = function(key) {
+        _this.updateMask = key => {
             _this.destroyMask();
             _this.initMask(key);
         };
 
-        _this.init = function() {
+        _this.init = () => {
             $this.on('keypress', e => {
                 const { key } = e;
                 const value = $(e.target).val();
