@@ -69,7 +69,9 @@ export default function(options = {}) {
             });
 
             _this.handlers = {
-                paste: e => e.preventDefault();
+                paste: e => {
+                    e.preventDefault();
+                },
                 focusout: e => {
                     if ($(e.target).val().length !== _this.mask.length) {
                         $(e.target).val('');
