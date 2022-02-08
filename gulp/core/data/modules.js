@@ -9,20 +9,24 @@ const config = add('@gulp/core/config');
 module.exports = () => {
     const {
         paths,
-        modules: {
-            postfix
-        }
+        modules
     } = config;
+
+    const modulesPostfix = `.${modules.postfix}`;
 
     const tree = scanDirectory(`${paths.src.root}`, {
         depth: 10,
         extensions: ['scss', 'sass', 'js']
     });
 
-    const files = findDeep(tree, ({ type, name }) => (type === 'file' && name.includes(`.${postfix}`))).map(file => {
+    const files = findDeep(tree, ({ type, name }) => (type === 'file' && name.includes(modulesPostfix))).map(file => {
         const type = /\.(scss|sass)/.test(file.name) ? 'css' : 'js';
-        const name = `${trimExt(file.name.replace(`.${postfix}`, ''))}.${type}`;
-        const title = capitalize(file.name.replace(`.${file.extension}`, '').replace(`.${postfix}`, ''));
+
+        const minPostfix = modules.minify[type] ? '.min' : '';
+        const baseName = trimExt(file.name.replace(modulesPostfix, ''));
+
+        const title = capitalize(baseName);
+        const name = `${baseName}${minPostfix}.${type}`;
         const path = `${paths.output[type]}/${name}`.replace(paths.output.root, '..');
 
         return {

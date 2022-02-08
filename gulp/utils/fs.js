@@ -59,7 +59,10 @@ const createDirectory = async path => {
 
 const scanDirectory = (path, options = {}) => {
     try {
-        const result = dree.scan(path.replace('@', './'), options);
+        const result = dree.scan(path.replace('@', './'), {
+            showHidden: false,
+            ...options
+        });
 
         const tree = (result && ('children' in result)) ? result.children : [];
 

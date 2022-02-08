@@ -24,7 +24,6 @@ const { findDeep } = add('@gulp/utils/object');
 const { removeLastSlash, trimAfter } = add('@gulp/utils/path');
 const { isModule, merge } = add('@gulp/utils/stream');
 const { scanDirectory } = add('@gulp/utils/fs');
-const { defineName } = add('@gulp/utils/function');
 
 module.exports = (gulp, plugins, config) => {
     const {
@@ -112,9 +111,7 @@ module.exports = (gulp, plugins, config) => {
                 config.module = {
                     rules: [{
                         test: /\.js$/,
-                        exclude: [
-                            /\/core-js\//
-                        ],
+                        exclude: /core-js/,
                         use: {
                             loader: 'babel-loader',
                             options: {
@@ -195,9 +192,9 @@ module.exports = (gulp, plugins, config) => {
             .pipe(buffer());
         };
 
-        const streams = merge(inputs.map(input => args.rollup ? setupRollupStream(input) : setupWebpackStream(input)));
+        const streams = inputs.map(input => args.rollup ? setupRollupStream(input) : setupWebpackStream(input));
 
-        const compile = defineName('js:compile', done => streams
+        return merge(streams)
             .pipe(plugins.plumber())
             .pipe(_if(maps, sourcemaps.init({
                 loadMaps: true
@@ -210,11 +207,8 @@ module.exports = (gulp, plugins, config) => {
                 cb();
             }))
             .pipe(_if(maps, sourcemaps.write('.')))
+            .pipe(rename({dirname: ''}))
             .pipe(gulp.dest(dest))
-            .on('end', done));
-
-        const tasks = [compile];
-
-        return gulp.series(...tasks)(done);
+            .on('end', done);
     };
 };

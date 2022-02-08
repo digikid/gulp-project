@@ -7,6 +7,9 @@ module.exports = {
         }]
     ],
     plugins: [
-        ['@babel/transform-runtime']
+        ['@babel/transform-runtime', {
+            helpers: false,
+            regenerator: true
+        }]
     ]
 };
