@@ -4,7 +4,7 @@
 
 [1.7.2]: https://github.com/digikid/gulp-project/releases/tag/1.7.2
 
-## [1.7.2] - 2022-02-08
+## [1.7.2] - 2022-02-09
 
 ### Исправлено
 - Ошибка сборки JS в режиме production mode (Windows)
