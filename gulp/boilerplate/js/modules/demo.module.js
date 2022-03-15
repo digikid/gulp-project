@@ -1,4 +1,4 @@
-import mode from '../../config/mode';
+import { mode } from '../config';
 
 $(document).ready(() => {
     if (mode === 'build') return;

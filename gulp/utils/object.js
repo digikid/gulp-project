@@ -14,7 +14,7 @@ const mergeDeep = (target, ...sources) => {
             if (isObject(source[key])) {
                 if (!target[key]) {
                     Object.assign(target, {
-                        [key]: {}
+                        [key]: (source[key] instanceof Date) ? source[key] : {}
                     });
                 };
 

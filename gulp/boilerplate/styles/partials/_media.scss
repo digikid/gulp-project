@@ -1,5 +1,5 @@
 @mixin ms($breakpoint, $orientation: null) {
-    $size: ms_get_screen_size($breakpoint);
+    $size: get-screen-size($breakpoint);
 
     @if ($size) {
         @if ($size > 2) {
@@ -33,12 +33,12 @@
 };
 
 @mixin mo($breakpoint, $orientation: null) {
-    $previous: ms_get_screen($breakpoint, 'previous');
-    $current: ms_get_screen($breakpoint, 'current');
-    $next: ms_get_screen($breakpoint, 'next');
+    $previous: get-screen($breakpoint, 'previous');
+    $current: get-screen($breakpoint, 'current');
+    $next: get-screen($breakpoint, 'next');
 
-    $current-size: ms_get_screen_size($current);
-    $next-size: ms_get_screen_size($next);
+    $current-size: get-screen-size($current);
+    $next-size: get-screen-size($next);
 
     @if ($breakpoint) {
         @if ($current) {
@@ -88,8 +88,8 @@
 };
 
 @mixin ml($breakpoint, $orientation: null) {
-    @if (ms_get_screen($breakpoint)) {
-        $next-size: ms_get_screen_size($breakpoint, 'next');
+    @if (get-screen($breakpoint)) {
+        $next-size: get-screen-size($breakpoint, 'next');
 
         @if ($next-size) {
             @if ($orientation) {

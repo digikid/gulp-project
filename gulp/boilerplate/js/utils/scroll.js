@@ -1,4 +1,4 @@
-import { preventEvent, preventKeyEvent } from './events';
+import { preventEvent, preventKeyEvent } from './event';
 
 const params = {
     passive: false

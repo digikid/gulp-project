@@ -20,6 +20,7 @@ export default function(func, timeout = 200) {
 
             if (savedArgs) {
                 wrapper.apply(savedThis, savedArgs);
+
                 savedArgs = savedThis = null;
             };
         }, timeout);

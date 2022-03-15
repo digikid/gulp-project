@@ -5,6 +5,7 @@
     width: 600px;
     max-width: 100%;
     border-radius: $radius;
+    overflow: auto;
 
     @include shadow();
 

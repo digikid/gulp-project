@@ -1,6 +1,10 @@
 import $ from 'jquery';
 import { Fancybox } from '@fancyapps/ui';
 
+import Component from './component';
+
+const title = 'Fancybox';
+
 const l10n = {
     CLOSE: 'Закрыть',
     NEXT: 'Вперед',
@@ -19,6 +23,7 @@ const defaults = {
     dragToClose: false,
     showClass: 'fancybox-fadeIn',
     hideClass: 'fancybox-fadeOut',
+    closeSelector: '[data-close]',
     Thumbs: {
         Carousel: {
             Sync: {
@@ -37,21 +42,53 @@ const defaults = {
     l10n
 };
 
-export default function(options = {}) {
-    const settings = $.extend(true, {}, defaults, options);
-    const selector = $(this).data('selector');
+export default class extends Component {
+    constructor(...args) {
+        super(title, defaults, ...args);
 
-    const { closeSelector } = settings;
+        this.init();
+    };
 
-    $.settings.fancybox = settings;
+    validate() {
+        const { selector, warning } = this;
 
-    Fancybox.bind(selector, settings);
+        if (typeof selector !== 'string') {
+            warning.show('Неверный тип селектора!');
 
-    $(closeSelector).click(e => {
-        e.preventDefault();
+            return false;
+        };
 
-        Fancybox.close();
-    });
+        return true;
+    };
 
-    return this;
+    init() {
+        const { selector, options, close, validate } = this;
+        const { closeSelector } = options;
+
+        if (!super.validate(validate)) {
+            return;
+        };
+
+        Fancybox.bind(selector, options);
+
+        if (closeSelector) {
+            $(document).on('click', closeSelector, e => {
+                e.preventDefault();
+
+                close();
+            });
+        };
+    };
+
+    close = () => Fancybox.close();
+
+    open = id => {
+        const { close, options } = this;
+
+        close();
+
+        Fancybox.show([{
+            src: `#modal-${id}`
+        }], options);
+    };
 };

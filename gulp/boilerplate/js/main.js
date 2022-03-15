@@ -1,24 +1,58 @@
+import $ from 'jquery';
+
 import './polyfills';
 
-import ready from './jquery';
+import Preload from './components/preload';
 
-ready(() => {
+/* if:fancybox */
+import Fancybox from './components/fancybox';
+/* /if:fancybox */
+
+/* if:lozad */
+import LazyLoad from './components/lazyLoad';
+/* /if:lozad */
+
+/* if:simplebar */
+import Scrollbar from './components/scrollbar';
+/* /if:simplebar */
+
+/* if:swiper */
+import Swiper from './components/swiper';
+/* /if:swiper */
+
+/* if:tippy */
+import Tooltip from './components/tooltip';
+/* /if:tippy */
+
+/* if:mask */
+import Phone from './components/phone';
+/* /if:mask */
+
+/* if:datepicker */
+import Datepicker from './components/datepicker';
+/* /if:datepicker */
+
+import Select from './components/select';
+
+window.$ = window.jQuery = $;
+
+$(function() {
+    const preload = new Preload('[data-preload]');
+
+    /* if:fancybox */
+    const fancybox = new Fancybox('[data-fancybox]');
+    /* /if:fancybox */
+
     /* if:lozad */
-    $('[data-src], [data-background-image]').lazyLoad();
+    const lazyLoad = new LazyLoad('[data-src], [data-background-image]');
     /* /if:lozad */
 
     /* if:simplebar */
-    $('[data-scrollable]').simplebar();
+    const scrollbar = new Scrollbar('[data-scrollbar]');
     /* /if:simplebar */
 
-    /* if:fancybox */
-    $('[data-fancybox]').fancybox({
-        closeSelector: '[data-close]'
-    });
-    /* /if:fancybox */
-
     /* if:swiper */
-    $('[data-swiper]').swiper({
+    const swiper = new Swiper('[data-swiper]', {
         slidesPerView: 1,
         spaceBetween: 20,
         breakpoints: {
@@ -33,10 +67,16 @@ ready(() => {
     /* /if:swiper */
 
     /* if:tippy */
-    $('[data-tooltip]').tooltip();
+    const tooltip = new Tooltip('[data-tooltip]');
     /* /if:tippy */
 
-    $('[data-form]').form();
+    /* if:mask */
+    const phone = new Phone('[data-phone]');
+    /* /if:mask */
 
-    $('body').preloader();
+    /* if:datepicker */
+    const datepicker = new Datepicker('[data-datepicker]');
+    /* /if:datepicker */
+
+    const select = new Select('[data-select]');
 });

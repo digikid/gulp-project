@@ -1,6 +1,8 @@
-<ul class="menu@@if(id && !layout){ menu--@@id}@@if(layout){ menu--@@layout}">
-    @@if(id !== ''){
-    @@loop('items/menu.html', '/data/menu/@@id.json')}
-    @@if(id === ''){
-    @@loop('items/menu.html', '/data/menu.json')}
-</ul>
+<nav class="menu@@if(context.layout){ menu--@@layout}@@if(context.id){ menu--@@id}">
+    <ul class="menu__list">
+        @@if(context.id){
+        @@loop('items/menu.html', '/data/menu/@@id.json')}
+        @@if(!context.id){
+        @@loop('items/menu.html', '/data/menu.json')}
+    </ul>
+</nav>

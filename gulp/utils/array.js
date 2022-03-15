@@ -18,7 +18,22 @@ const sortByKey = (arr, key, reverse) => {
 
 const findByValue = (arr, key, value = true) => arr.filter(item => item[key].toString() === value.toString());
 
+const shuffle = arr => {
+    const result = arr.concat();
+
+    for (let i = (result.length - 1); i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = result[i];
+
+        result[i] = result[j];
+        result[j] = temp;
+    };
+
+    return result;
+};
+
 module.exports = {
     sortByKey,
-    findByValue
+    findByValue,
+    shuffle
 };

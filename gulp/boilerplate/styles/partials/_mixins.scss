@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @mixin font-face($name, $path, $weight: 400, $style: normal, $exts: eot woff2 woff ttf svg) {
     $src: null;
 
@@ -299,7 +301,7 @@
 }
 
 @mixin ratio($width, $height) {
-    padding-bottom: ($height / $width) * 100%;
+    padding-bottom: math.div($height, $width) * 100%;
 }
 
 @mixin replace-parent($original, $replacement, $selector: &) {
