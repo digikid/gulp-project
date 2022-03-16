@@ -12,7 +12,7 @@ export default class Component {
             return;
         };
 
-        const options = mergeDeep(defaults, params);
+        const options = mergeDeep({}, defaults, params);
 
         const target = this.getTarget(selector);
 

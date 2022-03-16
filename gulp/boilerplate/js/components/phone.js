@@ -17,12 +17,12 @@ export default class extends Component {
     constructor(...args) {
         super(title, defaults, ...args);
 
-        const masks = mergeDeep({
+        const masks = mergeDeep({}, {
             '7': '+ 7 (000) 000-00-00',
             '8': '8 (000) 000-00-00'
         }, this.options.masks);
 
-        const keyHandlers = mergeDeep(Object.keys(masks).reduce((acc, key) => {
+        const keyHandlers = mergeDeep({}, Object.keys(masks).reduce((acc, key) => {
             const keydown = e => this.handleKey(key).bind(this);
 
             acc[key] = {

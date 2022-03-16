@@ -108,7 +108,7 @@ export default class extends Component {
 
         const id = getId(el);
         const dataOptions = parseDataOptions(el);
-        const params = mergeDeep(options, dataOptions);
+        const params = mergeDeep({}, options, dataOptions);
 
         const paginationEl = el.querySelector('.swiper-pagination');
         const nextEl = el.querySelector('.swiper-control--next');
