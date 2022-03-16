@@ -21,10 +21,20 @@ export const mergeDeep = (...objs) => {
     let copy;
     let copyIsArray;
     let clone;
-    let target = {};
+    let i = 1;
+    let length = objs.length;
+    let target = objs[0] || {};
     let deep = true;
 
-    for (let i = 0; i < objs.length; i++) {
+    if ((typeof target !== 'object') && (typeof target !== 'function')) {
+        target = {};
+    };
+
+    if (i === length) {
+        i--;
+    };
+
+    for (; i < length; i++) {
         if ((options = objs[i]) != null) {
             for (name in options) {
                 copy = options[name];

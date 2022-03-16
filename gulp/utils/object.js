@@ -2,32 +2,57 @@ const isObject = obj => obj != null && typeof obj === 'object' && !Array.isArray
 
 const cloneDeep = obj => JSON.parse(JSON.stringify(obj));
 
-const mergeDeep = (target, ...sources) => {
-    if (!sources.length) {
-        return target;
+const mergeDeep = (...objs) => {
+    let options;
+    let name;
+    let src;
+    let copy;
+    let copyIsArray;
+    let clone;
+    let i = 1;
+    let length = objs.length;
+    let target = objs[0] || {};
+    let deep = true;
+
+    if ((typeof target !== 'object') && (typeof target !== 'function')) {
+        target = {};
     };
 
-    const source = sources.shift();
+    if (i === length) {
+        i--;
+    };
 
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) {
-                    Object.assign(target, {
-                        [key]: (source[key] instanceof Date) ? source[key] : {}
-                    });
+    for (; i < length; i++) {
+        if ((options = objs[i]) != null) {
+            for (name in options) {
+                copy = options[name];
+
+                if ((name === '__proto__') || (target === copy)) {
+                    continue;
                 };
 
-                mergeDeep(target[key], source[key]);
-            } else {
-                Object.assign(target, {
-                    [key]: source[key]
-                });
+                if (deep && copy && (isObject(copy) || (copyIsArray = Array.isArray(copy)))) {
+                    src = target[name];
+
+                    if (copyIsArray && !Array.isArray(src)) {
+                        clone = [];
+                    } else if (!copyIsArray && !isObject(src)) {
+                        clone = {};
+                    } else {
+                        clone = src;
+                    };
+
+                    copyIsArray = false;
+
+                    target[name] = mergeDeep(clone, copy);
+                } else if (copy !== undefined) {
+                    target[name] = copy;
+                };
             };
         };
     };
 
-    return mergeDeep(target, ...sources);
+    return target;
 };
 
 const findDeep = (obj, cb) => {
