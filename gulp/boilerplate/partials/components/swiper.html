@@ -1,3 +1,4 @@
-<div class="@@id__slider js-swiper" data-swiper="@@id" data-swiper-options='@@include("../swipers/@@id.json")'>
-    @@loop('items/@@template.html', '/data/@@id.json')
-</div>
+@@for(var i = 0, path = context.path; i < 1; i++){
+<div class="@@id__slider js-swiper" data-swiper="@@id" data-swiper-options='@@include("../swipers/`+(path || id)+`.json")'>
+    @@loop('items/@@template.html', '/data/`+(path || id)+`.json')
+</div>}

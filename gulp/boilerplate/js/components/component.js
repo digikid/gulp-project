@@ -8,15 +8,14 @@ export default class Component {
     constructor(title, defaults, ...args) {
         const [selector, params = {}] = args;
 
-        if (!this.check(args)) {
+        const warning = new Warning(title);
+
+        if (!this.isArgumentsValid(args, warning)) {
             return;
         };
 
         const options = mergeDeep({}, defaults, params);
-
         const target = this.getTarget(selector);
-
-        const warning = new Warning(title);
 
         this.title = title;
         this.selector = selector;
@@ -35,8 +34,21 @@ export default class Component {
         };
     };
 
-    check(args) {
-        const { warning } = this;
+    isSelectorValid(selector) {
+        const selectorTypes = [
+            HTMLElement,
+            $
+        ];
+
+        const isString = (typeof selector === 'string');
+        const isNodeList = NodeList.prototype.isPrototypeOf(selector);
+        const isValidType = selectorTypes.reduce((acc, type) => (acc || (selector instanceof type)));
+
+        return (isString || isNodeList || isValidType);
+    };
+
+    isArgumentsValid(args, warning) {
+        const { isSelectorValid } = this;
 
         const [selector, params] = args;
 
@@ -45,17 +57,13 @@ export default class Component {
             $
         ];
 
-        const isTypeValid = selectorTypes.reduce((acc, type) => {
-            return acc && ((typeof selector === 'string') || NodeList.prototype.isPrototypeOf(selector) || (selector instanceof type));
-        }, true);
-
         if (!selector) {
             warning.show('Не определен селектор');
 
             return;
         };
 
-        if (!isTypeValid) {
+        if (!isSelectorValid(selector)) {
             warning.show('Неверный тип селектора');
 
             return;
@@ -73,13 +81,15 @@ export default class Component {
     validate(cb) {
         const { selector, params, warning } = this;
 
-        if (cb && typeof cb === 'function') {
-            return cb.call({
-                selector,
-                params,
-                warning
-            });
+        if (typeof cb !== 'function') {
+            return;
         };
+
+        return cb.call({
+            selector,
+            params,
+            warning
+        });
     };
 
     getTarget(selector) {
@@ -98,6 +108,8 @@ export default class Component {
         if (selector instanceof HTMLElement) {
             return [selector];
         };
+
+        return [];
     };
 
     parseDataSelector = id => {
