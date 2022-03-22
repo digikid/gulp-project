@@ -16,12 +16,14 @@ export default class Component {
 
         const options = mergeDeep({}, defaults, params);
         const target = this.getTarget(selector);
+        const handlers = {};
 
         this.title = title;
         this.selector = selector;
         this.defaults = defaults;
         this.params = params;
         this.options = options;
+        this.handlers = handlers;
         this.target = target;
         this.warning = warning;
     };
@@ -92,7 +94,33 @@ export default class Component {
         });
     };
 
-    getTarget(selector) {
+    initHandlers() {
+        const _that = this;
+
+        const { parseDataSelector, handlers } = this;
+
+        const outside = ['document', 'body', 'html', 'outside'];
+
+        Object.entries(handlers).forEach(([type, handlers]) => {
+            Object.entries(handlers).forEach(([id, handler]) => {
+                if (typeof handler !== 'function') {
+                    return;
+                };
+
+                const { selector } = parseDataSelector(id);
+
+                const cb = async function(e) {
+                    await handler.call(_that, e);
+                };
+
+                const params = outside.includes(id) ? [type, cb] : [type, selector, cb];
+
+                $(document).on(...params);
+            });
+        });
+    };
+
+    getTarget = selector => {
         if (typeof selector === 'string') {
             return Array.from(document.querySelectorAll(selector));
         };
@@ -112,9 +140,20 @@ export default class Component {
         return [];
     };
 
-    parseDataSelector = id => {
-        const { selector: s } = this;
+    getDataSelector = selector => {
+        const { getTarget } = this;
 
+        const target = getTarget(selector);
+        const dataKeys = Object.keys(target[0].dataset);
+        const data = dataKeys.length ? `[data-${dataKeys[0]}]` : null;
+
+        return data;
+    };
+
+    parseDataSelector = id => {
+        const { selector: _selector, getDataSelector } = this;
+
+        const s = (typeof _selector === 'string') ? _selector : getDataSelector(_selector);
         const reg = /\[|\]|data-/gi;
 
         if ((typeof s === 'string') && reg.test(s)) {

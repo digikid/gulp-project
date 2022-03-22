@@ -21,6 +21,8 @@ module.exports = (gulp, plugins, config) => {
                 }
             }
         },
+        plugins: params,
+        context: configContext,
         title,
         name,
         description,
@@ -29,35 +31,35 @@ module.exports = (gulp, plugins, config) => {
         version,
         theme,
         authors,
-        copyright,
-        plugins: params
+        copyright
     } = config;
 
     return done => {
         (async () => {
             const data = await fetchData();
 
-            const fileIncludeParams = {
-                ...params.fileInclude,
-                basepath: partials,
-                context: {
-                    ...params.fileInclude.context,
-                    ...data,
-                    title,
-                    name,
-                    description,
-                    now,
-                    repo,
-                    version,
-                    theme,
-                    authors,
-                    copyright
-                }
+            const context = {
+                ...params.fileInclude.context,
+                ...configContext,
+                ...data,
+                title,
+                name,
+                description,
+                now,
+                repo,
+                version,
+                theme,
+                authors,
+                copyright
             };
 
             return gulp.src(src)
                 .pipe(plumber())
-                .pipe(fileInclude(fileIncludeParams))
+                .pipe(fileInclude({
+                    ...params.fileInclude,
+                    basepath: partials,
+                    context
+                }))
                 .pipe(beautify.html(params.beautify.html))
                 .pipe(gulp.dest(dest))
                 .on('end', done);

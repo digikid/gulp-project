@@ -22,10 +22,6 @@ export default class extends Component {
     constructor(...args) {
         super(title, defaults, ...args);
 
-        if (!window.selects) {
-            window.selects = {};
-        };
-
         const attrs = [
             'id',
             'default',
@@ -34,7 +30,9 @@ export default class extends Component {
             'input',
             'dropdown',
             'item',
-            'value'
+            'value',
+            'checkbox',
+            'label'
         ];
 
         this.attrs = attrs.reduce((acc, id) => {
@@ -47,7 +45,10 @@ export default class extends Component {
             click: {
                 item: this.onItemClick,
                 input: this.onInputClick,
-                outside: this.onOutsideClick
+                document: this.onDocumentClick
+            },
+            change: {
+                checkbox: this.onCheckboxChange
             }
         };
 
@@ -55,28 +56,11 @@ export default class extends Component {
     };
 
     init() {
-        const _that = this;
+        const { getId, buildLayout, bindMethods/* if:simplebar */, initScrollbar/* /if:simplebar */ } = this;
 
-        const { handlers, parseDataSelector, getId, buildLayout, bindMethods } = this;
-
-        Object.entries(handlers).forEach(([type, handlers]) => {
-            Object.entries(handlers).forEach(([id, handler]) => {
-                const { selector } = parseDataSelector(id);
-
-                const cb = function(e) {
-                    if ((type === 'click') && (id !== 'outside')) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    };
-
-                    handler.call(_that, this);
-                };
-
-                const params = (id === 'outside') ? [type, cb] : [type, selector, cb];
-
-                $(document).on(...params);
-            });
-        });
+        if (!window.selects) {
+            window.selects = {};
+        };
 
         super.init((el, options) => {
             const id = getId(el);
@@ -85,15 +69,17 @@ export default class extends Component {
                 return;
             };
 
-            this.buildLayout.call(this, el);
-            this.bindMethods.call(this, el);
+            buildLayout.call(this, el);
+            bindMethods.call(this, el);
 
             /* if:simplebar */
-            this.initScrollbar.call(this, el);
+            initScrollbar.call(this, el);
             /* /if:simplebar */
 
             window.selects[id] = el;
         });
+
+        super.initHandlers();
     };
 
     buildLayout(el) {
@@ -145,18 +131,27 @@ export default class extends Component {
             return;
         };
 
-        const { attrs, getElements } = this;
+        const { attrs, getElements, getAttribute } = this;
 
         const { $dropdown } = getElements(el);
 
+        const multiple = getAttribute(el, 'multiple');
+
         options.forEach(option => {
             const { title, value, selected, disabled, hidden } = option;
+
+            const id = randomId();
 
             const activeClass = selected ? 'is-active' : '';
             const disabledClass = disabled ? 'is-disabled' : '';
             const hiddenClass = hidden ? 'is-hidden' : '';
 
-            $(`<a class="select__item" href="#" ${attrs.item} ${attrs.value}="${value}">${title}</a>`).addClass(`${activeClass} ${disabledClass} ${hiddenClass}`).appendTo($dropdown);
+            const defaultHtml = `<a class="select__item" href="#" ${attrs.item} ${attrs.value}="${value}">${title}</a>`;
+            const multipleHtml = `<div class="select__item" ${attrs.item}><input type="checkbox"  name="${id}" id="${id}" value="${value}" ${attrs.checkbox}><label for="${id}" ${attrs.label}>${title}</label></div>`
+
+            const html = multiple ? multipleHtml : defaultHtml;
+
+            $(html).addClass(`${activeClass} ${disabledClass} ${hiddenClass}`).appendTo($dropdown);
         });
 
         $(el).data('options', options);
@@ -178,29 +173,63 @@ export default class extends Component {
         });
     };
 
-    onItemClick(el) {
-        const { attrs, getElements, closeDropdown } = this;
+    onCheckboxChange(e) {
+        const { target: el } = e;
+        const { attrs, getElements } = this;
+        const { selects } = window;
+
+        const { $element, $dropdown } = getElements(el);
+
+        const id = $element.attr(attrs.id);
+        const checked = [];
+
+        $dropdown.find(`[${attrs.checkbox}]:checked`).each(function() {
+            const value = $(this).val();
+
+            checked.push(value);
+        });
+
+        if (selects[id]) {
+            selects[id].set(checked);
+        };
+    };
+
+    onItemClick(e) {
+        const { target: el } = e;
+        const { attrs, getElements, getAttribute, closeDropdown } = this;
         const { selects } = window;
 
         const { $element } = getElements(el);
 
-        const id = $element.attr(attrs.id);
-        const value = $(el).attr(attrs.value);
+        const multiple = getAttribute(el, 'multiple');
 
-        if (selects[id]) {
-            selects[id].set(value);
+        e.stopPropagation();
+
+        if (!multiple) {
+            e.preventDefault();
+
+            const id = $element.attr(attrs.id);
+            const value = $(el).attr(attrs.value);
+
+            if (selects[id]) {
+                selects[id].set(value);
+            };
+
+            closeDropdown(el);
         };
-
-        closeDropdown(el);
     };
 
-    onInputClick(el) {
+    onInputClick(e) {
+        const { target: el } = e;
         const { toggleDropdown } = this;
+
+        e.preventDefault();
+        e.stopPropagation();
 
         toggleDropdown(el);
     };
 
-    onOutsideClick(el) {
+    onDocumentClick(e) {
         const { attrs } = this;
 
         $(`[${attrs.root}]`).removeClass('is-active is-focused');
@@ -314,6 +343,24 @@ export default class extends Component {
         };
     };
 
+    getId = el => {
+        const { parseDataSelector } = this;
+
+        const { attr } = parseDataSelector();
+        const { attr: idAttr } = parseDataSelector('id');
+
+        const attrs = [idAttr, attr, 'id', 'name'];
+
+        return attrs.reduce((acc, attr) => acc || $(el).attr(attr), '') || randomId();
+    };
+
+    getAttribute = (el, attr) => {
+        const { getElements } = this;
+        const { $element } = getElements(el);
+
+        return $element.attr(attr);
+    };
+
     getTitleByValue = (el, value) => {
         const options = Array.from(el.querySelectorAll('option'));
         const option = options.find(option => (option.value === value));
@@ -325,17 +372,6 @@ export default class extends Component {
         const option = Array.from(el.querySelectorAll('option')).find(option => $(option).text() === title);
 
         return option ? option.value : '';
-    };
-
-    getId = el => {
-        const { parseDataSelector } = this;
-
-        const { attr } = parseDataSelector();
-        const { attr: idAttr } = parseDataSelector('id');
-
-        const attrs = [idAttr, attr, 'id', 'name'];
-
-        return attrs.reduce((acc, attr) => acc || $(el).attr(attr), '') || randomId();
     };
 
     enable = el => {
@@ -351,21 +387,48 @@ export default class extends Component {
     };
 
     set = (el, value) => {
-        const { attrs, getElements, getTitleByValue } = this;
+        const { attrs, getElements, getAttribute, getTitleByValue, warning } = this;
 
         const currentValue = $(el).val();
+        const multiple = getAttribute(el, 'multiple');
+
+        if (!multiple && Array.isArray(value)) {
+            warning.show('Некорректный тип значения');
+
+            return;
+        };
 
         if (value !== currentValue) {
-            const title = getTitleByValue(el, value);
+            const { $input, $element, $dropdown, $root } = getElements(el);
 
-            if (title) {
-                const { $input, $element, $dropdown, $root } = getElements(el);
+            const options = Array.isArray(value) ? value : [value];
 
-                $input.text(title);
-                $element.val(value).triggerNative('change');
-                $dropdown.find(`[${attrs.value}="${value}"]`).addClass('is-active').siblings().removeClass('is-active');
-                $root.addClass('is-selected');
-            };
+            const titles = [];
+            const values = [];
+
+            options.forEach(option => {
+                const title = getTitleByValue(el, option);
+
+                titles.push(title);
+                values.push(option);
+            });
+
+            const updatedTitle = (titles.length === 1) ? titles[0] : titles.join(', ');
+            const updatedValue = (values.length === 1) ? values[0] : values;
+
+            $dropdown.find(`[${attrs.item}]`).each(function() {
+                const value = multiple ? $(this).find(`[${attrs.checkbox}]`).val() : $(this).attr(attrs.value);
+
+                if (options.includes(value)) {
+                    $(this).addClass('is-active');
+                } else {
+                    $(this).removeClass('is-active');
+                };
+            });
+
+            $input.text(updatedTitle);
+            $element.val(updatedValue).triggerNative('change');
+            $root.addClass('is-selected');
         };
     };
 
@@ -375,6 +438,7 @@ export default class extends Component {
 
         const { title, value } = getDefaults(el);
 
+        $dropdown.find(`[${attrs.item}]`).removeClass('is-active').find(`[${attrs.checkbox}]`).prop('checked', false);
         $input.text(title);
         $element.val(value).triggerNative('reset');
         $root.removeClass('is-selected');
@@ -385,11 +449,7 @@ export default class extends Component {
             return;
         };
 
-        const { getElements, getDefaults, renderItems } = this;
-
-        /* if:simplebar */
-        const { initScrollbar, destroyScrollbar } = this;
-        /* /if:simplebar */
+        const { getElements, getDefaults, renderItems/* if:simplebar */, initScrollbar, destroyScrollbar/* /if:simplebar */ } = this;
 
         const { $element, $dropdown, $input } = getElements(el);
 

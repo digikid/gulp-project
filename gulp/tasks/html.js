@@ -16,10 +16,11 @@ module.exports = (gulp, plugins, config) => {
                 html: dest
             }
         },
-        plugins: params,
         args: {
             mode
         },
+        plugins: params,
+        context: configContext,
         title,
         description,
         icomoon,
@@ -32,6 +33,8 @@ module.exports = (gulp, plugins, config) => {
     } = plugins;
 
     const context = {
+        ...params.fileInclude.context,
+        ...configContext,
         title,
         description,
         mode,

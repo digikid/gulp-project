@@ -181,6 +181,7 @@ module.exports = (gulp, plugins, config) => {
                 cache,
                 plugins,
                 output: {
+                    name: outputName,
                     format: 'iife',
                     sourcemap: maps
                 }

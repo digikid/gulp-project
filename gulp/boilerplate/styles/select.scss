@@ -82,11 +82,16 @@
     }
 
     &__item {
+        position: relative;
         display: block;
         padding: 5px 15px;
 
         &:first-child {
             padding-top: 10px;
+
+            input[type="checkbox"] {
+                top: 10px;
+            }
         }
 
         &:last-child {
@@ -104,6 +109,15 @@
         &.is-disabled {
             pointer-events: none;
             opacity: .2;
+        }
+
+        input[type="checkbox"] {
+            top: 5px;
+            left: 15px;
+
+            & + label {
+                padding-left: 35px;
+            }
         }
     }
 }

@@ -32,8 +32,13 @@ const shuffle = arr => {
     return result;
 };
 
+const paginate = (arr = [], start = 0, end = arr.length) => {
+    return end > start ? [...arr].slice(start, end) : arr;
+};
+
 module.exports = {
     sortByKey,
     findByValue,
-    shuffle
+    shuffle,
+    paginate
 };
