@@ -1,12 +1,11 @@
 import $ from 'jquery';
-import Swiper, { Navigation, Pagination, Thumbs } from 'swiper';
+import Swiper, { Navigation, Pagination, Thumbs, Manipulation } from 'swiper';
 
 import Component from './component';
 import LazyLoad from './lazyLoad';
 
 import { names } from '../config';
 import { mergeDeep } from '../utils/object';
-import { id as randomId } from '../utils/random';
 
 const title = 'Swiper';
 
@@ -30,26 +29,18 @@ export default class extends Component {
     };
 
     init() {
-        const { target, options, parseDataSelector, getId, getParams, buildLayout, onReady } = this;
+        const { target, options, parseDataSelector, setup } = this;
 
         const { attr: thumbsAttr } = parseDataSelector('thumbs');
 
         const sorted = [...target].sort(el => $(el).attr(thumbsAttr) ? 1 : -1);
 
-        sorted.forEach(el => {
-            const id = getId(el);
+        sorted.forEach(el => setup(el, options));
 
-            if (window.swipers[id]) {
-                return;
-            };
-
-            buildLayout(el);
-
-            const params = getParams(el, options);
-
-            const swiperEl = el.children[0];
-
-            const swiper = new Swiper(swiperEl, params);
+        super.initHandlers({
+            click: {
+                control: this.onControlClick
+            }
         });
     };
 
@@ -57,6 +48,28 @@ export default class extends Component {
         $(el).children().wrap('<div class="swiper-slide"></div>');
         $(el).wrapInner('<div class="swiper"><div class="swiper-wrapper"></div></div>');
         $(el).append('<div class="swiper-navigation"><div class="swiper-controls"><a class="swiper-control swiper-control--prev"></a><a class="swiper-control swiper-control--next"></a></div><div class="swiper-pagination"></div></div>');
+    };
+
+    onControlClick(e) {
+        e.preventDefault();
+
+        const { target: el } = e;
+        const { parseDataSelector, getId, getSwiper } = this;
+
+        const { attr: controlAttr } = parseDataSelector('control');
+
+        const id = getId(el);
+        const swiper = getSwiper(id);
+
+        if (swiper) {
+            if ($(el).attr(controlAttr) === 'prev') {
+                swiper.slidePrev();
+            };
+
+            if ($(el).attr(controlAttr) === 'next') {
+                swiper.slideNext();
+            };
+        };
     };
 
     onReady() {
@@ -88,19 +101,47 @@ export default class extends Component {
         $(document).trigger(swiperReady);
     };
 
-    getId = el => {
+    toggleControls = (swiper, id) => {
         const { parseDataSelector } = this;
-
-        const { attr } = parseDataSelector();
         const { attr: idAttr } = parseDataSelector('id');
+        const { attr: controlAttr } = parseDataSelector('control');
 
-        const attrs = [idAttr, attr, 'id'];
+        const $prev = $(`[${idAttr}="${id}"][${controlAttr}="prev"]`);
+        const $next = $(`[${idAttr}="${id}"][${controlAttr}="next"]`);
 
-        return attrs.reduce((acc, attr) => acc || $(el).attr(attr), '') || randomId();
+        if (swiper.isBeginning) {
+            $prev.addClass('is-disabled');
+        } else {
+            $prev.removeClass('is-disabled');
+        };
+
+        if (swiper.isEnd) {
+            $next.addClass('is-disabled');
+        } else {
+            $next.removeClass('is-disabled');
+        };
+    };
+
+    setup = (el, options) => {
+        const { getId, getParams, buildLayout, onReady } = this;
+
+        const id = getId(el);
+
+        if (window.swipers[id]) {
+            return;
+        };
+
+        buildLayout(el);
+
+        const params = getParams(el, options);
+
+        const swiperEl = el.children[0];
+
+        const swiper = new Swiper(swiperEl, params);
     };
 
     getParams = (el, options) => {
-        const { getId, parseDataOptions, parseDataSelector, onInit } = this;
+        const { getId, parseDataOptions, parseDataSelector, toggleControls, onInit } = this;
 
         const { attr: thumbsAttr } = parseDataSelector('thumbs');
 
@@ -127,11 +168,41 @@ export default class extends Component {
             clickable
         };
 
-        const afterInit = swiper => onInit(swiper, id);
+        const afterInit = swiper => {
+            toggleControls(swiper, id);
+            onInit(swiper, id);
+        };
+
+        const slideChange = swiper => toggleControls(swiper, id);
+
+        const update = swiper => toggleControls(swiper, id);
+
+        const handlers = {
+            afterInit,
+            slideChange,
+            update
+        };
+
+        if (!params.on) {
+            params.on = {};
+        };
+
+        Object.entries(handlers).forEach(([id, handler]) => {
+            const cb = params.on[id];
+
+            if (typeof cb === 'function') {
+                params.on[id] = swiper => {
+                    handler(swiper);
+                    cb(swiper);
+                };
+            } else {
+                params.on[id] = handler;
+            };
+        });
 
         params.pagination = pagination;
         params.navigation = navigation;
-        params.modules = [Navigation, Pagination];
+        params.modules = [Navigation, Pagination, Manipulation];
 
         if (thumbsId) {
             params.modules.push(Thumbs);
@@ -139,10 +210,6 @@ export default class extends Component {
             params.thumbs = {
                 swiper: window.swipers[thumbsId].swiper
             };
-        };
-
-        params.on = {
-            afterInit
         };
 
         return params;

@@ -2,9 +2,14 @@ import $ from 'jquery';
 
 import Warning from './warning';
 
+import { id as randomId } from '../utils/random';
 import { isObject, mergeDeep } from '../utils/object';
+import { toCamelCase } from '../utils/string';
 
 export default class Component {
+    static components = {};
+    static attachedHandlers = {};
+
     constructor(title, defaults, ...args) {
         const [selector, params = {}] = args;
 
@@ -14,18 +19,22 @@ export default class Component {
             return;
         };
 
+        const id = toCamelCase(title);
         const options = mergeDeep({}, defaults, params);
         const target = this.getTarget(selector);
-        const handlers = {};
 
+        this.id = id;
         this.title = title;
         this.selector = selector;
         this.defaults = defaults;
         this.params = params;
         this.options = options;
-        this.handlers = handlers;
         this.target = target;
         this.warning = warning;
+
+        if (!Component.components[id]) {
+            Component.components[id] = this;
+        };
     };
 
     init(cb) {
@@ -94,16 +103,20 @@ export default class Component {
         });
     };
 
-    initHandlers() {
+    initHandlers(handlers = {}) {
         const _that = this;
 
-        const { parseDataSelector, handlers } = this;
+        const { id, parseDataSelector } = this;
 
         const outside = ['document', 'body', 'html', 'outside'];
 
+        if (Component.attachedHandlers[id]) {
+            return;
+        };
+
         Object.entries(handlers).forEach(([type, handlers]) => {
             Object.entries(handlers).forEach(([id, handler]) => {
-                if (typeof handler !== 'function') {
+                if ((typeof handler !== 'function')) {
                     return;
                 };
 
@@ -118,6 +131,62 @@ export default class Component {
                 $(document).on(...params);
             });
         });
+
+        Component.attachedHandlers[id] = handlers;
+    };
+
+    getOptions = (id, key = 'options') => {
+        if (!Component.components[id]) {
+            return {};
+        };
+
+        return Component.components[id][key];
+    };
+
+    getId = el => {
+        const { parseDataSelector, getElements } = this;
+
+        const { $root } = getElements(el);
+
+        const { attr } = parseDataSelector();
+        const { attr: idAttr } = parseDataSelector('id');
+
+        const attrs = [idAttr, attr, 'name', 'id'];
+
+        return attrs.reduce((acc, attr) => acc || (el ? $(el).attr(attr) : false) || $root.attr(attr), false) || randomId();
+    };
+
+    getElement = (el, id = 'root') => {
+        const { parseDataSelector } = this;
+
+        const element = {};
+
+        const { selector } = parseDataSelector(id);
+        const { selector: rootSelector } = parseDataSelector();
+
+        const $el = el ? $(el) : $(rootSelector);
+        const $root = $el.is(rootSelector) ? $el : $el.closest(rootSelector);
+        const $node = (id === 'root') ? $root : $root.find(selector);
+
+        element[`$${id}`] = $node;
+        element[id] = $node.get();
+
+        return element;
+    };
+
+    getElements = (el, ids = []) => {
+        const { getElement } = this;
+
+        const initial = getElement();
+
+        if (!el || !ids.length || !Array.isArray(ids)) {
+            return initial;
+        };
+
+        return ids.filter(id => (id !== 'root')).reduce((acc, id) => ({
+            ...acc,
+            ...getElement(el, id)
+        }), initial);
     };
 
     getTarget = selector => {

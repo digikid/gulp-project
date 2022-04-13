@@ -41,17 +41,6 @@ export default class extends Component {
             return acc;
         }, {});
 
-        this.handlers = {
-            click: {
-                item: this.onItemClick,
-                input: this.onInputClick,
-                document: this.onDocumentClick
-            },
-            change: {
-                checkbox: this.onCheckboxChange
-            }
-        };
-
         this.init();
     };
 
@@ -79,7 +68,16 @@ export default class extends Component {
             window.selects[id] = el;
         });
 
-        super.initHandlers();
+        super.initHandlers({
+            click: {
+                item: this.onItemClick,
+                input: this.onInputClick,
+                document: this.onDocumentClick
+            },
+            change: {
+                checkbox: this.onCheckboxChange
+            }
+        });
     };
 
     buildLayout(el) {
@@ -341,17 +339,6 @@ export default class extends Component {
             value,
             title
         };
-    };
-
-    getId = el => {
-        const { parseDataSelector } = this;
-
-        const { attr } = parseDataSelector();
-        const { attr: idAttr } = parseDataSelector('id');
-
-        const attrs = [idAttr, attr, 'id', 'name'];
-
-        return attrs.reduce((acc, attr) => acc || $(el).attr(attr), '') || randomId();
     };
 
     getAttribute = (el, attr) => {

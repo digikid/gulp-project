@@ -27,7 +27,7 @@ const defaults = {
     Thumbs: {
         Carousel: {
             Sync: {
-                friction: 0.9,
+                friction: 0.9
             }
         }
     },
@@ -42,7 +42,9 @@ const defaults = {
     l10n
 };
 
-export default class extends Component {
+export default class _Fancybox extends Component {
+    static closeSelectors = [];
+
     constructor(...args) {
         super(title, defaults, ...args);
 
@@ -71,12 +73,14 @@ export default class extends Component {
 
         Fancybox.bind(selector, options);
 
-        if (closeSelector) {
+        if (closeSelector && !_Fancybox.closeSelectors.includes(closeSelector)) {
             $(document).on('click', closeSelector, e => {
                 e.preventDefault();
 
                 close();
             });
+
+            _Fancybox.closeSelectors.push(closeSelector);
         };
     };
 
@@ -85,10 +89,14 @@ export default class extends Component {
     open = id => {
         const { close, options } = this;
 
-        close();
+        const src = `#modal-${id}`;
 
-        Fancybox.show([{
-            src: `#modal-${id}`
-        }], options);
+        if ($(src).length) {
+            close();
+
+            Fancybox.show([{
+                src
+            }], options);
+        };
     };
 };
