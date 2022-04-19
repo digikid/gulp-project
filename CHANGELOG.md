@@ -4,7 +4,7 @@
 
 [1.7.5]: https://github.com/digikid/gulp-project/releases/tag/1.7.5
 
-## [1.7.5] - 2022-04-14
+## [1.7.5] - 2022-04-19
 
 ### Добавлено
 - Новые методы для компонентов `getOptions`, `getId`, `getElement`, `getElements`
@@ -17,6 +17,7 @@
 - Исправление мелких ошибок, рефакторинг кода компонентов
 
 ### Обновлено
+- Обновлены настройки для ESLint / Stylelint
 - Обновление списка зависимостей и устранение уязвимостей
 
 [1.7.4]: https://github.com/digikid/gulp-project/releases/tag/1.7.4

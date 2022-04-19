@@ -1,6 +1,6 @@
 {
   "name": "gulp-project",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "Автоматизированная сборка HTML проекта",
   "main": "gulpfile.js",
   "dependencies": {
