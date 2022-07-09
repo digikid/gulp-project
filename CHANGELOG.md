@@ -1,200 +1,209 @@
-# История версий
+# Release Notes
 
-Все заметные изменения задокументированы в этом файле.
+[1.7.6]: https://github.com/digikid/gulp-project/releases/tag/1.7.6
+
+## [1.7.6] - 2022-07-09
+
+### Features
+- Handling multiple events in `initHandlers` method
+
+### Updates
+
+- All documentation translated into English
 
 [1.7.5]: https://github.com/digikid/gulp-project/releases/tag/1.7.5
 
 ## [1.7.5] - 2022-04-19
 
-### Добавлено
-- Новые методы для компонентов `getOptions`, `getId`, `getElement`, `getElements`
-- Инициализация обработчиков событий осуществляется через метод `super.initHandlers`
-- Обработчики для внешних контроллеров компонента `Swiper`
-- Новый метод для строк `toCamelCase`
+### Features
+- New methods for components `getOptions`, `getId`, `getElement`, `getElements`
+- Event handlers are initialized via the `super.initHandlers` method
+- Handlers for external controllers of `Swiper` component
+- New method `toCamelCase`
 
-### Исправлено
-- Повторная инициализация обработчиков событий при создании компонентов
-- Исправление мелких ошибок, рефакторинг кода компонентов
+### Bug Fixes
+- Re-initialization of event handlers when components are creating
+- Minor bug fixes, components code refactoring
 
-### Обновлено
-- Обновлены настройки для ESLint / Stylelint
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- Updated settings for ESLint / Stylelint
+- Update dependencies list, fix vulnerabilities
 
 [1.7.4]: https://github.com/digikid/gulp-project/releases/tag/1.7.4
 
 ## [1.7.4] - 2022-03-23
 
-### Добавлено
-- Параметр `config.context` для расширения контекста fileInclude
-- Поддержка аттрибута `multiple` в компоненте Select
-- Метод `initHandlers` доступен для всех компонентов
+### Features
+- `config.context` param to extend `fileInclude` context
+- Support for the `multiple` attribute in `Select` component
+- The `initHandlers` method is available for all components
 
-### Исправлено
-- Отображение чекбоксов в компоненте Select
-- Ошибка сборки rollup при импорте CommonJS модулей
+### Bug Fixes
+- Displaying checkboxes in the `Select` component
+- Rollup build error when importing CommonJS modules
 
-### Обновлено
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- Update dependencies list, fix vulnerabilities
 
 [1.7.3]: https://github.com/digikid/gulp-project/releases/tag/1.7.3
 
 ## [1.7.3] - 2022-03-16
 
-### Добавлено
-- Компонент Component для инициализации новых компонентов
-- Компонент Warning для отображения ошибок в компонентах
+### Features
+- All components inherit from a common `Component`
+- `Warning` component to display errors in components
 
-### Исправлено
-- Ошибки в компоненте Select
-- Ошибки операций деления в SASS файлах
-- Исправление мелких ошибок, рефакторинг кода
+### Bug Fixes
+- Bugs in the `Select` component
+- Errors in division operations in SASS files
+- Minor bug fixes, code refactoring
 
-### Обновлено
-- Все компоненты переписаны с использованием ES6 классов
-- Компонент Form разделен на компоненты Select, Phone и Datepicker
-- Компоненты Date и Scrollable переименованы в Datepicker и Scrollbar
-- Обновлены вспомогательные функции для объектов и массивов
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- All components rewritten using ES6 classes
+- `Form` component is split into `Select`, `Phone` and `Datepicker` components
+- `Date` and `Scrollable` components renamed to `Datepicker` and `Scrollbar`
+- Updated helper functions for objects and arrays
+- Update dependencies list, fix vulnerabilities
 
-### Удалено
-- Компонент Form
-- Вспомогательные функции для jQuery компонентов
+### Breaking Changes
+- `Form` component
+- Helper functions for jQuery components
 
 [1.7.2]: https://github.com/digikid/gulp-project/releases/tag/1.7.2
 
 ## [1.7.2] - 2022-02-09
 
-### Исправлено
-- Ошибка сборки JS в режиме production mode (Windows)
-- Некорректные пути до файлов модулей в оглавлении проекта
-- Отключена конкатенация скрытых файлов
-- Исправление мелких ошибок, рефакторинг кода
+### Bug Fixes
+- JS build error in production mode (Windows)
+- Incorrect paths to module files on abstract page
+- Disabled concatenation of hidden files
+- Code refactoring, minor bug fixes
 
 [1.7.1]: https://github.com/digikid/gulp-project/releases/tag/1.7.1
 
 ## [1.7.1] - 2022-02-05
 
-### Добавлено
-- Создание ZIP-архивов при запуске задачи `abstract` (через параметр `config.abstract.zip`)
+### Features
+- Creating ZIP files while `abstract` task is running (via `config.abstract.zip` param)
 
-### Исправлено
-- Содержимое архива с исходными файлами больше не ограничено директорией `/src`
-- Исправление мелких ошибок
+### Bug Fixes
+- The contents of ZIP file with source files are no longer limited to `/src` directory
+- Minor bug fixes
 
-### Обновлено
-- Поддержка ECMAScript модулей включена по умолчанию
-- В качестве компилятора SASS используется sass вместо node-sass
-- Параметры для задачи `zip` вынесены в `config.zip`
+### Updates
+- Support for ECMAScript modules is enabled by default
+- Uses `sass` as default SASS compiler instead of node-sass
+- `zip` task params moved to `config.zip`
 
-### Удалено
-- Параметр `es6`
-- Устаревший модуль node-sass исключен из списка зависимостей
+### Breaking Changes
+- Removed `es6` param
+- Removed deprecated node-sass module
 
 [1.7.0]: https://github.com/digikid/gulp-project/releases/tag/1.7.0
 
 ## [1.7.0] - 2022-01-28
 
-### Добавлено
-- Поддержка ECMAScript модулей через новый параметр `es6`
-- Сборка JS файлов с помощью Rollup через параметр `rollup`
-- Компиляция SASS и JS в отдельные файлы через добавление постфикса
-- Быстрая сборка с указанием списка задач через обновленный параметр `force`
-- На странице со списком файлов добавлены версии зависимостей
-- Валидация всех параметров перед запуском сборки
-- Обновлена документация
+### Features
+- Support for ECMAScript modules via `es6` param
+- Building JS files using Rollup via `rollup` param
+- Compiling SASS and JS into separate files by adding a postfix
+- Force building via `force` param
+- Added versions of dependencies on abstract page
+- Validation of all params before launching
+- Updated documentation
 
-### Исправлено
-- Приоритет параметров командной строки над остальными параметрами
-- Задача `index` переименована в `abstract` и исключена из списка обязательных
-- Генерирование ZIP архивов вынесено в отдельную задачу
-- Реорганизация структуры проекта и рефакторинг кода
+### Bug Fixes
+- Priority of cli params over other
+- `index` task renamed to `abstract` and removed from required list
+- ZIP files creation moved to separate task
+- Reorganization of project structure and code refactoring
 
-### Обновлено
-- Обновлены плагины для компрессии изображений
-- Устаревший плагин `js.device.detector` заменен на `bowser`
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- Updated plugins for image compression
+- Deprecated plugin `js.device.detector` replaced with `bowser`
+- Update dependencies list, fix vulnerabilities
 
-### Удалено
-- Импорт библиотек из директории /node_modules через файл конфигурации
-- Компиляция Pug файлов
-- Параметры `merge` и `main`
+### Breaking Changes
+- Removed dependencies import from the /node_modules directory via the configuration file
+- Removed task for compiling PUG files
+- Removed `merge` and `main` params
 
 [1.6.0]: https://github.com/digikid/gulp-project/releases/tag/1.6.0
 
 ## [1.6.0] - 2021-07-15
 
-### Добавлено
-- Добавлены core-js полифиллы для лучшей поддержки IE
-- Настройки FTP вынесены в отдельный .env файл
+### Features
+- Added core-js polyfills for better IE support
+- Moved FTP params to separate .env file
 
-### Исправлено
-- Объединение файлов при транспиляции в ES5
-- Исправление ошибок в файле конфигурации Stylelint
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Files combining when transpiling to ES5
+- Bug fixes in Stylelint config file
+- Code refactoring, minor bug fixes
 
-### Обновлено
-- Обновлен список браузеров (browserlist)
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- Update `.browserslistrc`
+- Update dependencies list, fix vulnerabilities
 
 [1.5.0]: https://github.com/digikid/gulp-project/releases/tag/1.5.0
 
 ## [1.5.0] - 2020-12-01
 
-### Добавлено
-- Компиляция JS кода в стандарт ES5 через Babel
-- Компиляция Pug файлов c поддержкой импорта данных из JSON файлов
-- Мгновенный линтинг SASS и JS файлов с помощью Stylelint и ESLint
-- Новые параметры `babel`, `preset`, `index`, `debug`, `open` и `mode`
-- Пресеты для удобного комбинирования параметров командной строки
-- Режим отладки (debug mode)
+### Features
+- Transpile JS code to ES5 via Babel
+- Compiling Pug files with support for importing data from JSON files
+- Instant linting of SASS and JS files with Stylelint and ESLint
+- New params `babel`, `preset`, `index`, `debug`, `open` and `mode`
+- Presets for convenient combination of cli params
+- Debug mode
 
-### Исправлено
-- Перемещение пользовательских настроек в отдельный файл конфигурации
-- Оптимизация структуры проекта и рефакторинг кода
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Move user settings to separate config file
+- Project structure optimization and code refactoring
+- Code refactoring, minor bug fixes
 
-### Обновлено
-- Обновление списка зависимостей и устранение уязвимостей
+### Updates
+- Update dependencies list, fix vulnerabilities
 
-### Удалено
-- Минификация HTML файлов
-- Плагин jpegtran заменен на mozjpeg для лучшей компрессии изображений
+### Breaking Changes
+- Remove param for HTML files minification
+- Replace `jpegtran` plugin with `mozjpeg` for better image compression
 
 ## 1.4.0 - 2020-08-24
 
-### Добавлено
-- Конктатенация и минификация CSS / JS файлов через параметр `compress`
-- Файлы локализации для плагинов Fancybox и Air Datepicker
-- Получение информации об устройстве, браузере и операционной системе
-- Кластеризация маркеров в Яндекс.Картах
+### Features
+- Concatenation and minification of CSS / JS files via `compress` param
+- Localization files for Fancybox and Air Datepicker plugins
+- Import information of user device, browser and OS to JS scope
+- Clustering markers in Yandex.Maps
 
-### Исправлено
-- Обновлен список полифиллов для IE
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Updated polyfills list for IE
+- Code refactoring, minor bug fixes
 
 ## 1.3.0 - 2020-06-01
 
-### Добавлено
-- Импорт модулей и библиотек напрямую из файла конфигурации
+### Features
+- Import modules and libraries directly from configuration file
 
-### Исправлено
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Code refactoring, minor bug fixes
 
 ## 1.2.0 - 2020-05-28
 
-### Добавлено
-- Параметр `main` для выборочной загрузки файлов на сервер
+### Features
+- `main` param to selectively upload files to server
 
-### Исправлено
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Code refactoring, minor bug fixes
 
 ## 1.1.0 - 2020-04-23
 
-### Добавлено
-- Аудит страниц через Google Lighthouse
+### Features
+- Audit pages through Google Lighthouse
 
-### Исправлено
-- Удаление неиспользуемого кода, исправление мелких ошибок
+### Bug Fixes
+- Code refactoring, fix minor bugs
 
 ## 1.0.0 - 2020-03-20
-Первый стабильный релиз
+Initial release

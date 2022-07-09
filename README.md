@@ -1,64 +1,72 @@
-# Сборка gulp-проекта
+<div align="center">
+  <img alt="Gulp Project" src="https://github.com/digikid/gulp-project/raw/main/logo.png" height="117" />
+</div>
 
-![GitHub release](https://img.shields.io/github/release/digikid/gulp-project.svg)
+<div align="center">
+  <h1>Gulp Project</h1>
+  <p>Automated project build with Gulp and Webpack.</p>
+  <img src="https://img.shields.io/github/release/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="Release version">
+  <img src="https://img.shields.io/github/languages/top/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="TypeScript">
+  <img src="https://img.shields.io/github/license/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="MIT License">
+  <p>
+    <a href="https://github.com/digikid/gulp-project/blob/main/README.md">en</a> | <a href="https://github.com/digikid/gulp-project/blob/main/README-ru.md">ru</a></p>
+</div>
 
-Автоматизированная сборка проекта с использованием Gulp и Webpack.
+## Table of contents
 
-## Содержание
-
-- [Основные возможности](#about)
-- [Системные требования](#requirements)
-- [Предварительная настройка](#setup)
-- [Инициализация и запуск](#build)
-- [Структура проекта](#structure)
-- - [Файлы конфигурации](#config-files)
-- [Основные параметры](#params)
-- - [Запуск с параметрами командной строки](#command-line)
-- - [Пресеты](#presets)
-- [Работа с файлами](#process)
-- - [HTML-файлы](#html)
-- - [SASS-файлы](#sass)
-- - [JS-файлы](#js)
-- - [Изображения](#images)
-- - [Конвертация SVG в Base64](#svg-base64)
-- - [Иконки Icomoon](#icomoon)
-- - [Шаблоны (Handlebars, Mustache)](#templates)
-- [Загрузка файлов на сервер](#deploy)
-- - [Добавление FTP-хоста](#add-ftp-host)
-- - [Быстрая загрузка](#force-upload)
+- [Features](#about)
+- [System requirements](#requirements)
+- [Setup](#setup)
+- [Initialization](#build)
+- [Project structure](#structure)
+- - [Config files](#config-files)
+- [Common params](#params)
+- - [Run with cli params](#command-line)
+- - [Presets](#presets)
+- [Working with files](#process)
+- - [HTML files](#html)
+- - [SASS / SCSS files](#sass)
+- - [JS files](#js)
+- - [Images](#images)
+- - [Convert SVG to Base64](#svg-base64)
+- - [Icomoon Icons](#icomoon)
+- - [Templates (Handlebars, Mustache)](#templates)
+- [Deploy](#deploy)
+- - [Adding FTP host](#add-ftp-host)
+- - [Force upload](#force-upload)
 - - [Production mode](#production-mode)
-- [Создание ZIP-архивов](#zip)
-- [Аудит страниц (PageSpeed Insights)](#reports)
+- [Creating ZIP archives](#zip)
+- [Audit with PageSpeed Insights](#reports)
 
 <a name="about"></a>
 
-## Основные возможности
+## Features
 
-- Импорт данных из JSON файлов и шаблонизация HTML (импорт, итерация и т.д).
-- Компиляция SASS / SCSS файлов в CSS, добавление браузерных префиксов, группировка медиа-запросов.
-- Поддержка импорта и экспорта ECMAScript-модулей внутри JS файлов.
-- Компиляция JS файлов в ES5 с использованием [Babel](https://babeljs.io/) (опционально).
-- Сборка JS файлов с помощью [Rollup](https://rollupjs.org/) (опционально).
-- Оптимизация и сжатие растровых (JPG, PNG, GIF) и векторных (SVG) изображений.
-- Конвертация SVG-файлов в Base64 и последующий импорт в CSS (опционально).
-- Конвертация изображений в формат WebP (опционально).
-- Автоматический импорт иконок Icomoon в SASS / SCSS из файла selection.json.
-- Слежение за файлами (watch) и автоматическая перекомпиляция файлов.
-- Генерация страницы со списком файлов и используемых зависимостей (опционально).
-- Линтинг SASS и JS файлов с помощью Stylelint и ESLint.
-- Генерация карт кода (sourcemaps) (опционально).
-- Создание ZIP-архивов с исходными и скомпилированными файлами (опционально).
-- Загрузка файлов на сервер по FTP (опционально).
-- Генерация отчетов PageSpeed Insights на локальном сервере.
+- Import data from JSON files and templating HTML (import, iteration, etc).
+- Compiling SASS / SCSS files to CSS, adding browser prefixes, grouping media queries.
+- Import and export of ECMAScript modules inside JS files.
+- Transpiling JS files to ES5 using [Babel](https://babeljs.io/) (optional).
+- Building JS files using [Rollup](https://rollupjs.org/) (optional).
+- Optimization and compression of raster (JPG, PNG, GIF) and vector (SVG) images.
+- Convert SVG files to Base64 and then import to CSS (optional).
+- Convert images to WebP format (optional).
+- Automatic import of Icomoon icons in SASS/SCSS from `selection.json` file.
+- Watching and automatic recompilation of files.
+- Generation abstract page with list of project files and used dependencies (optional).
+- Linting SASS and JS files with Stylelint and ESLint.
+- Sourcemaps generation (optional).
+- Creating ZIP archives with source and compiled files (optional).
+- Uploading project files to server via FTP (optional).
+- PageSpeed Insights reports on the local server (optional).
 
 <a name="requirements"></a>
 
-## Системные требования
+## System requirements
 
 - [Node.js 14+](https://nodejs.org/en/)
 - [gulp-cli](https://gulpjs.com/docs/en/getting-started/quick-start/)
 
-Для компрессии изображений дополнительно потребуется установить следующие библиотеки:
+For image compression you will additionally need to install the following libraries:
 
 ### Mac OS
 
@@ -74,15 +82,21 @@ apt-get install -y libjpeg libpng
 
 <a name="setup"></a>
 
-## Предварительная настройка
+## Setup
 
-Вы можете произвести настройку параметров с помощью [конфигуратора](https://github.com/digikid/create-project) либо самостоятельно определить их в файле `/config.js`.
+You can configure common params using [configurator](https://github.com/digikid/create-project) or define them yourself in `/config.js` file.
 
 <a name="build"></a>
 
-## Инициализация и запуск
+## Initialization
 
-Перейдите в корневую директорию проекта и запустите сборку:
+Go to project directory and install required dependencies:
+
+```shell
+npm ci
+```
+
+After that, start building:
 
 ```shell
 gulp
@@ -90,94 +104,95 @@ gulp
 
 <a name="structure"></a>
 
-## Структура проекта
+## Project structure
 
 ```
-gulp-project                        # Корневая директория
-├── gulp                            # Файлы Gulp
-│   └── config                      # Глобальные параметры
-├── src                             # Исходные файлы
-│   ├── abstract                    # Исходные файлы для страницы со списком файлов
-│   ├── data                        # JSON-файлы
-│   ├── fonts                       # Шрифты
-│   ├── icomoon                     # Исходные файлы Icomoon
-│   ├── images                      # Изображения
-│   ├── js                          # Файлы JavaScript
-│   ├── styles                      # Файлы SASS
-│   ├── partials                    # Включаемые HTML-файлы
-│   ├── swipers                     # JSON-файлы с параметрами Swiper
-│   ├── templates                   # Папка для шаблонов (Handlebars, Mustache и пр.)
-│   ├── vectors                     # SVG-файлы для встраивания в CSS
-│   └── index.html                  # Главная страница
-├── .browserslistrc                 # Список поддерживаемых браузеров
-├── .editorconfig                   # Настройки IDE
-├── .env                            # Настройки окружения
-├── .eslintrc                       # Настройки ESLint
-├── .gitignore                      # Игнорируемые файлы в git
-├── .stylelintignore                # Игнорируемые файлы Stylelint
-├── .stylelintrc                    # Настройки Stylelint
-├── CHANGELOG.md                    # Список изменений
-├── config.js                       # Пользовательские параметры
-├── gulpfile.js                     # Основной файл Gulp
-├── package-lock.json               # Дерево зависимостей
-├── package.json                    # Информация о проекте
-└── README.md                       # Документация
+gulp-project                        # Root directory
+├── gulp                            # Gulp files
+│   └── config                      # Global params
+├── src                             # Source files
+│   ├── abstract                    # Source files for abstract page
+│   ├── data                        # JSON files
+│   ├── fonts                       # Fonts
+│   ├── icomoon                     # Icomoon project files
+│   ├── images                      # Images
+│   ├── js                          # JavaScript files
+│   ├── styles                      # SASS / SCSS files
+│   ├── partials                    # Included HTML files
+│   ├── swipers                     # JSON files with Swiper params
+│   ├── templates                   # Templates (Handlebars, Mustache etc)
+│   ├── vectors                     # SVG files for embedding in CSS
+│   └── index.html                  # Index page
+├── .browserslistrc                 # Supported browsers list
+├── .editorconfig                   # IDE settings
+├── .env                            # Environment settings
+├── .eslintrc                       # ESLint configuration file
+├── .gitignore                      # Git ignored files
+├── .stylelintignore                # Stylelint inglored files
+├── .stylelintrc                    # Stylelint configuration file
+├── CHANGELOG.md                    # Release notes
+├── config.js                       # User params
+├── gulpfile.js                     # Main file for Gulp
+├── package-lock.json               # Dependencies tree
+├── package.json                    # Project info
+├── README-ru.md                    # Documentation in Russian
+└── README.md                       # Documentation
 ```
 
 <a name="config-files"></a>
 
-### Файлы конфигурации
+### Config files
 
-При каждом запуске сборки параметры импортируются из следующих файлов:
+Each time the build is run, params are imported from following files:
 
-- Глобальные параметры `/gulp/config`
-- Пользовательские параметры `/config.js`
+- Global params `/gulp/config`
+- User params `/config.js`
 
-**Приоритет параметров (в порядке возрастания):**
+**Parameter priority (in ascending order):**
 
-- Глобальные параметры
-- Пользовательские параметры
-- Пресеты (параметры из полей presets в файлах конфигурации)
-- Параметры командной строки
+- Global params
+- User params
+- Presets (params from presets fields in configuration files)
+- cli params
 
 <a name="params"></a>
 
-## Основные параметры
+## Common params
 
-Параметр   | Тип     | По умолчанию | Описание
----------- | --------| ------------ | ----------------------------------------------------------------------
-minify     | object  | false        | Минифицировать файлы
-sourcemaps | object  | false        | Генерировать карты кода для CSS и JS файлов
-babel      | boolean | false        | Компиляция JS в стандарт ES5
-rollup     | boolean | false        | Сборка JS с помощью Rollup
-webp       | boolean | false        | Конвертировать все изображения в формат WebP
-abstract   | boolean | false        | Добавить страницу со списком файлов проекта
-debug      | boolean | false        | Показ системных уведомлений
-force      | array   | []           | Список задач для режима быстрой сборки
-preset     | string  | 'global'     | Название активного пресета
-open       | string  | 'index'      | Стартовая страница при запуске (без расширения .html)
-host       | string  | 'default'    | Ключ объекта FTP настроек из параметра `config.ftp`
-mode       | string  | 'dev'        | Режим разработки (dev / build), доступен глобально в HTML как `@@mode`
+| Параметр   | Тип     | По умолчанию | Описание                                                          |
+|------------|---------|--------------|-------------------------------------------------------------------|
+ | minify     | object  | false        | Minify files                                                      |
+ | sourcemaps | object  | false        | Generate sourcemaps for CSS and JS files                          |
+ | babel      | boolean | false        | Transpile JS to ES5 with Babel                                    |
+ | rollup     | boolean | false        | Building JS with Rollup                                           |
+ | webp       | boolean | false        | Convert all images to WebP format                                 |
+ | abstract   | boolean | false        | Generate abstract page with project files list                    |
+ | debug      | boolean | false        | Enable debug mode                                                 |
+ | force      | array   | []           | Task names for force upload                                       |
+ | preset     | string  | 'global'     | Name of applying preset                                           |
+ | open       | string  | 'index'      | Startup page (without .html extension)                            |
+ | host       | string  | 'default'    | FTP host key from `config.ftp` file                               |
+ | mode       | string  | 'dev'        | Building mode (dev/build), available globally in HTML as `@@mode` |
 
 <a name="command-line"></a>
 
-### Запуск с параметрами командной строки
+### Run with cli params
 
-Все перечисленные выше параметры можно передать в командную строку через соответствующие флаги.
+All of the above params can be passed to command line through appropriate flags.
 
-Пример запуска сборки с параметрами:
+Example running with cli params:
 
 ```shell
 gulp --babel --minify js --open catalog
 ```
 
-Описанная команда эквивалента следующей записи в файле конфигурации:
+The described command is equivalent to the following entry in configuration file:
 
 ```javascript
 {
     babel: true,
     minify: {
-        css: false, // наследуется из параметров по умолчанию
+        css: false, // inherited from global params
         js: true
     },
     open: 'catalog'
@@ -186,18 +201,18 @@ gulp --babel --minify js --open catalog
 
 <a name="presets"></a>
 
-### Пресеты
+### Presets
 
-Благодаря пресетам можно запускать сборку файлов с разными параметрами в зависимости от запускаемой задачи и создавать собственные комбинации параметров.
+Presets allow you to start building with predefined params depending on task name or create your own combinations of params.
 
-Для создания нового пресета нужно добавить его в поле `presets` в файле конфигурации `/config.js`.
+To create a new preset, add params to `presets` field in `/config.js` file.
 
-Параметры из пресета применятся, если:
+Params from preset will be applied if:
 
-- Название пресета соответствует названию текущей задачи (`build` - для дефолтной задачи, `deploy` - для загрузки файлов на сервер и т.д);
-- Название пресета передано как параметр командной строки `--preset`.
+- Preset name is equivalent to current task name (`build` - for build task, `deploy` - for deploy task, etc);
+- Preset name passed as cli param `--preset`.
 
-**Пример пресета для задачи:**
+**Preset example**
 
 ```
 config.presets = {
@@ -209,13 +224,13 @@ config.presets = {
 }
 ```
 
-Данный пресет эквивалентен запуску с параметрами:
+This preset is equivalent to launching with following params:
 
 ```shell
 gulp deploy --babel --compress --mode build
 ```
 
-**Пример пресета, запускаемого из командной строки:**
+**Custom preset example**
 
 ```
 config.presets = {
@@ -229,15 +244,15 @@ config.presets = {
 }
 ```
 
-Вышеуказанный пресет будет запущен при явном указании флага `--preset`:
+The above params will be applied when `--preset` flag is explicitly specified:
 
 ```shell
 gulp --preset myPreset
 ```
 
-#### Глобальный пресет
+#### Global preset
 
-Параметры из глобального пресета применяются всегда и могут быть переопределены только из командной строки.
+Params from global preset are always applied and can only be overridden from command line.
 
 ```javascript
 config.presets = {
@@ -250,79 +265,79 @@ config.presets = {
 
 <a name="process"></a>
 
-## Работа с файлами
-
-Для удобной работы с HTML вы можете использовать операторы [gulp-file-include](https://www.npmjs.com/package/gulp-file-include):
-
-- `@@​include`
-- `@@​if`
-- `@@​for`
-- `@@​loop`
-
-Документация и примеры использования можно найти [здесь](https://github.com/haoxins/gulp-file-include#readme).
+## Working with files
 
 <a name="html"></a>
 
-### HTML-файлы
+### HTML files
 
-HTML-файлы размещаются в директории `/src`.
+HTML files are placed in `/src` directory.
 
-Включаемые файлы размещаются в директории `/src/partials/`.
+Included files are placed in `/src/partials/` directory.
+
+For convenient work with HTML files, you can use [gulp-file-include](https://www.npmjs.com/package/gulp-file-include) operators:
+
+- `@@include`
+- `@@if`
+- `@@for`
+- `@@loop`
+
+Documentation and usage examples can be found [here](https://github.com/haoxins/gulp-file-include#readme).
 
 <a name="sass"></a>
 
-### SASS-файлы
+### SASS / SCSS files
 
-SASS-файлы размещаются в директории `/src/styles`.
+SASS / SCSS files are placed in `/src/styles` directory.
 
 <a name="js"></a>
 
-### JS-файлы
+### JS files
 
-JS-файлы размещаются в директории `/src/js`.
+JS files are placed in `/src/js` directory.
 
-:warning: **Объединение файлов**
->По умолчанию при сборке все SASS и JS файлы объединяются в один выходной файл.
-Если нужно создать отдельный файл, добавьте к его названию постфикс `.module`, например `component.module.scss`.
-В этом случае при сборке будет создан файл `component.css` и добавлен на все страницы проекта.
+:warning: **Merge files**
+>By default, all SASS and JS files are combined into one output file.
+If you need to create a separate file, append `.module` postfix to file name (e.g. `component.module.scss`).
+Thereafter `component.css` file will be created and added to all project pages.
 
 <a name="images"></a>
 
-### Изображения
+### Images
 
-Изображения размещаются в директории `/src/images`.
+Images are placed in `/src/images` directory.
 
-Настройки компрессии задаются в параметре `config.plugins.image`.
+Compression settings are set in `config.plugins.image` param.
 
-Для конвертации всех изображений в формат WebP установите параметр `config.webp` в значение `true`.
+To convert all images to WebP format, set `config.webp` param to `true`.
 
 <a name="svg-base64"></a>
 
-### Конвертация SVG в Base64
+### Convert SVG to Base64
 
-Для конвертации SVG файлов в Base64 и встраивания в CSS переместите их в директорию `/src/vectors`.
+To convert SVG files to Base64 and subsequent embedding to CSS, move them to the `/src/vectors` directory.
 
 <a name="icomoon"></a>
 
-### Добавление иконок Icomoon
+### Icomoon icons
 
-Для добавления иконок в проект распакуйте содержимое ZIP-архива с сайта [icomoon.io](https://icomoon.io/app/) в директорию `/src/icomoon`.
+To add icons, move Icomoon project files from [icomoon.io](https://icomoon.io/app/) website to `/src/icomoon` directory.
 
-После этого идентификаторы иконок будут доступны в SASS через переменную `$icomoon-icons`.
+The icons will be available in SASS via `$icomoon-icons` map.
 
 <a name="templates"></a>
 
-### Шаблоны (Handlebars, Mustache)
+### Templates (Handlebars, Mustache)
 
-Если вы используете HTML-шаблонизаторы (Handlebars, Mustache и т.п), для хранения шаблонов предусмотрена директория `/src/templates`.
+If you are using HTML compilers like Handlebars or Mustache, you can store template files in `/src/templates` directory.
 
 <a name="deploy"></a>
 
-## Загрузка файлов на сервер
+## Deploy
 
-Перед загрузкой файлов на сервер необходимо задать параметры FTP в `.env` файле.
+Before deploying files to server, you must set FTP params in `.env` file.
 
-После этого запустите команду:
+After that, run the command:
 
 ```shell
 gulp deploy
@@ -330,11 +345,11 @@ gulp deploy
 
 <a name="add-ftp-host"></a>
 
-### Добавление FTP-хоста
+### Adding FTP host
 
-По умолчанию загрузка файлов происходит на хост `default`.
+By default, files are uploaded to `default` host.
 
-Если необходимо создать еще один хост, добавьте параметры в `.env` файл:
+If you need to create another FTP host, add params to `.env` file:
 
 ```
 FTP_CUSTOM_HOST=HOSTNAME
@@ -344,7 +359,7 @@ FTP_CUSTOM_DEST=DEST
 FTP_CUSTOM_URI=URL
 ```
 
-После этого импортируйте параметры в файл `config.ftp`, в качестве ключа задайте название хоста:
+After that, import environment params in `config.js` file and use host name as object key:
 
 ```
 config: {
@@ -360,7 +375,7 @@ config: {
 }
 ```
 
-Для загрузки файлов на хост `custom` запустите команду:
+To upload files to the `custom` host, run command:
 
 ```shell
 gulp deploy --host custom
@@ -368,13 +383,11 @@ gulp deploy --host custom
 
 <a name="force-upload"></a>
 
-### Быстрая загрузка
+### Force upload
 
-Перед запуском сборки вы можете передать список задач через флаг `--force`.
+Before building, you can pass a list of required tasks through the `--force` flag. Then only selected tasks will be launched, and all others will be ignored.
 
-В этом случае будут запущены только выбранные задачи, а все остальные проигнорированы.
-
-Это может быть удобным, если нужно собрать и загрузить только недавно измененные файлы.
+This can be useful if you want to build and deploy recently modified files only.
 
 ```shell
 gulp deploy --force html,css,js
@@ -384,36 +397,36 @@ gulp deploy --force html,css,js
 
 ### Production mode
 
-По умолчанию перед загрузкой файлов включена компиляция в ES5 и минификация файлов, поэтому передавать параметры `--minify` и `--babel` не требуется.
+In production mode transpiling to ES5 and minification of files are enabled by default, so passing `--minify` and `--babel` flags is not required.
 
-Если вы хотите изменить это поведение, отредактируйте пресет `config.presets.deploy`.
+If you want to change this behavior, edit `config.presets.deploy` preset.
 
 <a name="zip"></a>
 
-## Создание ZIP-архивов
+## Creating ZIP files
 
-Для создания ZIP-архивов с исходными и скомпилированными файлами запустите задачу:
+To create ZIP files with source and compiled files, run the task:
 
 ```shell
 gulp zip
 ```
 
-Названия файлов задаются в параметре `config.files.zip`.
+File names for ZIP files are specified in `config.files.zip` param.
 
 <a name="reports"></a>
 
-## Аудит страниц (PageSpeed Insights)
+## Audit with PageSpeed Insights
 
->[Google Lighthouse](https://github.com/GoogleChrome/lighthouse) – это инструмент аудита с открытым исходным кодом, который помогает разработчикам повысить производительность и доступность своих веб-проектов.
+>[Google Lighthouse](https://github.com/GoogleChrome/lighthouse) is an open source auditing tool that helps developers improve performance and accessibility of their web projects.
 
-Отчеты PageSpeed Insights генерируются на локальном сервере для каждой страницы проекта после запуска команды:
+PageSpeed Insights reports are generated on the local server for each project page after running the command:
 
 ```shell
 gulp reports
 ```
 
-В зависимости от количества страниц в проекте и ресурсов вашего компьютера выполнение задачи может занять продолжительное время.
+Depending on number of pages and hardware resources, this task may take a long time to complete.
 
-## Лицензия
+## LICENSE
 
 [The MIT License (MIT)](LICENSE)

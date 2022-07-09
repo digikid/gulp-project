@@ -1,7 +1,7 @@
 {
   "name": "gulp-project",
-  "version": "1.7.5",
-  "description": "Автоматизированная сборка HTML проекта",
+  "version": "1.7.6",
+  "description": "Automated project build with Gulp and Webpack",
   "main": "gulpfile.js",
   "dependencies": {
     "@babel/runtime": "^7.16.7",

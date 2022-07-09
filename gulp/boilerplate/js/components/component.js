@@ -114,21 +114,23 @@ export default class Component {
             return;
         };
 
-        Object.entries(handlers).forEach(([type, handlers]) => {
-            Object.entries(handlers).forEach(([id, handler]) => {
-                if ((typeof handler !== 'function')) {
-                    return;
-                };
+        Object.entries(handlers).forEach(([events, handlers]) => {
+            events.split(' ').forEach((event) => {
+                Object.entries(handlers).forEach(([id, handler]) => {
+                    if ((typeof handler !== 'function')) {
+                        return;
+                    };
 
-                const { selector } = parseDataSelector(id);
+                    const { selector } = parseDataSelector(id);
 
-                const cb = async function(e) {
-                    await handler.call(_that, e);
-                };
+                    const cb = async function(e) {
+                        await handler.call(_that, e);
+                    };
 
-                const params = outside.includes(id) ? [type, cb] : [type, selector, cb];
+                    const params = outside.includes(id) ? [event, cb] : [event, selector, cb];
 
-                $(document).on(...params);
+                    $(document).on(...params);
+                });
             });
         });
 
