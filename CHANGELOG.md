@@ -1,5 +1,15 @@
 # Release Notes
 
+[1.7.7]: https://github.com/digikid/gulp-project/releases/tag/1.7.7
+
+## [1.7.7] - 2022-07-14
+
+### Features
+- `boilerplateVersion` param
+
+### Bug Fixes
+- Minor bug fixes, code refactoring
+
 [1.7.6]: https://github.com/digikid/gulp-project/releases/tag/1.7.6
 
 ## [1.7.6] - 2022-07-09

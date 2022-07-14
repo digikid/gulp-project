@@ -1,5 +1,4 @@
-const { name, description, version} = add('@/package.json');
-
+const { name, description, version, boilerplateVersion } = add('@/package.json');
 const { concat } = add('@gulp/utils/params');
 
 const root = '.';
@@ -18,5 +17,6 @@ module.exports = {
     description,
     name,
     version,
+    boilerplateVersion,
     ...params
 };

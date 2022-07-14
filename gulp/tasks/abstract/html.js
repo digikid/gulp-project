@@ -29,6 +29,7 @@ module.exports = (gulp, plugins, config) => {
         now,
         repo,
         version,
+        boilerplateVersion,
         theme,
         authors,
         copyright
@@ -48,6 +49,7 @@ module.exports = (gulp, plugins, config) => {
                 now,
                 repo,
                 version,
+                boilerplateVersion,
                 theme,
                 authors,
                 copyright
