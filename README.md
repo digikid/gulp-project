@@ -296,7 +296,7 @@ SASS / SCSS files are placed in `/src/styles` directory.
 
 JS files are placed in `/src/js` directory.
 
-:warning: **Merge files**
+:warning: **Files merging**
 >By default, all SASS and JS files are combined into one output file.
 If you need to create a separate file, append `.module` postfix to file name (e.g. `component.module.scss`).
 Thereafter `component.css` file will be created and added to all project pages.
