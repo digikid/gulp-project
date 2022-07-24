@@ -5,11 +5,10 @@
 <div align="center">
   <h1>Gulp Project</h1>
   <p>Автоматизированная сборка проекта с использованием Gulp и Webpack</p>
+  <p><a href="https://github.com/digikid/gulp-project/blob/main/README.md">English</a> | <b>Русский</b></p>
   <img src="https://img.shields.io/github/release/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="Release version">
   <img src="https://img.shields.io/github/languages/top/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="TypeScript">
   <img src="https://img.shields.io/github/license/digikid/gulp-project.svg?style=flat-square&logo=appveyor" alt="MIT License">
-  <p>
-    <a href="https://github.com/digikid/gulp-project/blob/main/README.md">en</a> | <a href="https://github.com/digikid/gulp-project/blob/main/README-ru.md">ru</a></p>
 </div>
 
 ## Содержание
