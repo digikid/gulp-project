@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Gulp Project" src="https://github.com/digikid/gulp-project/raw/main/logo.png" height="117" />
+  <img alt="Gulp Project" src="https://github.com/digikid/gulp-project/raw/main/logo.svg" height="117" />
 </div>
 
 <div align="center">
