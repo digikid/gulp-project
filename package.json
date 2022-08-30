@@ -1,8 +1,8 @@
 {
   "name": "gulp-project",
   "description": "Automated project build with Gulp and Webpack",
-  "version": "1.7.7",
-  "boilerplateVersion": "1.7.7",
+  "version": "1.7.8",
+  "boilerplateVersion": "1.7.8",
   "main": "gulpfile.js",
   "dependencies": {
     "@babel/runtime": "^7.16.7",

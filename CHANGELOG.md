@@ -1,5 +1,15 @@
 # Release Notes
 
+[1.7.8]: https://github.com/digikid/gulp-project/releases/tag/1.7.8
+
+## [1.7.8] - 2022-08-30
+
+### Updates
+- Update config file for bootstrap@5
+
+### Bug Fixes
+- Minor bug fixes, code refactoring
+
 [1.7.7]: https://github.com/digikid/gulp-project/releases/tag/1.7.7
 
 ## [1.7.7] - 2022-07-14
