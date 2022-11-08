@@ -23,6 +23,7 @@ module.exports = (gulp, plugins, config) => {
         },
         plugins: params,
         context: configContext,
+        abstract,
         title,
         name,
         description,
@@ -30,7 +31,6 @@ module.exports = (gulp, plugins, config) => {
         repo,
         version,
         boilerplateVersion,
-        theme,
         authors,
         copyright
     } = config;
@@ -43,6 +43,7 @@ module.exports = (gulp, plugins, config) => {
                 ...params.fileInclude.context,
                 ...configContext,
                 ...data,
+                ...abstract,
                 title,
                 name,
                 description,
@@ -50,7 +51,6 @@ module.exports = (gulp, plugins, config) => {
                 repo,
                 version,
                 boilerplateVersion,
-                theme,
                 authors,
                 copyright
             };
