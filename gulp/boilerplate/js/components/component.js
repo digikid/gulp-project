@@ -108,7 +108,8 @@ export default class Component {
 
         const { id, parseDataSelector } = this;
 
-        const outside = ['document', 'body', 'html', 'outside'];
+        const rootIds = ['root'];
+        const outsideIds = ['document', 'body', 'html', 'outside'];
 
         if (Component.attachedHandlers[id]) {
             return;
@@ -121,13 +122,17 @@ export default class Component {
                         return;
                     };
 
-                    const { selector } = parseDataSelector(id);
+                    const isRootSelector = rootIds.includes(id);
+                    const isOutsideSelector = outsideIds.includes(id);
+                    const baseId = isRootSelector ? undefined : id;
+
+                    const { selector } = parseDataSelector(baseId);
 
                     const cb = async function(e) {
                         await handler.call(_that, e);
                     };
 
-                    const params = outside.includes(id) ? [event, cb] : [event, selector, cb];
+                    const params = isOutsideSelector ? [event, cb] : [event, selector, cb];
 
                     $(document).on(...params);
                 });
