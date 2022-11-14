@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import lozad from 'lozad';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 const title = 'LazyLoad';
 

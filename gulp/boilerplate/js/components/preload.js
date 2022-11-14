@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Component from './component';
+import Component from '../classes/Component';
 
 import { names } from '../config';
 import { isObjectEmpty } from '../utils/object';

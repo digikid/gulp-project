@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import AirDatepicker from 'air-datepicker';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 import { disable as disableScroll, enable as enableScroll } from '../utils/scroll';
 

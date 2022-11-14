@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Swiper, { Navigation, Pagination, Thumbs, Manipulation } from 'swiper';
 
-import Component from './component';
+import Component from '../classes/Component';
 import LazyLoad from './lazyLoad';
 
 import { names } from '../config';

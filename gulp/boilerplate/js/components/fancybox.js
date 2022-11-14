@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { Fancybox } from '@fancyapps/ui';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 const title = 'Fancybox';
 

@@ -1,6 +1,6 @@
 import SimpleBar from 'simplebar';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 const title = 'Scrollbar';
 

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import 'jquery-mask-plugin';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 import { mergeDeep } from '../utils/object';
 

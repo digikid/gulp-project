@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import tippy from 'tippy.js';
 
-import Component from './component';
+import Component from '../classes/Component';
 
 const title = 'Tooltip';
 

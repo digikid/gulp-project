@@ -4,7 +4,7 @@ import $ from 'jquery';
 import SimpleBar from 'simplebar';
 /* /if:simplebar */
 
-import Component from './component';
+import Component from '../classes/Component';
 
 import { triggerNative } from '../utils/event';
 import { id as randomId } from '../utils/random';
