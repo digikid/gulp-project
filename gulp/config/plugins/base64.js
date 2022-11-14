@@ -3,6 +3,7 @@ module.exports = {
     exclude: [
         '/sprite/',
         '/images/',
-        '/symbols/'
+        '/symbols/',
+        '/fonts/'
     ]
 };
