@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import Warning from './warning';
+import Warning from './Warning';
 
 import { id as randomId } from '../utils/random';
 import { isObject, mergeDeep } from '../utils/object';
