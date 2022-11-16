@@ -83,6 +83,8 @@ export default class extends Component {
     };
 
     onError(el) {
+        const { options: { cssClasses: { loading, error } } } = this;
+
         $(el).removeClass(loading).addClass(error);
     };
 };
