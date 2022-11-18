@@ -184,16 +184,10 @@ export default class Component {
     getElements = (el, ids = []) => {
         const { getElement } = this;
 
-        const initial = getElement();
-
-        if (!el || !ids.length || !Array.isArray(ids)) {
-            return initial;
-        };
-
-        return ids.filter(id => (id !== 'root')).reduce((acc, id) => ({
+        return ['root', ...ids].reduce((acc, id) => ({
             ...acc,
             ...getElement(el, id)
-        }), initial);
+        }), {});
     };
 
     getTarget = selector => {
