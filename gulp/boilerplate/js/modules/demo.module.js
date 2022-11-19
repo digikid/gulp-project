@@ -5,8 +5,6 @@ $(document).ready(() => {
 
     $('form').on('submit', function(e) {
         e.preventDefault();
-
-        $.fn.modal('success');
     });
 
     $('.menu__item').each(function() {
