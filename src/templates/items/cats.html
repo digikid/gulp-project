@@ -1,0 +1,12 @@
+<div class="cats__item">
+    {{ if index === 3 }}
+    <div class="cats__badge">The most fluffy</div>
+    {{ /if }}
+    <div class="cats__thumb">
+        <img src="{{ thumb }}" alt="{{ title }}" />
+    </div>
+    <div class="cats__title">{{ title }}</div>
+    <div class="cats__description">
+        <p>{{ description }}</p>
+    </div>
+</div>

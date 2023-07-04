@@ -1,1 +1,0 @@
-module.exports = gulp => gulp.series('dev');

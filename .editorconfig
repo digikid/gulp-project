@@ -3,19 +3,15 @@ root = true
 [*]
 end_of_line = LF
 indent_style = space
-indent_size = 4
+indent_size = 2
 charset = utf-8
-trim_trailing_whitespace = all
 insert_final_newline = true
 
 [*.min.*]
-indent_style = ignore
 trim_trailing_whitespace = false
-insert_final_newline = ignore
+
+[*.html]
+indent_size = 4
 
 [Makefile]
 indent_style = tab
-
-[{package.json,.travis.yml,.stylelintrc}]
-indent_style = space
-indent_size = 2
